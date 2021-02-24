@@ -1,0 +1,27 @@
+{
+  "name": "mern-jwt",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
+    "start:prod": "node server",
+    "start:dev": "concurrently -c magenta,blue \"npm:server\" \"npm:client\"",
+    "server": "cd server && npm run dev",
+    "client": "cd client && npm run start",
+    "postinstall": "(cd client && npm install); (cd server && npm install);",
+    "build": "cd client && npm run build"
+  },
+  "keywords": [],
+  "contributors": [
+    "John Desrosiers <john.desro@gmail.com> (https://github.com/median-man)",
+    "Travis Thompson <Travo100@gmail.com> (https://github.com/Travo100)"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "if-env": "^1.0.4"
+  },
+  "devDependencies": {
+    "concurrently": "^6.0.0"
+  }
+}
