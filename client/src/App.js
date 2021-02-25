@@ -6,6 +6,7 @@ import ProtectedPage from "./pages/ProtectedPage";
 import PublicPage from "./pages/PublicPage";
 import SignUpPage from "./pages/SignUpPage";
 import UserProfilePage from "./pages/UserProfilePage";
+import SearchLyricsPage from "./pages/SearchLyrics";
 import { ProvideAuth } from "./util/authContext";
 
 function App() {
@@ -23,6 +24,9 @@ function App() {
           <Navbar />
 
           <Switch>
+            <Route path="/searchLyrics">
+              <SearchLyricsPage />
+            </Route>
             <Route path="/public">
               <PublicPage />
             </Route>
