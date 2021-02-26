@@ -25,9 +25,9 @@ function useProvideAuth() {
 
   const isLoggedIn = !!user;
 
-  const login = ({ email, password }) => {
+  const login = ({ username, password }) => {
     return auth
-      .login(email, password)
+      .login(username, password)
       .then(() => {
         setUser(auth.getProfile());
         setError(null);

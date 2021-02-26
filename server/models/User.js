@@ -8,23 +8,9 @@ const UserSchema = new Schema({
     required: true,
     trim: true
   },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-    trim: true,
-    lowercase: true,
-    index: {
-      unique: true
-    }
-  },
   password: {
     type: String,
     required: true,
-
-    // Don't include password in queries unless the query asks for it to prevent
-    // accidentally exposing hashed passwords. (see
-    // https://mongoosejs.com/docs/api.html#schematype_SchemaType-select)
     select: false
   },
   createdAt: {

@@ -21,6 +21,9 @@ function Navbar() {
   return (
     <ul style={styles.ul}>
       <li style={styles.li}>
+        <Link to="/searchLyrics">Search Lyrics</Link>
+      </li>
+      <li style={styles.li}>
         <Link to="/public">Public Page</Link>
       </li>
       <li style={styles.li}>

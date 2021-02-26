@@ -5,7 +5,7 @@ import { useAuth } from "../util/authContext";
 function LoginPage() {
   let auth = useAuth();
   const [formState, setFormState] = useState({
-    email: "",
+    username: "",
     password: ""
   });
 
@@ -28,12 +28,12 @@ function LoginPage() {
     <div>
       <h1>Login</h1>
       <form onSubmit={login}>
-        <label htmlFor="email">Email:</label>
+        <label htmlFor="username">Username:</label>
         <input
-          type="email"
-          name="email"
-          id="email"
-          value={formState.email}
+          type="username"
+          name="username"
+          id="username"
+          value={formState.username}
           onChange={handleInputChange}
           required
         />
