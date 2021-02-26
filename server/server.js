@@ -34,6 +34,8 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.resolve(__dirname, "../client/build")));
 }
 
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(apiRouter);
 
 var multer = require("multer");
@@ -45,6 +47,40 @@ var storage = multer.diskStorage({
   filename: (req, file, cb) => {
     cb(null, file.fieldname + "-" + Date.now());
   },
+});
+
+var upload = multer({ storage: storage });
+var imgModel = require("./model");
+
+app.get("{GALLERY-COMPONENT-HERE}", (req, res) => {
+  imgModel.find({}, (err, items) => {
+    if (err) {
+      console.log(err);
+      // res.status(500).send("An error occurred", err);
+      res.render("{IMAGE-COMPONENT-HERE}", { items: [] });
+    } else {
+      res.render("{IMAGE-COMPONENT-HERE}", { items: items });
+    }
+  });
+});
+
+app.post("{CANVAS-COMPONENT-URL-HERE?}", upload.single("image"), (req, res, next) => {
+  var obj = {
+    name: req.body.name,
+    desc: req.body.desc,
+    img: {
+      data: fs.readFileSync(path.join(__dirname + "/uploads/" + req.file.filename)), //May need to change /uploads/
+      contentType: "image/png",
+    },
+  };
+  imgModel.create(obj, (err, item) => {
+    if (err) {
+      console.log(err);
+    } else {
+      // item.save();
+      res.redirect("{REDIRECT-TO-SEARCH?}");
+    }
+  });
 });
 
 // Error handling
