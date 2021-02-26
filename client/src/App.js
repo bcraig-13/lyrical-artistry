@@ -21,9 +21,13 @@ function App() {
             maxWidth: "50rem"
           }}
         >
-          <Navbar />
-
+          <Route path= {["/searchLyrics", "/protected", "/profile", "/public"]}>
+            <Navbar />
+          </Route>
           <Switch>
+          <Route exact path="/">
+              <LoginPage />
+            </Route>
             <Route path="/searchLyrics">
               <SearchLyricsPage />
             </Route>

@@ -2,17 +2,17 @@ const db = require("../models");
 const jwt = require("jsonwebtoken");
 
 module.exports = {
-  logUserIn: function (email, password) {
+  logUserIn: function (username, password) {
     return new Promise((resolve, reject) => {
       db.User.findOne({
-        email: email
+        username: username
       })
         .select("+password")
         .then((user) => {
           user.verifyPassword(password, (err, isMatch) => {
             if (isMatch && !err) {
               let token = jwt.sign(
-                { id: user._id, email: user.email },
+                { id: user._id, username: user.username },
                 process.env.SERVER_SECRET,
                 { expiresIn: 129600 }
               ); // Sigining the token

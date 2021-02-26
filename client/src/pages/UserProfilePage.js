@@ -20,7 +20,6 @@ function UserProfilePage() {
       <h1>User Profile Example Page</h1>
       <p>Id: {user?._id}</p>
       <p>Username: {user?.username}</p>
-      <p>Email: {user?.email}</p>
     </div>
   );
 }
