@@ -66,7 +66,6 @@ app.get("{GALLERY-COMPONENT-HERE}", (req, res) => {
 app.post("{CANVAS-COMPONENT-URL-HERE?}", upload.single("image"), (req, res, next) => {
   var obj = {
     name: req.body.name,
-    desc: req.body.desc,
     img: {
       data: fs.readFileSync(path.join(__dirname + "/uploads/" + req.file.filename)), //May need to change /uploads/
       contentType: "image/png",
