@@ -50,14 +50,13 @@ var storage = multer.diskStorage({
 });
 
 var upload = multer({ storage: storage });
-var imgModel = require("./model");
+var imgModel = require("./models/imageModel");
 
 app.get("{GALLERY-COMPONENT-HERE}", (req, res) => {
   imgModel.find({}, (err, items) => {
     if (err) {
       console.log(err);
-      // res.status(500).send("An error occurred", err);
-      res.render("{IMAGE-COMPONENT-HERE}", { items: [] });
+      res.status(500).send("An error occurred", err);
     } else {
       res.render("{IMAGE-COMPONENT-HERE}", { items: items });
     }
