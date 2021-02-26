@@ -4,6 +4,8 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const apiRouter = require("./routes/api");
+const bodyParser = require("body-parser");
+const fs = require("fs");
 
 const PORT = process.env.PORT || 3001;
 
@@ -33,6 +35,17 @@ if (process.env.NODE_ENV === "production") {
 }
 
 app.use(apiRouter);
+
+var multer = require("multer");
+
+var storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads");
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.fieldname + "-" + Date.now());
+  },
+});
 
 // Error handling
 app.use(function (err, req, res, next) {
