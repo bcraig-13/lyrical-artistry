@@ -4,8 +4,12 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const apiRouter = require("./routes/api");
+
 const bodyParser = require("body-parser");
 const fs = require("fs");
+
+const musixMatchRouter = require("./routes/musixMatchAPI");
+
 
 const PORT = process.env.PORT || 3001;
 
@@ -20,6 +24,7 @@ if (!process.env.SERVER_SECRET) {
 // Setting up express to use json and set it to req.body
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
 
 mongoose
   .connect(process.env.MONGODB_URI || "mongodb://localhost:27017/appDB", {
@@ -37,6 +42,7 @@ if (process.env.NODE_ENV === "production") {
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(apiRouter);
+app.use(musixMatchRouter);
 
 var multer = require("multer");
 
