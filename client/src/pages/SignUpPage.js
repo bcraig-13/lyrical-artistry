@@ -1,12 +1,11 @@
 import { useState } from "react";
-import { Redirect } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { useAuth } from "../util/authContext";
 import API from "../util/API";
 
 function SignUpPage() {
   const [formState, setFormState] = useState({
     username: "",
-    email: "",
     password: ""
   });
 
@@ -21,7 +20,7 @@ function SignUpPage() {
     event.preventDefault();
     API.signUpUser(formState)
       .then(() => {
-        auth.login({ email: formState.email, password: formState.password });
+        auth.login({ username: formState.username, password: formState.password });
       })
       .catch((error) => {
         alert("Unable to sign up.");
@@ -47,16 +46,6 @@ function SignUpPage() {
           required
         />
         <br />
-        <label htmlFor="email">Email:</label>
-        <input
-          type="email"
-          name="email"
-          id="email"
-          value={formState.email}
-          onChange={handleInputChange}
-          required
-        />
-        <br />
         <label htmlFor="password">Password:</label>
         <input
           type="password"
@@ -69,6 +58,9 @@ function SignUpPage() {
         <br />
         <button type="submit">Submit</button>
       </form>
+      <p>
+        Have an account? <Link to="/login">Login</Link>
+      </p>
     </div>
   );
 }
