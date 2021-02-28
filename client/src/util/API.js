@@ -1,4 +1,5 @@
 import axios from "axios";
+
 const API = {
   // Gets a single user by id
   getUser: () => {
@@ -11,6 +12,10 @@ const API = {
       email,
       password
     });
+  },
+  
+  getTracks: (trackName) => {
+    return axios.get(`/api/tracks/${trackName}`);
   }
 };
 
