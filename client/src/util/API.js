@@ -12,9 +12,12 @@ const API = {
       password
     });
   },
-  
+
   getTracks: (trackName) => {
     return axios.get(`/api/tracks/${trackName}`);
+  },
+  getLyrics: (trackID) => {
+    return axios.get(`/api/lyrics/${trackID}`)
   }
 };
 

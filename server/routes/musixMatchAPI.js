@@ -18,5 +18,14 @@ musixMatchRouter.get("/api/tracks/:trackName", (req, res) => {
     });
 });
 
+musixMatchRouter.get("/api/lyrics/:trackID", (req,res) => {
+    const trackID = req.params.trackID;
+    axios.get(`https://api.musixmatch.com/ws/1.1/track.lyrics.get?track_id=${trackID}&apikey=${process.env.MUSIXMATCH_KEY}`)
+    .then((musixResponse) => {
+        res.json(musixResponse.data);
+    }).catch((err) => {
+        res.status(400).send(err);
+    })
+})
 
 module.exports = musixMatchRouter;
