@@ -6,7 +6,7 @@ import ProtectedPage from "./pages/ProtectedPage";
 import PublicPage from "./pages/PublicPage";
 import SignUpPage from "./pages/SignUpPage";
 import UserProfilePage from "./pages/UserProfilePage";
-import SearchLyricsPage from "./pages/SearchLyrics";
+import SearchLyricsPage from "./pages/SearchLyricsPage";
 import { ProvideAuth } from "./util/authContext";
 
 function App() {
