@@ -4,6 +4,7 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const apiRouter = require("./routes/api");
+const musixMatchRouter = require("./routes/musixMatchAPI");
 
 const PORT = process.env.PORT || 3001;
 
@@ -19,6 +20,7 @@ if (!process.env.SERVER_SECRET) {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+
 mongoose
   .connect(process.env.MONGODB_URI || "mongodb://localhost:27017/appDB", {
     useNewUrlParser: true,
@@ -33,6 +35,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 app.use(apiRouter);
+app.use(musixMatchRouter);
 
 // Error handling
 app.use(function (err, req, res, next) {

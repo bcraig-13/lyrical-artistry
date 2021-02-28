@@ -24,7 +24,8 @@ Add a .env to the `/server` folder of this app.
 Then inside of the .env add a SERVER_SECRET set to any value you'd like
 
 ```
-SERVER_SECRET = 123456
+SERVER_SECRET = 112345
+MUSIXMATCH_KEY= GET MUSIXMATCH SERVER API KEY
 ```
 
 First off make sure you have a local version of MongoDB running on your machine. This project will make a local database for you called `appDB`. (You may want to rename the local database to something else.)
