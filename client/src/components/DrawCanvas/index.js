@@ -6,39 +6,74 @@ function DrawCanvas(props) {
     const canvasRef = useRef(null);
     // let canvas;
     // let ctx;
-    
+
     // var imageObj = new Image();
     // imageObj.src = "./exPhoto.jpg";
 
-    // const draw = (ctx) => {
-    //     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    //     ctx.drawImage(imageObj, 0, 0);
-    //     for (var i = 0; i < texts.length; i++) {
-    //         var text = texts[i];
-    //         ctx.fillStyle = text.color;
-    //         ctx.font = `${text.size}px ${text.font}`;
+    const draw = (canvas, ctx, texts, imageObj) => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(imageObj, 0, 0);
 
-    //         // vvv code to check text hitbox
-    //         // ctx.clearRect(text.x, text.y, text.width, text.height);
 
-    //         ctx.fillText(text.text, text.x, text.y);
-    //     }
-    // }
+        for (var i = 0; i < texts.length; i++) {
+            var text = texts[i];
+            ctx.fillStyle = text.color;
+            ctx.font = `${text.size}px ${text.font}`;
+
+            // vvv code to check text hitbox
+            // ctx.clearRect(text.x, text.y, text.width, text.height);
+
+            ctx.fillText(text.text, text.x, text.y);
+        }
+    }
 
     // const draw = (ctx) => { }
 
+    var texts = [];
+
+    var y = texts.length * 50 + 50
+    texts = [
+        {
+            text: "test1",
+            font: "arial",
+            size: 50,
+            color: "black",
+            x: 20,
+            y
+        },
+        {
+            text: "test2",
+            font: "arial",
+            size: 50,
+            color: "green",
+            x: 20,
+            y
+        },
+    ]
+    // var text = {
+    //     text: $("#theText").val(),
+    //     font: $("#theFont").val(),
+    //     size: $("#theSize").val(),
+    //     color: $("#theColor").val(),
+    //     x: 20,
+    //     y: y
+    // };
+
+
     useEffect(() => {
 
+
+        
         const canvas = canvasRef.current;
         const ctx = canvas.getContext('2d');
         const imageObj = new Image();
         imageObj.src = "./exPhoto.jpg";
 
         imageObj.onload = () => {
-            ctx.drawImage(imageObj, 0, 0);
+            // ctx.drawImage(imageObj, 0, 0);
+            draw(canvas, ctx, texts, imageObj)
         }
-
-        // draw(ctx)
+        
 
     }, [])
 
