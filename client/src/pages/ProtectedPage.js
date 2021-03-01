@@ -5,11 +5,11 @@ function ProtectedPage() {
   return (
     <div>
       <h1>Edit your Lyrics</h1>
-
+      {/* The below code is used for uploading and submitting an image. Need to integrate with canvas */}
       <h1>To Upload Image on mongoDB</h1>
       <hr />
       <div>
-        <form action="/protected" method="POST" enctype="multipart/form-data">
+        <form action="/protected" method="POST" encType="multipart/form-data">
           <div>
             <label htmlFor="name">Image Title</label>
             {/* Took 'value=""' out of the inputs. May need later */}
