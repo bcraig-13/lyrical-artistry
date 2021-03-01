@@ -1,11 +1,11 @@
 import LyricSearchForm from "../components/SearchLyrics/LyricSearchForm";
-import Canvas from "../components/Canvas";
+import DrawCanvas from "../components/DrawCanvas";
 
 function SearchLyricsPage() {
     return (
         <div>
             <LyricSearchForm />
-            <Canvas />
+            <DrawCanvas/>
         </div>)
 }
 
