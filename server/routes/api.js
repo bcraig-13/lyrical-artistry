@@ -33,4 +33,19 @@ apiRouter.get("/api/user", isAuthenticated, (req, res) => {
     .catch((err) => res.status(400).send(err));
 });
 
+// ROUTE TO DISPLAY GALLERY ONCE USER IS LOGGED IN
+apiRouter.get("api/gallery", isAuthenticated, (req, res) => {
+  db.lyrical_artistry_db.findAll({
+    where: {
+      UserId: req.user.id
+    },
+    raw: true
+  }).then(lyrical_artistry_db => {
+    res.render("gallery", {
+      username: req.user.username,
+      images: images
+    })
+  })
+});
+
 module.exports = apiRouter;

@@ -9,14 +9,14 @@ function Navbar() {
     auth.logout();
   };
   return (
-    <nav class="navbar navbar-expand-lg navbar-light">
+    <nav className="navbar navbar-expand-lg navbar-light">
       <img
         src={process.env.PUBLIC_URL + "./img/lyrical-artistry2.png"}
         alt="Lyrical Artistry"
       ></img>
-      <div class="container-fluid">
+      <div className="container-fluid">
         <button
-          class="navbar-toggler"
+          className="navbar-toggler"
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#navbarNav"
@@ -24,27 +24,27 @@ function Navbar() {
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
-          <span class="navbar-toggler-icon"></span>
+          <span className="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="public" className= "nav">
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <ul className="navbar-nav">
+            <li className="nav-item">
+              <a className="nav-link nav active" aria-current="page" href="gallery">
                 Gallery
               </a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="searchLyrics" className= "nav">
+            <li className="nav-item">
+              <a className="nav-link nav" href="searchLyrics">
                 Search for Lyrics
               </a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="protected" className= "nav">
+            <li className="nav-item">
+              <a className="nav-link nav" href="protected">
                 Edit Lyrics
               </a>
             </li>
-            <li class="nav-item">
-            <a class="nav-link" href="login" className= "nav" onClick={signOut}>
+            <li className="nav-item">
+            <a className="nav-link nav" href="login" onClick={signOut}>
                 Sign Out
               </a>
             </li>
