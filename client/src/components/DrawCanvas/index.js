@@ -6,7 +6,10 @@ function DrawCanvas(props) {
     // vvv might change texts into a state
     // const [texts, setTexts] = useState([]);
     // const [textToAdd, setTextToAdd] = useState({});
-    const [textToAdd, setTextToAdd] = useState("testing");
+    const [textToAdd, setTextToAdd] = useState("");
+    const [fontToAdd, setFontToAdd] = useState("arial");
+    const [sizeToAdd, setSizeToAdd] = useState(20);
+    const [colorToAdd, setColorToAdd] = useState("black");
 
     const canvasRef = useRef(null);
     // let canvas;
@@ -32,37 +35,15 @@ function DrawCanvas(props) {
             // ^^^ will use this in actual font
 
 
-            ctx.fillStyle = "black";
-            ctx.font = "20px arial";
-            ctx.fillText(text, 50, 50);
+            // ctx.fillStyle = "black";
+            // ctx.font = "20px arial";
+            ctx.fillText(text.text, 50, 50);
             // vvv code to check text hitbox
             // ctx.clearRect(text.x, text.y, text.width, text.height);
 
         }
     }
 
-
-    var texts = [];
-
-    var y = texts.length * 50 + 50
-    texts = [
-        {
-            text: "test1",
-            font: "arial",
-            size: 50,
-            color: "black",
-            x: 20,
-            y
-        },
-        {
-            text: "test2",
-            font: "arial",
-            size: 50,
-            color: "green",
-            x: 20,
-            y
-        },
-    ]
 
     function handleTextSubmit() { }
 
@@ -76,10 +57,10 @@ function DrawCanvas(props) {
 
         imageObj.onload = () => {
 
-            draw(canvas, ctx, [textToAdd], imageObj)
+            draw(canvas, ctx, [{text: textToAdd, font: fontToAdd, size: sizeToAdd, color: colorToAdd}], imageObj)
         }
 
-    }, [textToAdd])
+    }, [textToAdd, fontToAdd, sizeToAdd, colorToAdd])
 
 
     // useEffect(() => {
@@ -102,9 +83,9 @@ function DrawCanvas(props) {
             {/* <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script> */}
             <h4>Add text to canvas and drag it</h4>
             <input onChange={(event) => setTextToAdd(event.target.value)} value={textToAdd} id="theText" placeholder="text" type="text" />
-            <input id="theFont" placeholder="font" type="text" />
-            <input id="theSize" placeholder="size" type="number" />
-            <input id="theColor" placeholder="color" type="text" />
+            <input onChange={(event) => setFontToAdd(event.target.value)} value={fontToAdd} id="theFont" placeholder="font" type="text" />
+            <input onChange={(event) => setSizeToAdd(event.target.value)} value={sizeToAdd} id="theSize" placeholder="size" type="number" />
+            <input onChange={(event) => setColorToAdd(event.target.value)} value={colorToAdd} id="theColor" placeholder="color" type="text" />
             <button
                 id="submit"
                 onSubmit={() => handleTextSubmit()}
