@@ -11,6 +11,11 @@ function DrawCanvas(props) {
     const [fontToAdd, setFontToAdd] = useState("arial");
     const [sizeToAdd, setSizeToAdd] = useState(20);
     const [colorToAdd, setColorToAdd] = useState("black");
+    const [widthToAdd, setWidthToAdd] = useState("black");
+    const [heightToAdd, setHeightToAdd] = useState("black");
+    const [xToAdd, setXToAdd] = useState(50);
+    const [yToAdd, setYToAdd] = useState(50);
+
 
     const canvasRef = useRef(null);
     // let canvas;
@@ -36,8 +41,13 @@ function DrawCanvas(props) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage(imageObj, 0, 0);
 
-        console.log("draw called");
-        console.log(texts);
+        // console.log("draw called");
+        // console.log(texts);
+
+
+        // vvv code to check text hitbox
+        ctx.fillStyle = "blue";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         for (var i = 0; i < texts.length; i++) {
             var text = texts[i];
@@ -45,12 +55,14 @@ function DrawCanvas(props) {
 
             ctx.fillStyle = text.color;
             ctx.font = `${text.size}px ${text.font}`;
+
             // ctx.fillText(text.text, text.x, text.y);
             // ^^^ will use this in actual font
 
-            ctx.fillText(text.text, 50, 50);
+            ctx.fillText(text.text, xToAdd, yToAdd);
+
             // vvv code to check text hitbox
-            // ctx.clearRect(text.x, text.y, text.width, text.height);
+            ctx.clearRect(xToAdd, yToAdd, widthToAdd, heightToAdd);
 
         }
     }
@@ -79,12 +91,17 @@ function DrawCanvas(props) {
         const imageObj = new Image();
         imageObj.src = "./exPhoto.jpg";
 
+
         imageObj.onload = () => {
 
-            draw(canvas, ctx, [{ text: textToAdd, font: fontToAdd, size: sizeToAdd, color: colorToAdd }], imageObj)
+            ctx.font = `${sizeToAdd}px ${fontToAdd}`;
+            setWidthToAdd(ctx.measureText(textToAdd).width)
+            setHeightToAdd(sizeToAdd);
+
+            draw(canvas, ctx, [{ text: textToAdd, font: fontToAdd, size: sizeToAdd, color: colorToAdd, x: xToAdd, y: yToAdd }], imageObj)
         }
 
-    }, [textToAdd, fontToAdd, sizeToAdd, colorToAdd])
+    }, [textToAdd, fontToAdd, sizeToAdd, colorToAdd, xToAdd, yToAdd])
 
 
     // useEffect(() => {
@@ -98,31 +115,34 @@ function DrawCanvas(props) {
     //     }
     // }, [])
 
+    // test if x,y is inside the bounding box of texts[textIndex]
+    function textHittest(x, y, textIndex) {
+        // var text = texts[textIndex];
+        return (x >= xToAdd && x <= xToAdd + widthToAdd && y >= yToAdd - heightToAdd && y <= yToAdd);
+    }
+
     function handleMouseDown(e) {
         e.preventDefault();
-        selectedText=1;
         startX = parseInt(e.clientX - offsetX);
         startY = parseInt(e.clientY - offsetY);
-        console.log(`startX: ${startX}, startY: ${startY}`);
-        // // Put your mousedown stuff here
+
+        // Put your mousedown stuff here
         // for (var i = 0; i < texts.length; i++) {
-        //   if (textHittest(startX, startY, i)) {
-        //     selectedText = i;
-        //   }
+        if (textHittest(startX, startY,)) {
+            selectedText = 1;
+        }
         // }
     }
 
     // done dragging
     function handleMouseUp(e) {
         e.preventDefault();
-        console.log("click released");
         selectedText = -1;
     }
 
     // also done dragging
     function handleMouseOut(e) {
         e.preventDefault();
-        console.log("event finished: OOB");
         selectedText = -1;
     }
 
@@ -133,9 +153,10 @@ function DrawCanvas(props) {
     // by that distance
     function handleMouseMove(e) {
         if (selectedText < 0) {
-          return;
+            return;
         }
         e.preventDefault();
+        console.log("hit text");
         var mouseX = parseInt(e.clientX - offsetX);
         var mouseY = parseInt(e.clientY - offsetY);
 
@@ -145,9 +166,9 @@ function DrawCanvas(props) {
         startX = mouseX;
         startY = mouseY;
 
-        console.log(`mouseMove: ${dx}dx, ${dy}dy`)
-
-        // var text = texts[selectedText];
+        var text = textToAdd[selectedText];
+        // setXToAdd(xToAdd+dx);
+        // setYToAdd(yToAdd+dy);
         // text.x += dx;
         // text.y += dy;
         // draw();
