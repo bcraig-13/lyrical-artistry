@@ -1,16 +1,6 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../util/authContext";
-
-const styles = {
-  ul: {
-    display: "flex",
-    justifyContent: "flex-start",
-    listStyleType: "none",
-    margin: 0,
-    padding: 0
-  },
-  li: { display: "block", padding: "0.5em" }
-};
+import "../components/myStyles.css";
 
 function Navbar() {
   const auth = useAuth();
@@ -19,31 +9,49 @@ function Navbar() {
     auth.logout();
   };
   return (
-    <ul style={styles.ul}>
-      <li style={styles.li}>
-        <Link to="/searchLyrics">Search Lyrics</Link>
-      </li>
-      <li style={styles.li}>
-        <Link to="/public">Public Page</Link>
-      </li>
-      <li style={styles.li}>
-        <Link to="/protected">Protected Page</Link>
-      </li>
-      {auth.isLoggedIn && (
-        <li style={styles.li}>
-          <Link to="/profile">Profile Page</Link>
-        </li>
-      )}
-      <li style={styles.li}>
-        {auth.isLoggedIn ? (
-          <button type="button" onClick={signOut}>
-            Sign Out
-          </button>
-        ) : (
-          <Link to="/login">Login</Link>
-        )}
-      </li>
-    </ul>
+    <nav class="navbar navbar-expand-lg navbar-light">
+      <img
+        src={process.env.PUBLIC_URL + "./img/lyrical-artistry2.png"}
+        alt="Lyrical Artistry"
+      ></img>
+      <div class="container-fluid">
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="public" className= "nav">
+                Gallery
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="searchLyrics" className= "nav">
+                Search for Lyrics
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="protected" className= "nav">
+                Edit Lyrics
+              </a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" href="login" className= "nav" onClick={signOut}>
+                Sign Out
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
   );
 }
 
