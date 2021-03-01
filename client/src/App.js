@@ -13,14 +13,7 @@ function App() {
   return (
     <ProvideAuth>
       <Router>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            margin: "0 auto",
-            maxWidth: "50rem"
-          }}
-        >
+        <div>
           <Route path= {["/searchLyrics", "/protected", "/profile", "/public"]}>
             <Navbar />
           </Route>
