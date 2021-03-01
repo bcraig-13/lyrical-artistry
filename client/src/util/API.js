@@ -17,7 +17,14 @@ const API = {
     return axios.get(`/api/tracks/${trackName}`);
   },
   getLyrics: (trackID) => {
-    return axios.get(`/api/lyrics/${trackID}`)
+    return axios.get(`/api/lyrics/${trackID}`);
+  },
+
+  getAllQuotes: () => {
+    return axios.get(`/api/quotes`);
+  },
+  postQuotes: (quoteObject) => {
+    return axios.post(`/api/quotes`, quoteObject)
   }
 };
 
