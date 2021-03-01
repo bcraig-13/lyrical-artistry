@@ -58,18 +58,18 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage });
 var imgModel = require("./models/imageModel");
 
-app.get("{GALLERY-COMPONENT-HERE}", (req, res) => {
+app.get("api/gallery", (req, res) => {
   imgModel.find({}, (err, items) => {
     if (err) {
       console.log(err);
       res.status(500).send("An error occurred", err);
     } else {
-      res.render("{IMAGE-COMPONENT-HERE}", { items: items });
+      res.render("api/gallery", { items: items });
     }
   });
 });
 
-app.post("{CANVAS-COMPONENT-URL-HERE?}", upload.single("image"), (req, res, next) => {
+app.post("api/protected", upload.single("image"), (req, res, next) => {
   var obj = {
     name: req.body.name,
     img: {
@@ -82,7 +82,7 @@ app.post("{CANVAS-COMPONENT-URL-HERE?}", upload.single("image"), (req, res, next
       console.log(err);
     } else {
       // item.save();
-      res.redirect("{REDIRECT-TO-SEARCH?}");
+      res.redirect("api/gallery");
     }
   });
 });

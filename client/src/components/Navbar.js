@@ -24,7 +24,7 @@ function Navbar() {
         <Link to="/searchLyrics">Search Lyrics</Link>
       </li>
       <li style={styles.li}>
-        <Link to="/public">Public Page</Link>
+        <Link to="/gallery">Gallery Page</Link>
       </li>
       <li style={styles.li}>
         <Link to="/protected">Protected Page</Link>
