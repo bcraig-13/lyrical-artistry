@@ -8,6 +8,7 @@ import SignUpPage from "./pages/SignUpPage";
 import UserProfilePage from "./pages/UserProfilePage";
 import SearchLyricsPage from "./pages/SearchLyricsPage";
 import { ProvideAuth } from "./util/authContext";
+import Gallery from "./pages/Gallery";
 
 function App() {
   return (
@@ -20,6 +21,9 @@ function App() {
           <Switch>
           <Route exact path="/">
               <LoginPage />
+            </Route>
+            <Route path="/gallery">
+              <Gallery />
             </Route>
             <Route path="/searchLyrics">
               <SearchLyricsPage />
