@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import Canvas from "../Canvas";
+import "jquery";
 
 function DrawCanvas(props) {
 
@@ -18,6 +19,19 @@ function DrawCanvas(props) {
     // var imageObj = new Image();
     // imageObj.src = "./exPhoto.jpg";
 
+    // this var will hold the index of the hit-selected text
+    var selectedText = -1;
+
+    // variables used to get mouse position on the canvas
+    var canvasOffset;
+    var offsetX;
+    var offsetY;
+    var scrollX;
+    var scrollY;
+
+    var startX;
+    var startY;
+
     const draw = (canvas, ctx, texts, imageObj) => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage(imageObj, 0, 0);
@@ -34,9 +48,6 @@ function DrawCanvas(props) {
             // ctx.fillText(text.text, text.x, text.y);
             // ^^^ will use this in actual font
 
-
-            // ctx.fillStyle = "black";
-            // ctx.font = "20px arial";
             ctx.fillText(text.text, 50, 50);
             // vvv code to check text hitbox
             // ctx.clearRect(text.x, text.y, text.width, text.height);
@@ -45,38 +56,102 @@ function DrawCanvas(props) {
     }
 
 
+
+
+
     function handleTextSubmit() { }
 
 
     useEffect(() => {
 
         const canvas = canvasRef.current;
+
+        // vvv vars that need to be referenceable for mouse clicks & hit testing
+        // canvasOffset = canvas.offset();
+        offsetX = canvas.offsetLeft;
+        offsetY = canvas.offsetTop;
+
+        // vvv need to find non-jQuery equivalent!
+        // scrollX = canvas.scrollLeft();
+        // scrollY = canvas.scrollTop();
+
         const ctx = canvas.getContext('2d');
         const imageObj = new Image();
         imageObj.src = "./exPhoto.jpg";
 
         imageObj.onload = () => {
 
-            draw(canvas, ctx, [{text: textToAdd, font: fontToAdd, size: sizeToAdd, color: colorToAdd}], imageObj)
+            draw(canvas, ctx, [{ text: textToAdd, font: fontToAdd, size: sizeToAdd, color: colorToAdd }], imageObj)
         }
 
     }, [textToAdd, fontToAdd, sizeToAdd, colorToAdd])
 
 
     // useEffect(() => {
-
     //     const canvas = canvasRef.current;
     //     const ctx = canvas.getContext('2d');
     //     const imageObj = new Image();
     //     imageObj.src = "./exPhoto.jpg";
-
     //     imageObj.onload = () => {
     //         // ctx.drawImage(imageObj, 0, 0);
     //         draw(canvas, ctx, texts, imageObj)
     //     }
-
-
     // }, [])
+
+    function handleMouseDown(e) {
+        e.preventDefault();
+        selectedText=1;
+        startX = parseInt(e.clientX - offsetX);
+        startY = parseInt(e.clientY - offsetY);
+        console.log(`startX: ${startX}, startY: ${startY}`);
+        // // Put your mousedown stuff here
+        // for (var i = 0; i < texts.length; i++) {
+        //   if (textHittest(startX, startY, i)) {
+        //     selectedText = i;
+        //   }
+        // }
+    }
+
+    // done dragging
+    function handleMouseUp(e) {
+        e.preventDefault();
+        console.log("click released");
+        selectedText = -1;
+    }
+
+    // also done dragging
+    function handleMouseOut(e) {
+        e.preventDefault();
+        console.log("event finished: OOB");
+        selectedText = -1;
+    }
+
+
+    // handle mousemove events
+    // calc how far the mouse has been dragged since
+    // the last mousemove event and move the selected text
+    // by that distance
+    function handleMouseMove(e) {
+        if (selectedText < 0) {
+          return;
+        }
+        e.preventDefault();
+        var mouseX = parseInt(e.clientX - offsetX);
+        var mouseY = parseInt(e.clientY - offsetY);
+
+        // Put your mousemove stuff here
+        var dx = mouseX - startX;
+        var dy = mouseY - startY;
+        startX = mouseX;
+        startY = mouseY;
+
+        console.log(`mouseMove: ${dx}dx, ${dy}dy`)
+
+        // var text = texts[selectedText];
+        // text.x += dx;
+        // text.y += dy;
+        // draw();
+    }
 
     return (
         <div>
@@ -89,9 +164,15 @@ function DrawCanvas(props) {
             <button
                 id="submit"
                 onSubmit={() => handleTextSubmit()}
+            // submit button is gonna add to list of texts
             >Draw text on canvas</button><br />
             <button id="download">Download</button><br />
-            <canvas id="canvas" ref={canvasRef} {...props} width="500" height="500"></canvas>
+            <canvas id="canvas" ref={canvasRef} {...props} width="500" height="500"
+                onMouseDown={(event) => handleMouseDown(event)}
+                onMouseUp={(event) => handleMouseUp(event)}
+                onMouseOut={(event) => handleMouseOut(event)}
+                onMouseMove={(event) => handleMouseMove(event)}
+            ></canvas>
         </div >
     )
 
