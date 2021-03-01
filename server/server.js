@@ -69,6 +69,7 @@ app.get("api/gallery", (req, res) => {
   });
 });
 
+//The ".protected" route will change to whatever page the canvas ends up on. Need a way to target finished image.
 app.post("/protected", upload.single("image"), (req, res, next) => {
   var obj = {
     name: req.body.name,

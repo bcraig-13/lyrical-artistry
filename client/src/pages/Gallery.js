@@ -1,19 +1,18 @@
 import React from "react";
-import test from "../img/test.jpg";
+import ImageCard from "./ImageCard";
 
 function Gallery() {
+  // userImages must be a const with an array that equals the user's db
+  const userImages = []
   return (
-    <div className="card" style={{ width: "18rem" }}>
-      <a href={test} target="_blank" rel="noreferrer"><img
-        src={test}
-        className="card-img-top"
-        alt=""
-        style={{ width: "18rem", height: "200px" }}
-      /></a>
-      <div className="card-body">
-        <h5 className="card-title">Test</h5>
-      </div>
+    // Bootstrap container and row go here
+    <div className="container-fluid portfolio-bg" style={{ marginTop: "50px" }}>
+    <div className="row mx-auto">
+      {userImages.map((images, idx) => (
+        <ImageCard key={idx} id={images.id} img={images.img} name={images.name} />
+      ))}
     </div>
+  </div>
   );
 }
 
