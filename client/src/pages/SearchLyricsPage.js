@@ -27,10 +27,6 @@ function SearchLyricsPage() {
 
     // }, [quote])
 
-    // useEffect(() => {
-
-    // }, [results])
-
     //handle when user submits form
     const handleSearchTracksFormSubmit = (event) => {
         event.preventDefault();
@@ -48,6 +44,7 @@ function SearchLyricsPage() {
 
     const handleQuoteSaveClick = (quoteObject) => {
         console.log(quoteObject);
+        API.postQuotes(quoteObject);
     }
 
     const handleQuoteHighlight = () => {
@@ -59,15 +56,26 @@ function SearchLyricsPage() {
     return (
         <div>
             <div className="row">
-                <div className="col-md-3">
+                <div className="col-md-3" >
                     <LyricSearchForm ref={trackRef} handleSearchTracksFormSubmit={handleSearchTracksFormSubmit} />
-                    {results.length > 0 && results.map((track) => <SongResult track={track} handleTrackViewClick={handleTrackViewClick} key={track.track.track_name} />)}
+                    {/* {results.length > 0 && results.map((track) => <SongResult track={track} handleTrackViewClick={handleTrackViewClick} key={track.track.track_name} />)} */}
+
+                    {results.length > 0 &&
+                        <div style={{ overflow: "scroll", width: "100%", height: "500px " }}>
+                            {results.map((track) => (
+                                <SongResult track={track} handleTrackViewClick={handleTrackViewClick} key={track.track.track_name} />
+                            ))}
+                        </div>
+
+                    }
+
+
                 </div>
                 <div className="col-md-5">
                     {lyrics !== "" && <LyricsDisplay lyrics={lyrics} handleQuoteHighlight={handleQuoteHighlight} />}
                 </div>
                 <div className="col-md-4">
-                    {quote !== "" && <QuoteSelectForm quote={quote} handleQuoteSaveClick={handleQuoteSaveClick}/>}
+                    {quote !== "" && <QuoteSelectForm quote={quote} handleQuoteSaveClick={handleQuoteSaveClick} />}
                 </div>
             </div>
 

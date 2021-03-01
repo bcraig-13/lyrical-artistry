@@ -21,7 +21,9 @@ function QuoteSelectForm(props) {
             <div>Save your quote!</div>
             <input className="form-control" placeholder="e.g. Stairway To Heaven" ref={titleRef} />
             <input className="form-control" placeholder="e.g. Led Zeppelin" ref={artistRef} />
-            <input className="form-control" defaultValue={props.quote} ref={quoteRef} value={props.quote}/>
+            <div key={props.quote}>
+                <input className="form-control" ref={quoteRef} defaultValue={props.quote} />
+            </div>
             <button style={{ float: "right", marginBottom: 10 }} className="btn btn-success" type="submit">
                 Submit
         </button>

@@ -8,7 +8,6 @@ var quoteSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     }
-
 });
 
 module.exports = new mongoose.model('Quote', quoteSchema);
