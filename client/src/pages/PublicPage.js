@@ -1,5 +1,5 @@
 function PublicPage() {
-  return <h2>Your Gallery</h2>;
+  return <h2>Gallery</h2>;
 }
 
 export default PublicPage;

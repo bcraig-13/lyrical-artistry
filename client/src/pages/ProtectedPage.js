@@ -4,8 +4,8 @@ function ProtectedPage() {
   const auth = useAuth();
   return (
     <div>
-      <h2>Protected</h2>
-      <p>Email: {auth.user.email}</p>
+      <h1>Edit your Lyrics</h1>
+
       <h1>To Upload Image on mongoDB</h1>
       <hr />
       <div>
