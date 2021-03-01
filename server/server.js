@@ -69,7 +69,7 @@ app.get("api/gallery", (req, res) => {
   });
 });
 
-app.post("api/protected", upload.single("image"), (req, res, next) => {
+app.post("/protected", upload.single("image"), (req, res, next) => {
   var obj = {
     name: req.body.name,
     img: {
@@ -81,8 +81,7 @@ app.post("api/protected", upload.single("image"), (req, res, next) => {
     if (err) {
       console.log(err);
     } else {
-      // item.save();
-      res.redirect("api/gallery");
+      res.redirect("/gallery");
     }
   });
 });
