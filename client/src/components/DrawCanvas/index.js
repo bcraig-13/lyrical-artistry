@@ -46,8 +46,8 @@ function DrawCanvas(props) {
 
 
         // vvv code to check text hitbox
-        ctx.fillStyle = "blue";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        // ctx.fillStyle = "blue";
+        // ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         for (var i = 0; i < texts.length; i++) {
             var text = texts[i];
@@ -62,7 +62,7 @@ function DrawCanvas(props) {
             ctx.fillText(text.text, xToAdd, yToAdd);
 
             // vvv code to check text hitbox
-            ctx.clearRect(xToAdd, yToAdd, widthToAdd, heightToAdd);
+            // ctx.clearRect(xToAdd, yToAdd, widthToAdd, heightToAdd);
 
         }
     }
@@ -98,7 +98,7 @@ function DrawCanvas(props) {
             setWidthToAdd(ctx.measureText(textToAdd).width)
             setHeightToAdd(sizeToAdd);
 
-            draw(canvas, ctx, [{ text: textToAdd, font: fontToAdd, size: sizeToAdd, color: colorToAdd, x: xToAdd, y: yToAdd }], imageObj)
+            draw(canvas, ctx, [{ text: textToAdd, font: fontToAdd, size: sizeToAdd, color: colorToAdd }], imageObj)
         }
 
     }, [textToAdd, fontToAdd, sizeToAdd, colorToAdd, xToAdd, yToAdd])
@@ -117,19 +117,30 @@ function DrawCanvas(props) {
 
     // test if x,y is inside the bounding box of texts[textIndex]
     function textHittest(x, y, textIndex) {
+        console.log("hittest running");
         // var text = texts[textIndex];
+
+        console.log(`testing${[x, y]}x,y;  hitbox: ${[xToAdd, xToAdd + widthToAdd, yToAdd - heightToAdd, yToAdd]}xL,xR,yB,yT`)
+
+        if (x >= xToAdd && x <= xToAdd + widthToAdd && y >= yToAdd - heightToAdd && y <= yToAdd) {
+            console.log("hittest hit")
+        }
+
         return (x >= xToAdd && x <= xToAdd + widthToAdd && y >= yToAdd - heightToAdd && y <= yToAdd);
     }
 
     function handleMouseDown(e) {
         e.preventDefault();
+        const canvas = canvasRef.current;
+        offsetX = canvas.offsetLeft;
+        offsetY = canvas.offsetTop;
         startX = parseInt(e.clientX - offsetX);
         startY = parseInt(e.clientY - offsetY);
 
         // Put your mousedown stuff here
         // for (var i = 0; i < texts.length; i++) {
         if (textHittest(startX, startY,)) {
-            selectedText = 1;
+            selectedText = 0;
         }
         // }
     }
@@ -166,9 +177,18 @@ function DrawCanvas(props) {
         startX = mouseX;
         startY = mouseY;
 
-        var text = textToAdd[selectedText];
-        // setXToAdd(xToAdd+dx);
-        // setYToAdd(yToAdd+dy);
+        // var text = textToAdd[selectedText];
+        setXToAdd(xToAdd + dx);
+        console.log(xToAdd);
+        setYToAdd(yToAdd + dy);
+        console.log(yToAdd);
+
+        const canvas = canvasRef.current;
+        const ctx = canvas.getContext('2d');
+        const imageObj = new Image();
+        imageObj.src = "./exPhoto.jpg";
+
+        draw(canvas, ctx, [{ text: textToAdd, font: fontToAdd, size: sizeToAdd, color: colorToAdd }], imageObj);
         // text.x += dx;
         // text.y += dy;
         // draw();
