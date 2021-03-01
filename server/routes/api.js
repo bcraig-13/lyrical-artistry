@@ -43,9 +43,9 @@ apiRouter.get("api/gallery", isAuthenticated, (req, res) => {
   }).then(lyrical_artistry_db => {
     res.render("gallery", {
       username: req.user.username,
-      // images: render each image?
+      images: images
     })
   })
-})
+});
 
 module.exports = apiRouter;

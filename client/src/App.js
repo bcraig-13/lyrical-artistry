@@ -3,7 +3,7 @@ import Navbar from "./components/Navbar";
 import PrivateRoute from "./components/PrivateRoute";
 import LoginPage from "./pages/LoginPage";
 import ProtectedPage from "./pages/ProtectedPage";
-import PublicPage from "./pages/PublicPage";
+// import PublicPage from "./pages/PublicPage";
 import SignUpPage from "./pages/SignUpPage";
 import UserProfilePage from "./pages/UserProfilePage";
 import SearchLyricsPage from "./pages/SearchLyricsPage";
@@ -15,7 +15,7 @@ function App() {
     <ProvideAuth>
       <Router>
         <div>
-          <Route path= {["/searchLyrics", "/protected", "/profile", "/public"]}>
+          <Route path= {["/searchLyrics", "/protected", "/profile", "/gallery"]}>
             <Navbar />
           </Route>
           <Switch>
@@ -27,9 +27,6 @@ function App() {
             </Route>
             <Route path="/searchLyrics">
               <SearchLyricsPage />
-            </Route>
-            <Route path="/public">
-              <PublicPage />
             </Route>
             <Route path="/login">
               <LoginPage />
