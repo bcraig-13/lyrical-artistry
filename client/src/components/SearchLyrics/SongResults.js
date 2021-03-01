@@ -2,7 +2,7 @@ import React from "react";
 
 function SongResult(props) {
     return (
-        <div>
+        <div style={{backgroundColor:"white" }}>
             <h2>Title: {props.track.track.track_name}</h2>
             <div>Artist: {props.track.track.artist_name}</div>
             <div>Album: {props.track.track.album_name}</div>
