@@ -40,9 +40,9 @@ function CanvasKonva(props) {
     //     can pass uri straight to DB
     //     can also write temp image, then send that... either way, gonna have to proc ajax after (writing file: less efficient...)
     // 
-  //   fs.writeFile('/tmp.png', uri, (err) => {
-  //     err ? console.error(err) : console.log("success!")
-  // })
+    //   fs.writeFile('/tmp.png', uri, (err) => {
+    //     err ? console.error(err) : console.log("success!")
+    // })
     // 
     //     probs use fs.WriteToFile here, or something like this...
     // 
@@ -74,12 +74,6 @@ function CanvasKonva(props) {
         listDragged: false
       })
     }
-    // need to push to textsList: ONLY IF THERE'S CONTENT!
-    // need to set inputToAdd to default levels
-    // need to add map function that puts current texts into text components
-    // setTextsList[i]({ ...inputToAdd, currX: e.target.x(), currY: e.target.y() });
-    // can update later so that the index is attached
-    // be sure to add a key!
   }
 
 
@@ -199,6 +193,10 @@ function CanvasKonva(props) {
 
 export default CanvasKonva;
 
+
+
+// ====================================================================================================================
+// vvv good refs for future enhancements!
 
 // @media (inverted-colors: inverted) {
 //   p {

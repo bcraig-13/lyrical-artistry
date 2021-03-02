@@ -23,7 +23,7 @@ function ProtectedPage() {
           </div>
         </form>
       </div>
-      
+      <CanvasKonva/>
     </div>
   );
 }
