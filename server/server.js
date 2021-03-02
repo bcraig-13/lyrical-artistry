@@ -10,7 +10,6 @@ const fs = require("fs");
 
 const musixMatchRouter = require("./routes/musixMatchAPI");
 
-
 const PORT = process.env.PORT || 3001;
 
 // Check if SERVER_SECRET has been set and exit with an error if an env var is
@@ -25,11 +24,10 @@ if (!process.env.SERVER_SECRET) {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
 mongoose
   .connect(process.env.MONGODB_URI || "mongodb://localhost:27017/appDB", {
     useNewUrlParser: true,
-    useCreateIndex: true
+    useCreateIndex: true,
   })
   .then(() => console.log("MongoDB Connected!"))
   .catch((err) => console.error(err));
@@ -58,23 +56,30 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage });
 var imgModel = require("./models/imageModel");
 
-app.get("api/gallery", (req, res) => {
-  imgModel.find({}, (err, items) => {
-    if (err) {
-      console.log(err);
-      res.status(500).send("An error occurred", err);
-    } else {
-      res.render("api/gallery", { items: items });
-    }
-  });
+// No idea if this is right. Comment out if it doesn't work
+app.get("/api/gallery", (req, res) => {
+  imgModel.find({}).then((images) => {
+    // if (err) {
+    //   console.log(err);
+    //   res.status(500).send("An error occurred", err);
+    // } else {
+    // res.render(, { items: items });
+    console.log(images);
+    res.send(images);
+  }).catch(err => {
+    console.log(err);
+    res.status(500).send("An error occurred", err);
+  })
 });
 
-//The ".protected" route will change to whatever page the canvas ends up on. Need a way to target finished image.
+//The "/protected" route will change to whatever page the canvas ends up on. Need a way to target finished image.
 app.post("/protected", upload.single("image"), (req, res, next) => {
   var obj = {
     name: req.body.name,
     img: {
-      data: fs.readFileSync(path.join(__dirname + "/uploads/" + req.file.filename)), //May need to change /uploads/
+      data: fs.readFileSync(
+        path.join(__dirname + "/uploads/" + req.file.filename)
+      ), //May need to change /uploads/
       contentType: "image/png",
     },
   };
@@ -99,9 +104,9 @@ app.use(function (err, req, res, next) {
 
 // Send every request to the React app
 // Define any API routes before this runs
-app.get("*", function (req, res) {
-  res.sendFile(path.resolve(__dirname, "../client/build/index.html"));
-});
+// app.get("*", function (req, res) {
+//   res.sendFile(path.resolve(__dirname, "../client/build/index.html"));
+// });
 
 app.listen(PORT, function () {
   console.log(`🌎 ==> Server now on port ${PORT}!`);

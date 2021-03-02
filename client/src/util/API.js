@@ -18,6 +18,9 @@ const API = {
   },
   getLyrics: (trackID) => {
     return axios.get(`/api/lyrics/${trackID}`)
+  },
+  getImages: () => {
+    return axios.get("/api/gallery");
   }
 };
 
