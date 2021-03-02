@@ -51,7 +51,7 @@ var storage = multer.diskStorage({
 });
 
 var upload = multer({ storage: storage });
-// var imgModel = require("./models/imageModel");
+var imgModel = require("./models/imageModel");
 // var Quote = require("./models/Quote");
 
 // No idea if this is right. Comment out if it doesn't work
