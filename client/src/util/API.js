@@ -26,7 +26,10 @@ const API = {
     return axios.get(`/api/quotes`);
   },
   postQuotes: (quoteObject) => {
-    return axios.post(`/api/quotes`, quoteObject)
+    return axios.post(`/api/user/quotes`, quoteObject)
+  },
+  getAllUserQuotes: () => {
+    return axios.get(`/api/quotes`);
   }
 };
 

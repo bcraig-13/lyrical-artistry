@@ -16,7 +16,18 @@ const UserSchema = new Schema({
   createdAt: {
     type: Date,
     default: Date.now
-  }
+  },
+  // quotes: [Quote]
+  quotes: {
+    type: [{ type: Schema.Types.ObjectId, ref: "Quote" }],
+    validate: {
+      validator: function () {
+        return this.quotes.length <= 5;
+      },
+      message: `Quotes exceed max size`
+    }
+  },
+  images: [{ type: Schema.Types.ObjectId, ref: "Image" }]
 });
 
 // Execute before each user.save() call

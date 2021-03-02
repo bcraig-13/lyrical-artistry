@@ -19,6 +19,7 @@ apiRouter.post("/api/signup", (req, res) => {
     .catch((err) => res.status(400).json(err));
 });
 
+
 // Any route with isAuthenticated is protected and you need a valid token
 // to access
 apiRouter.get("/api/user", isAuthenticated, (req, res) => {
@@ -47,5 +48,21 @@ apiRouter.get("api/gallery", isAuthenticated, (req, res) => {
     })
   })
 });
+
+apiRouter.post("/api/user/quotes", isAuthenticated, (req, res) => {
+  db.Quote.create(req.body)
+    .then(({ _id }) => db.User.findOneAndUpdate({ _id: req.user.id }, { $push: { quotes: _id } }, { new: true }))
+    .then(dbUser => {
+      res.json(dbUser);
+    })
+});
+
+apiRouter.get("/api/user/quotes", isAuthenticated, (req, res) => {
+  db.User.findById(req.user.id).populate("quotes").then(dbUser => {
+    res.json(dbUser.quotes);
+  }).catch(err => {
+    res.json(err);
+  })
+})
 
 module.exports = apiRouter;

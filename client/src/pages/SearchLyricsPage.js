@@ -48,7 +48,7 @@ function SearchLyricsPage() {
     }
 
     const handleQuoteHighlight = () => {
-        if (window.getSelection().toString() !== "") {
+        if (window.getSelection() !== "") {
             setQuote(window.getSelection().toString());
         };
     }
@@ -59,20 +59,21 @@ function SearchLyricsPage() {
                 <div className="col-md-3" >
                     <LyricSearchForm ref={trackRef} handleSearchTracksFormSubmit={handleSearchTracksFormSubmit} />
                     {/* {results.length > 0 && results.map((track) => <SongResult track={track} handleTrackViewClick={handleTrackViewClick} key={track.track.track_name} />)} */}
-
                     {results.length > 0 &&
-                        <div style={{ overflow: "scroll", width: "100%", height: "500px " }}>
+                        <div style={{ overflow: "scroll", width: "100%", height: "400px ", marginTop: "10px", marginLeft: "10px", borderRadius: "25px 0px 0px 25px"}}>
                             {results.map((track) => (
                                 <SongResult track={track} handleTrackViewClick={handleTrackViewClick} key={track.track.track_name} />
                             ))}
                         </div>
-
                     }
-
-
                 </div>
                 <div className="col-md-5">
-                    {lyrics !== "" && <LyricsDisplay lyrics={lyrics} handleQuoteHighlight={handleQuoteHighlight} />}
+                    {/* {lyrics !== "" && <LyricsDisplay lyrics={lyrics} handleQuoteHighlight={handleQuoteHighlight} />} */}
+                    {lyrics !== "" &&
+                        <div style={{ overflowY: "auto", width: "100%", height: "575px " }}>
+                            <LyricsDisplay lyrics={lyrics} handleQuoteHighlight={handleQuoteHighlight} />
+                        </div>
+                    }
                 </div>
                 <div className="col-md-4">
                     {quote !== "" && <QuoteSelectForm quote={quote} handleQuoteSaveClick={handleQuoteSaveClick} />}
