@@ -10,8 +10,6 @@ musixMatchRouter.get("/api/tracks/:trackName", (req, res) => {
     const trackName = req.params.trackName;
     axios.get(`https://api.musixmatch.com/ws/1.1/track.search?q_track=${trackName}&f_has_lyrics=1&apikey=${process.env.MUSIXMATCH_KEY}`)
     .then((musixResponse) => {
-        // console.log(data.data.message);
-        // console.log(stringify(data,null,2));
         res.json(musixResponse.data);
     }).catch((err) => {
         res.status(400).send(err);

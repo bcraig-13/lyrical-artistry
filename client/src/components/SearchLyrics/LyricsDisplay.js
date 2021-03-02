@@ -2,9 +2,9 @@ import React from "react";
 
 function LyricsDisplay(props) {
     return (
-        <div style={{whiteSpace: "pre"}}>
-            {props.lyrics}
-        </div>
+        <div style={{ whiteSpace: "pre", backgroundColor: "white" }} onMouseUp={props.handleQuoteHighlight}>
+            { props.lyrics }
+        </div >
     )
 }
 

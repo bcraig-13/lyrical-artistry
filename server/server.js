@@ -51,6 +51,7 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage: storage });
 var imgModel = require("./models/imageModel");
+var Quote = require("./models/Quotes");
 
 // No idea if this is right. Comment out if it doesn't work
 app.get("/api/gallery", (req, res) => {
@@ -95,6 +96,16 @@ app.post("/protected", upload.single("image"), (req, res, next) => {
       res.sendStatus(500);
     });
 });
+
+app.post("/api/quotes", (req, res) => {
+  Quote.create(req.body).then((data) => res.json(data))
+    .catch((err) => res.status(400).json(err));
+})
+
+/*********************************************************************************
+ * CREATE GET(/api/quotes) HERE TO GET ALL QUOTES
+ ********************************************************************************/
+
 
 // Error handling
 app.use(function (err, req, res, next) {

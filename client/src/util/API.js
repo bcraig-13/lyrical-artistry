@@ -21,6 +21,12 @@ const API = {
   },
   getImages: () => {
     return axios.get("/api/gallery");
+  },
+  getAllQuotes: () => {
+    return axios.get(`/api/quotes`);
+  },
+  postQuotes: (quoteObject) => {
+    return axios.post(`/api/quotes`, quoteObject)
   }
 };
 
