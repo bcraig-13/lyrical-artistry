@@ -17,9 +17,11 @@ const API = {
     return axios.get(`/api/tracks/${trackName}`);
   },
   getLyrics: (trackID) => {
-    return axios.get(`/api/lyrics/${trackID}`);
+    return axios.get(`/api/lyrics/${trackID}`)
   },
-
+  getImages: () => {
+    return axios.get("/api/gallery");
+  },
   getAllQuotes: () => {
     return axios.get(`/api/quotes`);
   },
