@@ -1,7 +1,7 @@
-import { useAuth } from "../util/authContext";
+// import { useAuth } from "../util/authContext";
 
 function ProtectedPage() {
-  const auth = useAuth();
+  // const auth = useAuth();
   return (
     <div>
       <h1>Edit your Lyrics</h1>

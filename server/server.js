@@ -4,9 +4,9 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const apiRouter = require("./routes/api");
+const multer = require("multer");
 
-const bodyParser = require("body-parser");
-const fs = require("fs");
+const fs = require("fs").promises;
 
 const musixMatchRouter = require("./routes/musixMatchAPI");
 
@@ -37,12 +37,8 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.resolve(__dirname, "../client/build")));
 }
 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
 app.use(apiRouter);
 app.use(musixMatchRouter);
-
-var multer = require("multer");
 
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -58,38 +54,46 @@ var imgModel = require("./models/imageModel");
 
 // No idea if this is right. Comment out if it doesn't work
 app.get("/api/gallery", (req, res) => {
-  imgModel.find({}).then((images) => {
-    // if (err) {
-    //   console.log(err);
-    //   res.status(500).send("An error occurred", err);
-    // } else {
-    // res.render(, { items: items });
-    console.log(images);
-    res.send(images);
-  }).catch(err => {
-    console.log(err);
-    res.status(500).send("An error occurred", err);
-  })
+  imgModel
+    .find({})
+    .lean()
+    .then((images) => {
+      res.json(
+        images.map((image) => {
+          image.img.data = `data:image/${
+            image.img.contentType
+          };base64,${image.img.data.toString("base64")}`;
+          return image;
+        })
+      );
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send("An error occurred", err);
+    });
 });
 
 //The "/protected" route will change to whatever page the canvas ends up on. Need a way to target finished image.
 app.post("/protected", upload.single("image"), (req, res, next) => {
-  var obj = {
-    name: req.body.name,
-    img: {
-      data: fs.readFileSync(
-        path.join(__dirname + "/uploads/" + req.file.filename)
-      ), //May need to change /uploads/
-      contentType: "image/png",
-    },
-  };
-  imgModel.create(obj, (err, item) => {
-    if (err) {
-      console.log(err);
-    } else {
+  fs.readFile(path.join(__dirname + "/uploads/" + req.file.filename))
+    .then((data) => {
+      var obj = {
+        name: req.body.name,
+        img: {
+          data, //May need to change /uploads/
+          contentType: "image/png",
+        },
+      };
+      return obj;
+    })
+    .then(() => {
+      return imgModel.create(obj);
+    }).then(() => {
       res.redirect("/gallery");
-    }
-  });
+    }).catch((err) => {
+      console.log(err);
+      res.sendStatus(500);
+    });
 });
 
 // Error handling
