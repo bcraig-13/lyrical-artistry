@@ -9,7 +9,7 @@ const bodyParser = require("body-parser");
 const fs = require("fs");
 
 const musixMatchRouter = require("./routes/musixMatchAPI");
-
+const isAuthenticated = require("./config/isAuthenticated");
 
 const PORT = process.env.PORT || 3001;
 
@@ -56,8 +56,8 @@ var storage = multer.diskStorage({
 });
 
 var upload = multer({ storage: storage });
-var imgModel = require("./models/imageModel");
-var Quote = require("./models/Quotes");
+// var imgModel = require("./models/imageModel");
+// var Quote = require("./models/Quote");
 
 app.get("api/gallery", (req, res) => {
   imgModel.find({}, (err, items) => {
@@ -84,13 +84,10 @@ app.post("/protected", upload.single("image"), (req, res, next) => {
     } else {
       res.redirect("/gallery");
     }
-  });
+  });s
 });
 
-app.post("/api/quotes", (req, res) => {
-  Quote.create(req.body).then((data) => res.json(data))
-    .catch((err) => res.status(400).json(err));
-})
+
 
 /*********************************************************************************
  * CREATE GET(/api/quotes) HERE TO GET ALL QUOTES

@@ -1,13 +1,14 @@
 import React, { forwardRef } from "react";
 
 const SearchInput = forwardRef((props, ref) => (
-    <form style={{ margin: "auto", width: "75%" }} onSubmit={props.handleSearchTracksFormSubmit}>
+    <form style={{ margin: "auto", width: "80%" }} onSubmit={props.handleSearchTracksFormSubmit}>
         <h3>Search for your favorite song lyrics</h3>
-        <div>Song</div>
-        <input className="form-control" ref={ref} />
-        <button style={{ float: "right", marginBottom: 10 }} className="btn btn-success" type="submit">
-            Submit
+        <div className="input-group">
+            <input className="form-control" ref={ref} placeholder="e.g. Hey Jude"/>
+            <button className="btn btn-success" type="submit" >
+                Submit
         </button>
+        </div>
     </form>
 ));
 
