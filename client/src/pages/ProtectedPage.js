@@ -1,3 +1,5 @@
+import CanvasKonva from "../components/CanvasKonva";
+
 function ProtectedPage() {
   return (
     <div>
@@ -21,6 +23,7 @@ function ProtectedPage() {
           </div>
         </form>
       </div>
+      <CanvasKonva/>
     </div>
   );
 }
