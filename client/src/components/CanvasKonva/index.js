@@ -33,15 +33,25 @@ function CanvasKonva(props) {
   const height = 500;
 
 
-  // const handleExport = () => {
-  //     const uri = stageRef.current.toDataURL();
-  //     console.log(uri);
-  //     // we also can save uri as file
-  //     // but in the demo on Konva website it will not work
-  //     // because of iframe restrictions
-  //     // but feel free to use it in your apps:
-  //     // downloadURI(uri, 'stage.png');
-  //   };
+  const handleExport = () => {
+    const uri = stageRef.current.toDataURL();
+    console.log(uri);
+
+    //     can pass uri straight to DB
+    //     can also write temp image, then send that... either way, gonna have to proc ajax after (writing file: less efficient...)
+    // 
+  //   fs.writeFile('/tmp.png', uri, (err) => {
+  //     err ? console.error(err) : console.log("success!")
+  // })
+    // 
+    //     probs use fs.WriteToFile here, or something like this...
+    // 
+    //     // we also can save uri as file
+    //     // but in the demo on Konva website it will not work
+    //     // because of iframe restrictions
+    //     // but feel free to use it in your apps:
+    //     // downloadURI(uri, 'stage.png');
+  };
 
 
   const stageRef = useRef(null);
@@ -85,7 +95,7 @@ function CanvasKonva(props) {
         colorToAdd,
         currX,
         currY,
-        listDragged
+        // listDragged
 
       } = textEntry;
       count++;
@@ -102,24 +112,24 @@ function CanvasKonva(props) {
           fill={colorToAdd}
 
 
-          // need to work on the update when done dragging!
-          // draggable
-          // fill={listDragged ? colorToAdd !== 'green' ? 'green' : 'blue' : colorToAdd}
-          // onDragStart={() => {
-          //   setIsDragging(true);
-          //   const newIds = textsList.slice() //copy the array
-          //   newIds[count] = { ...textsList[count], listDragged: true } //execute the manipulations
-          //   setTextLists(newIds); //set the new state
-          // }}
-          // onDragEnd={e => {
-          //   setIsDragging(false);
+        // need to work on the update when done dragging!
+        // draggable
+        // fill={listDragged ? colorToAdd !== 'green' ? 'green' : 'blue' : colorToAdd}
+        // onDragStart={() => {
+        //   setIsDragging(true);
+        //   const newIds = textsList.slice() //copy the array
+        //   newIds[count] = { ...textsList[count], listDragged: true } //execute the manipulations
+        //   setTextLists(newIds); //set the new state
+        // }}
+        // onDragEnd={e => {
+        //   setIsDragging(false);
 
-          //   const newIds = textsList.slice() //copy the array
-          //   newIds[count] = { ...textsList[count], listDragged: false, currX: e.target.x(), currY: e.target.y() } //execute the manipulations
-          //   setTextLists(newIds); //set the new state
+        //   const newIds = textsList.slice() //copy the array
+        //   newIds[count] = { ...textsList[count], listDragged: false, currX: e.target.x(), currY: e.target.y() } //execute the manipulations
+        //   setTextLists(newIds); //set the new state
 
-          //   // textsList[count] need to destructure the index number!
-          // }}
+        //   // textsList[count] need to destructure the index number!
+        // }}
         />
       )
     })
@@ -138,10 +148,15 @@ function CanvasKonva(props) {
       <input onChange={(event) => setInputToAdd({ ...inputToAdd, sizeToAdd: event.target.value })} value={inputToAdd.sizeToAdd} id="theSize" placeholder="size" type="number" />
       <input onChange={(event) => setInputToAdd({ ...inputToAdd, colorToAdd: event.target.value })} value={inputToAdd.colorToAdd} id="theColor" placeholder="color" type="text" />
       <button
-        id="submit"
+        id="addText"
         onClick={(event) => handleTextSubmit(event)}
       // submit button is gonna add to list of texts
-      >Draw text on canvas</button><br />
+      >Fix Text to Image</button><br />
+      <button
+        id="saveWork"
+        onClick={(event) => handleExport(event)}
+      // submit button is gonna add to list of texts
+      >Save Work</button><br />
 
       <Stage width={width} height={height} ref={stageRef}>
         <Layer>
