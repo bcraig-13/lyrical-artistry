@@ -1,4 +1,5 @@
 import axios from "axios";
+
 const API = {
   // Gets a single user by id
   getUser: () => {
@@ -10,6 +11,25 @@ const API = {
       username,
       password
     });
+  },
+
+  getTracks: (trackName) => {
+    return axios.get(`/api/tracks/${trackName}`);
+  },
+  getLyrics: (trackID) => {
+    return axios.get(`/api/lyrics/${trackID}`)
+  },
+  getImages: () => {
+    return axios.get("/api/gallery");
+  },
+  getAllQuotes: () => {
+    return axios.get(`/api/quotes`);
+  },
+  postQuotes: (quoteObject) => {
+    return axios.post(`/api/user/quotes`, quoteObject)
+  },
+  getAllUserQuotes: () => {
+    return axios.get(`/api/quotes`);
   }
 };
 

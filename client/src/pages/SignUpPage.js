@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { useAuth } from "../util/authContext";
 import API from "../util/API";
+import '../components/myStyles.css'
 
 function SignUpPage() {
   const [formState, setFormState] = useState({
@@ -33,11 +34,12 @@ function SignUpPage() {
   }
 
   return (
-    <div>
-      <h1>Sign Up</h1>
+    <div className= 'parent'>
+      <img src= {process.env.PUBLIC_URL + "./img/lyrical-artistry.png"} alt="Lyrical Artistry"></img>
+      <h1 className='primary'>Sign Up</h1>
       <form onSubmit={handleSignUpFormSubmit}>
-        <label htmlFor="username">Username:</label>
-        <input
+        <label htmlFor="username" className='primary'>Username:</label>
+        <input className='username'
           type="text"
           name="username"
           id="username"
@@ -46,7 +48,7 @@ function SignUpPage() {
           required
         />
         <br />
-        <label htmlFor="password">Password:</label>
+        <label htmlFor="password" className='primary'>Password:</label>
         <input
           type="password"
           name="password"
@@ -56,10 +58,10 @@ function SignUpPage() {
           required
         />
         <br />
-        <button type="submit">Submit</button>
+        <button className= 'button' type="submit">Submit</button>
       </form>
-      <p>
-        Have an account? <Link to="/login">Login</Link>
+      <p className='primary'>
+        Have an account? <Link to="/login" style={{color: "#DCDCDC"}}>Login</Link>
       </p>
     </div>
   );

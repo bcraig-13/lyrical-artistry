@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { useAuth } from "../util/authContext";
+import '../components/myStyles.css'
 
 function LoginPage() {
   let auth = useAuth();
@@ -21,15 +22,16 @@ function LoginPage() {
 
   if (auth.isLoggedIn) {
     // redirect to /protected if user is logged in
-    return <Redirect to="/protected" />;
+    return <Redirect to="/gallery" />;
   }
 
   return (
-    <div>
-      <h1>Login</h1>
+    <div className= 'parent'>
+      <img src= {process.env.PUBLIC_URL + "./img/lyrical-artistry.png"} alt="Lyrical Artistry"></img>
+      <h1 className='primary'>Login</h1>
       <form onSubmit={login}>
-        <label htmlFor="username">Username:</label>
-        <input
+        <label htmlFor="username" className='primary'>Username:</label>
+        <input className='username'
           type="username"
           name="username"
           id="username"
@@ -38,7 +40,7 @@ function LoginPage() {
           required
         />
         <br />
-        <label htmlFor="password">Password:</label>
+        <label htmlFor="password" className='primary'>Password:</label>
         <input
           type="password"
           name="password"
@@ -48,12 +50,12 @@ function LoginPage() {
           required
         />
         <br />
-        <button type="submit" onClick={login}>
+        <button className= 'button' type="submit" onClick={login} >
           Log in
         </button>
       </form>
-      <p>
-        Don't have an account yet? <Link to="/signup">Sign Up</Link>
+      <p className='primary'>
+        Don't have an account yet? <Link to="/signup" style={{color: "#DCDCDC"}}>Sign Up</Link>
       </p>
     </div>
   );

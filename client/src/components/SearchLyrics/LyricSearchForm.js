@@ -1,18 +1,15 @@
-import React from "react";
+import React, { forwardRef } from "react";
 
-function SearchBox(props) {
-    return (
-        <form style={{ margin: "auto", width: "75%"}}>
-            <h3>Search for your favorite song lyrics</h3>
-            <div>Song</div>
-            <div className="form-group">
-                <input className="form-control" onChange={() => { }} />
-            </div>
-            <button style={{ float: "right", marginBottom: 10 }} className="btn btn-success" onClick={() => { }}>
+const SearchInput = forwardRef((props, ref) => (
+    <form style={{ margin: "auto", width: "80%" }} onSubmit={props.handleSearchTracksFormSubmit}>
+        <h3>Search for your favorite song lyrics</h3>
+        <div className="input-group">
+            <input className="form-control" ref={ref} placeholder="e.g. Hey Jude"/>
+            <button className="btn btn-success" type="submit" >
                 Submit
-            </button>
-        </form>
-    )
-}
+        </button>
+        </div>
+    </form>
+));
 
-export default SearchBox;    
+export default SearchInput;    

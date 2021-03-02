@@ -3,36 +3,30 @@ import Navbar from "./components/Navbar";
 import PrivateRoute from "./components/PrivateRoute";
 import LoginPage from "./pages/LoginPage";
 import ProtectedPage from "./pages/ProtectedPage";
-import PublicPage from "./pages/PublicPage";
+// import PublicPage from "./pages/PublicPage";
 import SignUpPage from "./pages/SignUpPage";
 import UserProfilePage from "./pages/UserProfilePage";
-import SearchLyricsPage from "./pages/SearchLyrics";
+import SearchLyricsPage from "./pages/SearchLyricsPage";
 import { ProvideAuth } from "./util/authContext";
+import Gallery from "./pages/Gallery";
 
 function App() {
   return (
     <ProvideAuth>
       <Router>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            margin: "0 auto",
-            maxWidth: "50rem"
-          }}
-        >
-          <Route path= {["/searchLyrics", "/protected", "/profile", "/public"]}>
+        <div>
+          <Route path= {["/searchLyrics", "/protected", "/profile", "/gallery"]}>
             <Navbar />
           </Route>
           <Switch>
           <Route exact path="/">
               <LoginPage />
             </Route>
+            <Route path="/gallery">
+              <Gallery />
+            </Route>
             <Route path="/searchLyrics">
               <SearchLyricsPage />
-            </Route>
-            <Route path="/public">
-              <PublicPage />
             </Route>
             <Route path="/login">
               <LoginPage />
