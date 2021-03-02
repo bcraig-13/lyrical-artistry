@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Stage, Layer, Image, Text } from 'react-konva';
 import useImage from 'use-image';
+import { v4 as uuidv4 } from 'uuid';
 
 function CanvasKonva(props) {
 
@@ -11,17 +12,21 @@ function CanvasKonva(props) {
 
   const imgSrc = "./exPhoto.jpg";
   const [image] = useImage(imgSrc);
+  // console.log([image.width, image.height])
 
   const [isDragging, setIsDragging] = useState(false);
 
+
+  const [textsList, setTextLists] = useState([]);
   const [inputToAdd, setInputToAdd] = useState({
     textToAdd: "",
     fontToAdd: "arial",
     sizeToAdd: 20,
     colorToAdd: "black",
     currX: 50,
-    currY: 50
-  })
+    currY: 50,
+    // ListDragging: false
+  });
 
 
   const width = 500;
@@ -42,14 +47,85 @@ function CanvasKonva(props) {
   const stageRef = useRef(null);
   // <canvas id="canvas" ref={canvasRef} />
 
-  function handleTextSubmit() {
+  function handleTextSubmit(event) {
 
+    event.preventDefault();
+    console.log("submit fired")
+
+    if (inputToAdd.textToAdd) {
+      setTextLists([...textsList, inputToAdd]);
+      setInputToAdd({
+        textToAdd: "",
+        fontToAdd: "arial",
+        sizeToAdd: 20,
+        colorToAdd: "black",
+        currX: 50,
+        currY: 50,
+        listDragged: false
+      })
+    }
     // need to push to textsList: ONLY IF THERE'S CONTENT!
     // need to set inputToAdd to default levels
     // need to add map function that puts current texts into text components
     // setTextsList[i]({ ...inputToAdd, currX: e.target.x(), currY: e.target.y() });
     // can update later so that the index is attached
     // be sure to add a key!
+  }
+
+
+  /* the ones saved in list */
+  function mapTexts(textsArr) {
+    let count = -1;
+    return (textsArr.map(textEntry => {
+
+      const {
+        textToAdd,
+        fontToAdd,
+        sizeToAdd,
+        colorToAdd,
+        currX,
+        currY,
+        listDragged
+
+      } = textEntry;
+      count++;
+      return (
+        < Text
+          key={uuidv4()}
+          className={count}
+          text={textToAdd}
+          fontSize={sizeToAdd}
+          fontFamily={fontToAdd}
+
+          x={currX}
+          y={currY}
+          fill={colorToAdd}
+
+
+          // need to work on the update when done dragging!
+          // draggable
+          // fill={listDragged ? colorToAdd !== 'green' ? 'green' : 'blue' : colorToAdd}
+          // onDragStart={() => {
+          //   setIsDragging(true);
+          //   const newIds = textsList.slice() //copy the array
+          //   newIds[count] = { ...textsList[count], listDragged: true } //execute the manipulations
+          //   setTextLists(newIds); //set the new state
+          // }}
+          // onDragEnd={e => {
+          //   setIsDragging(false);
+
+          //   const newIds = textsList.slice() //copy the array
+          //   newIds[count] = { ...textsList[count], listDragged: false, currX: e.target.x(), currY: e.target.y() } //execute the manipulations
+          //   setTextLists(newIds); //set the new state
+
+          //   // textsList[count] need to destructure the index number!
+          // }}
+        />
+      )
+    })
+
+    )
+
   }
 
   return (
@@ -63,7 +139,7 @@ function CanvasKonva(props) {
       <input onChange={(event) => setInputToAdd({ ...inputToAdd, colorToAdd: event.target.value })} value={inputToAdd.colorToAdd} id="theColor" placeholder="color" type="text" />
       <button
         id="submit"
-        onSubmit={() => handleTextSubmit()}
+        onClick={(event) => handleTextSubmit(event)}
       // submit button is gonna add to list of texts
       >Draw text on canvas</button><br />
 
@@ -75,6 +151,7 @@ function CanvasKonva(props) {
         {/* state for align: center vs align: right would be good too! */}
 
         <Layer>
+          {/* the one we're working on */}
           <Text
             text={inputToAdd.textToAdd}
             fontSize={inputToAdd.sizeToAdd}
@@ -93,6 +170,9 @@ function CanvasKonva(props) {
               setInputToAdd({ ...inputToAdd, currX: e.target.x(), currY: e.target.y() });
             }}
           />
+
+          {textsList.length ? mapTexts(textsList) : <Text></Text>}
+
         </Layer>
 
       </Stage>
