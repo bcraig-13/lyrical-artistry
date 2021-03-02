@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Canvas from "../Canvas";
 import "jquery";
 
+
 function DrawCanvas(props) {
 
     // vvv might change texts into a state
@@ -16,6 +17,9 @@ function DrawCanvas(props) {
     const [xToAdd, setXToAdd] = useState(50);
     const [yToAdd, setYToAdd] = useState(50);
 
+
+    let proposedX=50;
+    let proposedY=50;
 
     const canvasRef = useRef(null);
     // let canvas;
@@ -59,7 +63,7 @@ function DrawCanvas(props) {
             // ctx.fillText(text.text, text.x, text.y);
             // ^^^ will use this in actual font
 
-            ctx.fillText(text.text, xToAdd, yToAdd);
+            ctx.fillText(text.text, proposedX, proposedY);
 
             // vvv code to check text hitbox
             // ctx.clearRect(xToAdd, yToAdd, widthToAdd, heightToAdd);
@@ -98,10 +102,10 @@ function DrawCanvas(props) {
             setWidthToAdd(ctx.measureText(textToAdd).width)
             setHeightToAdd(sizeToAdd);
 
-            draw(canvas, ctx, [{ text: textToAdd, font: fontToAdd, size: sizeToAdd, color: colorToAdd }], imageObj)
+            draw(canvas, ctx, [{ text: textToAdd, font: fontToAdd, size: sizeToAdd, color: colorToAdd, x: xToAdd, y:yToAdd }], imageObj)
         }
 
-    }, [textToAdd, fontToAdd, sizeToAdd, colorToAdd, xToAdd, yToAdd])
+    }, [textToAdd, fontToAdd, sizeToAdd, colorToAdd])
 
 
     // useEffect(() => {
@@ -178,10 +182,15 @@ function DrawCanvas(props) {
         startY = mouseY;
 
         // var text = textToAdd[selectedText];
-        setXToAdd(xToAdd + dx);
-        console.log(xToAdd);
-        setYToAdd(yToAdd + dy);
-        console.log(yToAdd);
+        // proposedX+=dx;
+        // proposedY+=dy;
+        // setXToAdd(proposedX + dx);
+        // console.log(proposedX);
+        // setYToAdd(proposedY + dy);
+        // console.log(proposedY);
+
+        setXToAdd(xToAdd+dx);
+        setYToAdd(yToAdd+dy);
 
         const canvas = canvasRef.current;
         const ctx = canvas.getContext('2d');
