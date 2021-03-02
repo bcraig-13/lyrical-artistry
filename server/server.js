@@ -4,9 +4,9 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const apiRouter = require("./routes/api");
+const multer = require("multer");
 
-const bodyParser = require("body-parser");
-const fs = require("fs");
+const fs = require("fs").promises;
 
 const musixMatchRouter = require("./routes/musixMatchAPI");
 const isAuthenticated = require("./config/isAuthenticated");
@@ -25,11 +25,10 @@ if (!process.env.SERVER_SECRET) {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
 mongoose
   .connect(process.env.MONGODB_URI || "mongodb://localhost:27017/appDB", {
     useNewUrlParser: true,
-    useCreateIndex: true
+    useCreateIndex: true,
   })
   .then(() => console.log("MongoDB Connected!"))
   .catch((err) => console.error(err));
@@ -39,12 +38,8 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.resolve(__dirname, "../client/build")));
 }
 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
 app.use(apiRouter);
 app.use(musixMatchRouter);
-
-var multer = require("multer");
 
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -59,32 +54,48 @@ var upload = multer({ storage: storage });
 // var imgModel = require("./models/imageModel");
 // var Quote = require("./models/Quote");
 
-app.get("api/gallery", (req, res) => {
-  imgModel.find({}, (err, items) => {
-    if (err) {
+// No idea if this is right. Comment out if it doesn't work
+app.get("/api/gallery", (req, res) => {
+  imgModel
+    .find({})
+    .lean()
+    .then((images) => {
+      res.json(
+        images.map((image) => {
+          image.img.data = `data:image/${
+            image.img.contentType
+          };base64,${image.img.data.toString("base64")}`;
+          return image;
+        })
+      );
+    })
+    .catch((err) => {
       console.log(err);
       res.status(500).send("An error occurred", err);
-    } else {
-      res.render("api/gallery", { items: items });
-    }
-  });
+    });
 });
 
+//The "/protected" route will change to whatever page the canvas ends up on. Need a way to target finished image.
 app.post("/protected", upload.single("image"), (req, res, next) => {
-  var obj = {
-    name: req.body.name,
-    img: {
-      data: fs.readFileSync(path.join(__dirname + "/uploads/" + req.file.filename)), //May need to change /uploads/
-      contentType: "image/png",
-    },
-  };
-  imgModel.create(obj, (err, item) => {
-    if (err) {
-      console.log(err);
-    } else {
+  fs.readFile(path.join(__dirname + "/uploads/" + req.file.filename))
+    .then((data) => {
+      var obj = {
+        name: req.body.name,
+        img: {
+          data, //May need to change /uploads/
+          contentType: "image/png",
+        },
+      };
+      return obj;
+    })
+    .then(() => {
+      return imgModel.create(obj);
+    }).then(() => {
       res.redirect("/gallery");
-    }
-  });s
+    }).catch((err) => {
+      console.log(err);
+      res.sendStatus(500);
+    });
 });
 
 
@@ -106,9 +117,9 @@ app.use(function (err, req, res, next) {
 
 // Send every request to the React app
 // Define any API routes before this runs
-app.get("*", function (req, res) {
-  res.sendFile(path.resolve(__dirname, "../client/build/index.html"));
-});
+// app.get("*", function (req, res) {
+//   res.sendFile(path.resolve(__dirname, "../client/build/index.html"));
+// });
 
 app.listen(PORT, function () {
   console.log(`🌎 ==> Server now on port ${PORT}!`);

@@ -33,9 +33,9 @@
 }
 
 .nav {
-    color: white;
-    padding: 20px;
-    font-size: x-large;
+    color: white !important;
+    padding: 20px !important;
+    font-size: x-large !important;
 }
 
 .nav:hover {

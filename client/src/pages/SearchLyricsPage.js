@@ -2,7 +2,7 @@ import LyricSearchForm from "../components/SearchLyrics/LyricSearchForm";
 import SongResult from "../components/SearchLyrics/SongResults";
 import LyricsDisplay from "../components/SearchLyrics/LyricsDisplay"
 import QuoteSelectForm from "../components/SearchLyrics/QuoteSelectForm";
-import React, { Component, useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import API from "../util/API";
 
 

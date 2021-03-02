@@ -7,6 +7,7 @@ var imageSchema = new mongoose.Schema({
 		data: Buffer,
 		contentType: String
 	}
+	// user: String
 });
 
 module.exports = new mongoose.model('Image', imageSchema);
