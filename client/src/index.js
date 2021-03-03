@@ -5,7 +5,9 @@ import "./index.css";
 import App from "./App";
 
 import reportWebVitals from "./reportWebVitals";
+import {initAxiosAuth} from "./util/authContext" 
 
+initAxiosAuth();
 ReactDOM.render(
   <React.StrictMode>
     <App />

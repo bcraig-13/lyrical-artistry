@@ -30,6 +30,11 @@ const API = {
   },
   getAllUserQuotes: () => {
     return axios.get(`/api/quotes`);
+  },
+
+  postImage: (imageObject) => {
+    // return axios.post(`/api/user/imageTemplate`, imageObject)
+    return axios.post(`/api/user/images`, imageObject)
   }
 };
 
