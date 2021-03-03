@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { Stage, Layer, Image, Text } from 'react-konva';
 import useImage from 'use-image';
 import { v4 as uuidv4 } from 'uuid';
+import API from "../../util/API";
+import AuthService from "../../util/AuthService"
 
 function CanvasKonva(props) {
 
@@ -10,8 +12,9 @@ function CanvasKonva(props) {
   // const height = window.innerHeight;
   // ^^^ think this'll only work if there is a div controlling size that canvas is in...
 
-  const imgSrc = "./exPhoto.jpg";
-  const [image] = useImage(imgSrc);
+  // = "./exPhoto.jpg";
+  const [imgSrc, setImgSrc] = useState({});
+  const [image] = useImage(imgSrc.file);
   // console.log([image.width, image.height])
 
   const [isDragging, setIsDragging] = useState(false);
@@ -27,30 +30,20 @@ function CanvasKonva(props) {
     currY: 50,
     // ListDragging: false
   });
-
+  const [workName, setWorkName] = useState("");
 
   const width = 500;
   const height = 500;
 
 
   const handleExport = () => {
-    const uri = stageRef.current.toDataURL();
-    console.log(uri);
+    // const uri =stageRef.current.toDataURL();
+    // console.log(AuthService.getProfile());
 
-    //     can pass uri straight to DB
-    //     can also write temp image, then send that... either way, gonna have to proc ajax after (writing file: less efficient...)
-    // 
-    //   fs.writeFile('/tmp.png', uri, (err) => {
-    //     err ? console.error(err) : console.log("success!")
-    // })
-    // 
-    //     probs use fs.WriteToFile here, or something like this...
-    // 
-    //     // we also can save uri as file
-    //     // but in the demo on Konva website it will not work
-    //     // because of iframe restrictions
-    //     // but feel free to use it in your apps:
-    //     // downloadURI(uri, 'stage.png');
+    // API.postWork(workName, uri);
+    // stageRef.current.toDataURL().then()
+    // console.log(uri);
+
   };
 
 
@@ -76,6 +69,15 @@ function CanvasKonva(props) {
     }
   }
 
+
+  function openImage(event) {
+    console.log(event);
+    const url = URL.createObjectURL(event.target.files[0]);
+    setImgSrc({ file: url });
+    // this.setState({
+    //   file: URL.createObjectURL(event.target.files[0])
+    // })
+  }
 
   /* the ones saved in list */
   function mapTexts(textsArr) {
@@ -134,6 +136,8 @@ function CanvasKonva(props) {
 
   return (
     <div>
+      <h4>Upload File:</h4>
+      <input type="file" onChange={(event) => openImage(event)} />
 
       <h4>Add text to canvas and drag it</h4>
       <input onChange={(event) => setInputToAdd({ ...inputToAdd, textToAdd: event.target.value })} value={inputToAdd.textToAdd} id="theText" placeholder="text" type="text" />
@@ -146,6 +150,8 @@ function CanvasKonva(props) {
         onClick={(event) => handleTextSubmit(event)}
       // submit button is gonna add to list of texts
       >Fix Text to Image</button><br />
+
+      <input onChange={(event) => setWorkName(event.target.value)} value={workName} id="filename" placeholder="text" type="text" />
       <button
         id="saveWork"
         onClick={(event) => handleExport(event)}
