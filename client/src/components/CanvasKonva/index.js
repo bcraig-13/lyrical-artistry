@@ -3,7 +3,6 @@ import { Stage, Layer, Image, Text } from 'react-konva';
 import useImage from 'use-image';
 import { v4 as uuidv4 } from 'uuid';
 import API from "../../util/API";
-import AuthService from "../../util/AuthService"
 
 function CanvasKonva(props) {
 
@@ -36,13 +35,54 @@ function CanvasKonva(props) {
   const height = 500;
 
 
+  // ==================================================================================
+  // IGNORE (poss enhancment- scale canvas to image height)
+  // img.onload = function() {
+  //   c.width = this.naturalWidth;     // update canvas size to match image
+  //   c.height = this.naturalHeight;
+  // }
+  // ==================================================================================
+
+
+  function dataURItoBlob(dataURI) {
+    // convert base64 to raw binary data held in a string
+    // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
+    var byteString = atob(dataURI.split(',')[1]);
+
+    // separate out the mime component
+    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+
+    // write the bytes of the string to an ArrayBuffer
+    var ab = new ArrayBuffer(byteString.length);
+
+    // create a view into the buffer
+    var ia = new Uint8Array(ab);
+
+    // set the bytes of the buffer to the correct values
+    for (var i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+    }
+
+    // write the ArrayBuffer to a blob, and you're done
+    var blob = new Blob([ab], { type: mimeString });
+    return blob;
+
+  }
+
   const handleExport = () => {
-    // const uri =stageRef.current.toDataURL();
-    // console.log(AuthService.getProfile());
+    const url = stageRef.current.toDataURL();
+
+    const blob = dataURItoBlob(url);
+
+    // console.log(url);
+
+
+    const data = new FormData();
+    data.append("image", blob, workName);
+    API.postImage(data);
 
     // API.postWork(workName, uri);
     // stageRef.current.toDataURL().then()
-    // console.log(uri);
 
   };
 
