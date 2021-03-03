@@ -11,8 +11,9 @@ function CanvasKonva(props) {
   // const height = window.innerHeight;
   // ^^^ think this'll only work if there is a div controlling size that canvas is in...
 
-  const imgSrc = "./exPhoto.jpg";
-  const [image] = useImage(imgSrc);
+  // = "./exPhoto.jpg";
+  const [imgSrc, setImgSrc] = useState({});
+  const [image] = useImage(imgSrc.file);
   // console.log([image.width, image.height])
 
   const [isDragging, setIsDragging] = useState(false);
@@ -28,33 +29,61 @@ function CanvasKonva(props) {
     currY: 50,
     // ListDragging: false
   });
-
+  const [workName, setWorkName] = useState("");
 
   const width = 500;
   const height = 500;
 
 
-  const handleExport = (event) => {
-    const uri = stageRef.current.toDataURL();
-    console.log(uri);
-    const data = new FormData();
-    data.append("image", uri, "fish.png");
-    API.postImage(data)
+  // ==================================================================================
+  // IGNORE (poss enhancment- scale canvas to image height)
+  // img.onload = function() {
+  //   c.width = this.naturalWidth;     // update canvas size to match image
+  //   c.height = this.naturalHeight;
+  // }
+  // ==================================================================================
 
-    //     can pass uri straight to DB
-    //     can also write temp image, then send that... either way, gonna have to proc ajax after (writing file: less efficient...)
-    // 
-    //   fs.writeFile('/tmp.png', uri, (err) => {
-    //     err ? console.error(err) : console.log("success!")
-    // })
-    // 
-    //     probs use fs.WriteToFile here, or something like this...
-    // 
-    //     // we also can save uri as file
-    //     // but in the demo on Konva website it will not work
-    //     // because of iframe restrictions
-    //     // but feel free to use it in your apps:
-    //     // downloadURI(uri, 'stage.png');
+
+  function dataURItoBlob(dataURI) {
+    // convert base64 to raw binary data held in a string
+    // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
+    var byteString = atob(dataURI.split(',')[1]);
+
+    // separate out the mime component
+    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+
+    // write the bytes of the string to an ArrayBuffer
+    var ab = new ArrayBuffer(byteString.length);
+
+    // create a view into the buffer
+    var ia = new Uint8Array(ab);
+
+    // set the bytes of the buffer to the correct values
+    for (var i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+    }
+
+    // write the ArrayBuffer to a blob, and you're done
+    var blob = new Blob([ab], { type: mimeString });
+    return blob;
+
+  }
+
+  const handleExport = () => {
+    const url = stageRef.current.toDataURL();
+
+    const blob = dataURItoBlob(url);
+
+    // console.log(url);
+
+
+    const data = new FormData();
+    data.append("image", blob, workName);
+    API.postImage(data);
+
+    // API.postWork(workName, uri);
+    // stageRef.current.toDataURL().then()
+
   };
 
 
@@ -80,6 +109,15 @@ function CanvasKonva(props) {
     }
   }
 
+
+  function openImage(event) {
+    console.log(event);
+    const url = URL.createObjectURL(event.target.files[0]);
+    setImgSrc({ file: url });
+    // this.setState({
+    //   file: URL.createObjectURL(event.target.files[0])
+    // })
+  }
 
   /* the ones saved in list */
   function mapTexts(textsArr) {
@@ -138,6 +176,8 @@ function CanvasKonva(props) {
 
   return (
     <div>
+      <h4>Upload File:</h4>
+      <input type="file" onChange={(event) => openImage(event)} />
 
       <h4>Add text to canvas and drag it</h4>
       <input onChange={(event) => setInputToAdd({ ...inputToAdd, textToAdd: event.target.value })} value={inputToAdd.textToAdd} id="theText" placeholder="text" type="text" />
@@ -150,6 +190,8 @@ function CanvasKonva(props) {
         onClick={(event) => handleTextSubmit(event)}
       // submit button is gonna add to list of texts
       >Fix Text to Image</button><br />
+
+      <input onChange={(event) => setWorkName(event.target.value)} value={workName} id="filename" placeholder="text" type="text" />
       <button
         id="saveWork"
         onClick={(event) => handleExport(event)}
