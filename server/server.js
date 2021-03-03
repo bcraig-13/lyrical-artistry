@@ -13,6 +13,9 @@ const isAuthenticated = require("./config/isAuthenticated");
 
 const PORT = process.env.PORT || 3001;
 
+//body parser is used for parsing multipage requests
+
+
 // Check if SERVER_SECRET has been set and exit with an error if an env var is
 // not set.
 if (!process.env.SERVER_SECRET) {
@@ -51,7 +54,7 @@ var storage = multer.diskStorage({
 });
 
 var upload = multer({ storage: storage });
-// var imgModel = require("./models/imageModel");
+var imgModel = require("./models/imageModel");
 // var Quote = require("./models/Quote");
 
 // No idea if this is right. Comment out if it doesn't work
@@ -62,9 +65,8 @@ app.get("/api/gallery", (req, res) => {
     .then((images) => {
       res.json(
         images.map((image) => {
-          image.img.data = `data:image/${
-            image.img.contentType
-          };base64,${image.img.data.toString("base64")}`;
+          image.img.data = `data:image/${image.img.contentType
+            };base64,${image.img.data.toString("base64")}`;
           return image;
         })
       );
@@ -75,23 +77,30 @@ app.get("/api/gallery", (req, res) => {
     });
 });
 
+
+
+const db = require("./models");
+
 //The "/protected" route will change to whatever page the canvas ends up on. Need a way to target finished image.
-app.post("/protected", upload.single("image"), (req, res, next) => {
+app.post("/api/user/images", isAuthenticated, upload.single("image"), (req, res, next) => {
   fs.readFile(path.join(__dirname + "/uploads/" + req.file.filename))
     .then((data) => {
-      var obj = {
+      var imageObject = {
         name: req.body.name,
         img: {
-          data, //May need to change /uploads/
+          data,
           contentType: "image/png",
         },
       };
-      return obj;
+      return imageObject;
     })
-    .then(() => {
-      return imgModel.create(obj);
-    }).then(() => {
-      res.redirect("/gallery");
+    .then((image) => {
+      db.Image.create(image)
+        .then(({ _id }) => db.User.findOneAndUpdate({ _id: req.user.id }, { $push: { images: _id } }, { new: true }))
+        .then((dbUser) => {
+          res.redirect("/gallery")
+          // res.json(dbUser);
+        })
     }).catch((err) => {
       console.log(err);
       res.sendStatus(500);

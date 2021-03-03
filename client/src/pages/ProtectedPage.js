@@ -1,4 +1,13 @@
+import API from "../util/API";
+
 function ProtectedPage() {
+
+  const handleFileTemplateSubmit = (event) => {
+    event.preventDefault();
+    const data = new FormData();
+    data.append("image", event.target.image.files[0], event.target.name.value);
+    API.postImage(data)
+  }
   return (
     <div>
       <h1>Edit your Lyrics</h1>
@@ -6,11 +15,10 @@ function ProtectedPage() {
       <h1>To Upload Image on mongoDB</h1>
       <hr />
       <div>
-        <form action="/protected" method="POST" encType="multipart/form-data">
+        <form onSubmit={handleFileTemplateSubmit} encType="multipart/form-data">
           <div>
             <label htmlFor="name">Image Title</label>
-            {/* Took 'value=""' out of the inputs. May need later */}
-            <input type="text" id="name" placeholder="Name" name="name" required /> 
+            <input type="text" id="name" placeholder="Name" name="name123" required />
           </div>
           <div>
             <label htmlFor="image">Upload Image</label>
