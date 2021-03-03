@@ -1,5 +1,7 @@
 import { useAuth } from "../util/authContext";
 import "../components/myStyles.css";
+import React from "react";
+import { NavLink } from "react-router-dom";
 
 function Navbar() {
   const auth = useAuth();
@@ -28,24 +30,24 @@ function Navbar() {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav">
             <li className="nav-item">
-              <a className="nav-link nav active" aria-current="page" href="gallery">
+              <NavLink className="nav-link nav" activeClassName="active" aria-current="page" to="/gallery">
                 Gallery
-              </a>
+              </NavLink>
             </li>
             <li className="nav-item">
-              <a className="nav-link nav" href="searchLyrics">
+              <NavLink className="nav-link nav" activeClassName="active" to="/searchLyrics">
                 Search for Lyrics
-              </a>
+              </NavLink>
             </li>
             <li className="nav-item">
-              <a className="nav-link nav" href="protected">
+              <NavLink className="nav-link nav" activeClassName="active" to="/protected">
                 Edit Lyrics
-              </a>
+              </NavLink>
             </li>
             <li className="nav-item">
-            <a className="nav-link nav" href="login" onClick={signOut}>
+            <NavLink className="nav-link nav" activeClassName="active" to="/login" onClick={signOut}>
                 Sign Out
-              </a>
+              </NavLink>
             </li>
           </ul>
         </div>

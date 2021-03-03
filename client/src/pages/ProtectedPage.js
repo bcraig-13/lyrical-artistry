@@ -1,4 +1,5 @@
 import API from "../util/API";
+import CanvasKonva from "../components/CanvasKonva";
 
 function ProtectedPage() {
 
@@ -29,6 +30,7 @@ function ProtectedPage() {
           </div>
         </form>
       </div>
+      <CanvasKonva/>
     </div>
   );
 }
