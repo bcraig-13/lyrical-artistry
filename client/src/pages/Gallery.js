@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import ImageCard from "./ImageCard";
-import api from "../util/API";
-
+import API from "../util/API";
 function Gallery() {
   const [userImages, setUserImages] = useState([]);
+
   useEffect(() => {
-    api.getImages().then((res) => {
+    API.getAllUserImages().then((res) => {
+      console.log(res.data)
       setUserImages(res.data.map(image => {
         return {
           name: image.name,
@@ -14,22 +15,21 @@ function Gallery() {
         }
       }));
     })
-  }, [setUserImages])
+  }, [])
+
   return (
     <div className="container-fluid portfolio-bg" style={{ marginTop: "50px" }}>
       <div className="row mx-auto">
-        {userImages.length ? userImages.map((image) => (
+        {userImages.map((image) => (
           <ImageCard
             key={image.id}
             id={image.id}
             img={image.image}
             name={image.name}
           />
-        )):<div></div>}
+        ))}
       </div>
-      <form action="/gallery" method="GET"></form>
     </div>
   );
 }
-
 export default Gallery;

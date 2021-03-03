@@ -1,5 +1,5 @@
 import API from "../util/API";
-import CanvasKonva from "../components/CanvasKonva";
+import CanvasKonva from "../components/CanvasKonva/index";
 
 function ProtectedPage() {
 
@@ -19,7 +19,7 @@ function ProtectedPage() {
         <form onSubmit={handleFileTemplateSubmit} encType="multipart/form-data">
           <div>
             <label htmlFor="name">Image Title</label>
-            <input type="text" id="name" placeholder="Name" name="name123" required />
+            <input type="text" id="name" placeholder="Name" name="name" required />
           </div>
           <div>
             <label htmlFor="image">Upload Image</label>

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Stage, Layer, Image, Text } from 'react-konva';
 import useImage from 'use-image';
 import { v4 as uuidv4 } from 'uuid';
+import API from "../../util/API";
 
 function CanvasKonva(props) {
 
@@ -33,9 +34,12 @@ function CanvasKonva(props) {
   const height = 500;
 
 
-  const handleExport = () => {
+  const handleExport = (event) => {
     const uri = stageRef.current.toDataURL();
     console.log(uri);
+    const data = new FormData();
+    data.append("image", uri, "fish.png");
+    API.postImage(data)
 
     //     can pass uri straight to DB
     //     can also write temp image, then send that... either way, gonna have to proc ajax after (writing file: less efficient...)
