@@ -40,12 +40,12 @@ function Navbar() {
               </NavLink>
             </li>
             <li className="nav-item">
-              <NavLink className="nav-link nav" activeClassName="active" to="/protected">
-                Edit Lyrics
+              <NavLink className="nav-link nav" activeClassName="active" to="/canvasPage">
+                Edit pictures
               </NavLink>
             </li>
             <li className="nav-item">
-            <NavLink className="nav-link nav" activeClassName="active" to="/login" onClick={signOut}>
+              <NavLink className="nav-link nav" activeClassName="active" to="/login" onClick={signOut}>
                 Sign Out
               </NavLink>
             </li>
