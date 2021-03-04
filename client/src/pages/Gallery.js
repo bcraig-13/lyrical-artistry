@@ -6,7 +6,6 @@ function Gallery() {
 
   useEffect(() => {
     API.getAllUserImages().then((res) => {
-      console.log(res.data)
       setUserImages(res.data.map(image => {
         return {
           name: image.name,
