@@ -53,7 +53,10 @@ var storage = multer.diskStorage({
   },
 });
 
-var upload = multer({ storage: storage });
+var upload = multer({
+  storage: storage,
+  // limits: {fileSize: 500000}
+});
 
 const db = require("./models");
 

@@ -22,11 +22,6 @@ function SearchLyricsPage() {
         }
     }, [search])
 
-
-    // useEffect(() => {
-
-    // }, [quote])
-
     //handle when user submits form
     const handleSearchTracksFormSubmit = (event) => {
         event.preventDefault();
@@ -43,7 +38,6 @@ function SearchLyricsPage() {
     };
 
     const handleQuoteSaveClick = (quoteObject) => {
-        console.log(quoteObject);
         API.postQuotes(quoteObject);
     }
 
@@ -79,7 +73,6 @@ function SearchLyricsPage() {
                     {quote !== "" && <QuoteSelectForm quote={quote} handleQuoteSaveClick={handleQuoteSaveClick} />}
                 </div>
             </div>
-
         </div>)
 }
 
