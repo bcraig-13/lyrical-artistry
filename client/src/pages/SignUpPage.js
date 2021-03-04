@@ -30,7 +30,7 @@ function SignUpPage() {
   };
 
   if (auth.isLoggedIn) {
-    return <Redirect to="/protected" />;
+    return <Redirect to="/gallery" />;
   }
 
   return (
