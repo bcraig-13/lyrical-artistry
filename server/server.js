@@ -46,7 +46,7 @@ app.use(musixMatchRouter);
 
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads");
+    cb(null, path.join(__dirname, "uploads"));
   },
   filename: (req, file, cb) => {
     cb(null, file.fieldname + "-" + Date.now());
@@ -61,7 +61,7 @@ var upload = multer({
 const db = require("./models");
 
 app.post("/api/user/images", isAuthenticated, upload.single("image"), (req, res, next) => {
-  fs.readFile(path.join(__dirname + "/uploads/" + req.file.filename))
+  fs.readFile(path.join(__dirname, "uploads", req.file.filename))
     .then((data) => {
       var imageObject = {
         name: req.body.name,
