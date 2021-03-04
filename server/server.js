@@ -54,32 +54,8 @@ var storage = multer.diskStorage({
 });
 
 var upload = multer({ storage: storage });
-// var Quote = require("./models/Quote");
-
-// No idea if this is right. Comment out if it doesn't work
-// app.get("/api/gallery", (req, res) => {
-//   imgModel
-//     .find({})
-//     .lean()
-//     .then((images) => {
-//       res.json(
-//         images.map((image) => {
-//           image.img.data = `data:image/${image.img.contentType
-//             };base64,${image.img.data.toString("base64")}`;
-//           return image;
-//         })
-//       );
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//       res.status(500).send("An error occurred", err);
-//     });
-// });
-
-
 
 const db = require("./models");
-
 
 app.post("/api/user/images", isAuthenticated, upload.single("image"), (req, res, next) => {
   fs.readFile(path.join(__dirname + "/uploads/" + req.file.filename))
@@ -117,9 +93,9 @@ app.use(function (err, req, res, next) {
 
 // Send every request to the React app
 // Define any API routes before this runs
-// app.get("*", function (req, res) {
-//   res.sendFile(path.resolve(__dirname, "../client/build/index.html"));
-// });
+app.get("*", function (req, res) {
+  res.sendFile(path.resolve(__dirname, "../client/build/index.html"));
+});
 
 app.listen(PORT, function () {
   console.log(`🌎 ==> Server now on port ${PORT}!`);

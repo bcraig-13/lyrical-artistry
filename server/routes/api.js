@@ -3,10 +3,6 @@ const db = require("../models");
 const isAuthenticated = require("../config/isAuthenticated");
 const auth = require("../config/auth");
 const apiRouter = new Router();
-// const multer = require("multer");
-// var upload = multer({ storage: storage }); 
-// const fs = require("fs").promises;
-
 
 // LOGIN ROUTE
 apiRouter.post("/api/login", (req, res) => {
