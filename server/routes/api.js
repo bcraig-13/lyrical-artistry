@@ -38,20 +38,7 @@ apiRouter.get("/api/user", isAuthenticated, (req, res) => {
     .catch((err) => res.status(400).send(err));
 });
 
-// ROUTE TO DISPLAY GALLERY ONCE USER IS LOGGED IN
-apiRouter.get("api/gallery", isAuthenticated, (req, res) => {
-  db.lyrical_artistry_db.findAll({
-    where: {
-      UserId: req.user.id
-    },
-    raw: true
-  }).then(lyrical_artistry_db => {
-    res.render("gallery", {
-      username: req.user.username,
-      images: images
-    })
-  })
-});
+
 
 apiRouter.post("/api/user/quotes", isAuthenticated, (req, res) => {
   db.Quote.create(req.body)
@@ -69,8 +56,31 @@ apiRouter.get("/api/user/quotes", isAuthenticated, (req, res) => {
   })
 })
 
+apiRouter.get("api/gallery", isAuthenticated, (req, res) => {
+  db.User.findById(req.user.id)
+    .populate("images")
+    .then((userDoc) => {
+      res.render("gallery", {
+        username: req.user.username,
+        images: userDoc.images,
+      });
+    });
+});
 
-//The "/protected" route will change to whatever page the canvas ends up on. Need a way to target finished image.
 
+apiRouter.get("/api/user/images", isAuthenticated, (req, res) => {
+  db.User.findById(req.user.id).populate("images").then(dbUser => {
+    res.json(
+      dbUser.images.map((imageDoc) => {
+        //Convert mongoose Document class to JS object
+        const image = imageDoc.toObject();
+        image.img.data = `data:image/${image.img.contentType};base64,${image.img.data.toString("base64")}`;
+        return image;
+      })
+    );
+  }).catch(err => {
+    res.json(err);
+  })
+})
 
 module.exports = apiRouter;

@@ -19,22 +19,18 @@ const API = {
   getLyrics: (trackID) => {
     return axios.get(`/api/lyrics/${trackID}`)
   },
-  getImages: () => {
-    return axios.get("/api/gallery");
-  },
-  getAllQuotes: () => {
-    return axios.get(`/api/quotes`);
-  },
   postQuotes: (quoteObject) => {
     return axios.post(`/api/user/quotes`, quoteObject)
   },
   getAllUserQuotes: () => {
-    return axios.get(`/api/quotes`);
+    return axios.get(`/api/user/quotes`);
   },
-
   postImage: (imageObject) => {
     // return axios.post(`/api/user/imageTemplate`, imageObject)
     return axios.post(`/api/user/images`, imageObject)
+  },
+  getAllUserImages: () => {
+    return axios.get("/api/user/images");
   }
 };
 

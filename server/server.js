@@ -54,34 +54,33 @@ var storage = multer.diskStorage({
 });
 
 var upload = multer({ storage: storage });
-var imgModel = require("./models/imageModel");
 // var Quote = require("./models/Quote");
 
 // No idea if this is right. Comment out if it doesn't work
-app.get("/api/gallery", (req, res) => {
-  imgModel
-    .find({})
-    .lean()
-    .then((images) => {
-      res.json(
-        images.map((image) => {
-          image.img.data = `data:image/${image.img.contentType
-            };base64,${image.img.data.toString("base64")}`;
-          return image;
-        })
-      );
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).send("An error occurred", err);
-    });
-});
+// app.get("/api/gallery", (req, res) => {
+//   imgModel
+//     .find({})
+//     .lean()
+//     .then((images) => {
+//       res.json(
+//         images.map((image) => {
+//           image.img.data = `data:image/${image.img.contentType
+//             };base64,${image.img.data.toString("base64")}`;
+//           return image;
+//         })
+//       );
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//       res.status(500).send("An error occurred", err);
+//     });
+// });
 
 
 
 const db = require("./models");
 
-//The "/protected" route will change to whatever page the canvas ends up on. Need a way to target finished image.
+
 app.post("/api/user/images", isAuthenticated, upload.single("image"), (req, res, next) => {
   fs.readFile(path.join(__dirname + "/uploads/" + req.file.filename))
     .then((data) => {
@@ -97,22 +96,14 @@ app.post("/api/user/images", isAuthenticated, upload.single("image"), (req, res,
     .then((image) => {
       db.Image.create(image)
         .then(({ _id }) => db.User.findOneAndUpdate({ _id: req.user.id }, { $push: { images: _id } }, { new: true }))
-        .then((dbUser) => {
+        .then(() => {
           res.redirect("/gallery")
-          // res.json(dbUser);
         })
     }).catch((err) => {
       console.log(err);
       res.sendStatus(500);
     });
 });
-
-
-
-/*********************************************************************************
- * CREATE GET(/api/quotes) HERE TO GET ALL QUOTES
- ********************************************************************************/
-
 
 // Error handling
 app.use(function (err, req, res, next) {

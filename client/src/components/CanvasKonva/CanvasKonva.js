@@ -174,6 +174,7 @@ function CanvasKonva(props) {
 
   }
 
+
   return (
     <div>
       <h4>Upload File:</h4>
