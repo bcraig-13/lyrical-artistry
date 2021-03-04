@@ -6,7 +6,7 @@ function QuotesSelectionCanvas(props) {
         <div>Artist: {props.artist}</div>
         <div>Quote: {props.quote}</div>
         <div>Created At: {props.createdAt}</div>
-        <button onClick={props.handleQuoteSelectCanvas(props.quote)}>Select</button>
+        <button onClick={()=> props.changeInputToLyrics(props.quote)}>Select</button>
     </div>
   );
 }

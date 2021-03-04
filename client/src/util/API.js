@@ -5,6 +5,7 @@ const API = {
   getUser: () => {
     return axios.get("/api/user");
   },
+  
   // sign up a user to our service
   signUpUser: ({ username, password }) => {
     return axios.post("api/signup", {

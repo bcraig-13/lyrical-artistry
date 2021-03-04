@@ -3,6 +3,7 @@ import { Stage, Layer, Image, Text } from 'react-konva';
 import useImage from 'use-image';
 import { v4 as uuidv4 } from 'uuid';
 import API from "../../util/API";
+import QuotesSelectionCanvas from "./QuotesSelectionCanvas";
 
 function CanvasKonva(props) {
 
@@ -30,6 +31,10 @@ function CanvasKonva(props) {
     // ListDragging: false
   });
   const [workName, setWorkName] = useState("");
+
+
+  //Retrieve list of quotes stored in DB
+  const [quotes, setQuotes] = useState([]);
 
   const width = 500;
   const height = 500;
@@ -175,8 +180,21 @@ function CanvasKonva(props) {
   }
 
 
+  function changeInputToLyrics(quote) {
+    setInputToAdd({ ...inputToAdd, textToAdd: quote });
+  }
+
+  useEffect(() => {
+    API.getAllUserQuotes().then(quotes => {
+      setQuotes(quotes.data);
+    })
+  }, [])
+
   return (
     <div>
+      {quotes.length > 0 && quotes.map(quote => (
+        <QuotesSelectionCanvas {...quote} changeInputToLyrics={changeInputToLyrics}/>
+      ))}
       <h4>Upload File:</h4>
       <input type="file" onChange={(event) => openImage(event)} />
 
