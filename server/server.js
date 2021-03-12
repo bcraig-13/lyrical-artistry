@@ -4,17 +4,10 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const apiRouter = require("./routes/api");
-const multer = require("multer");
-
-const fs = require("fs").promises;
 
 const musixMatchRouter = require("./routes/musixMatchAPI");
-const isAuthenticated = require("./config/isAuthenticated");
 
 const PORT = process.env.PORT || 3001;
-
-//body parser is used for parsing multipage requests
-
 
 // Check if SERVER_SECRET has been set and exit with an error if an env var is
 // not set.
@@ -43,43 +36,6 @@ if (process.env.NODE_ENV === "production") {
 
 app.use(apiRouter);
 app.use(musixMatchRouter);
-
-var storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "uploads"));
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.fieldname + "-" + Date.now());
-  },
-});
-
-var upload = multer({ storage: storage });
-
-const db = require("./models");
-
-app.post("/api/user/images", isAuthenticated, upload.single("image"), (req, res, next) => {
-  fs.readFile(path.join(__dirname, "uploads", req.file.filename))
-    .then((data) => {
-      var imageObject = {
-        name: req.body.name,
-        img: {
-          data,
-          contentType: "image/png",
-        },
-      };
-      return imageObject;
-    })
-    .then((image) => {
-      db.Image.create(image)
-        .then(({ _id }) => db.User.findOneAndUpdate({ _id: req.user.id }, { $push: { images: _id } }, { new: true }))
-        .then(() => {
-          res.redirect("/gallery")
-        })
-    }).catch((err) => {
-      console.log(err);
-      res.sendStatus(500);
-    });
-});
 
 // Error handling
 app.use(function (err, req, res, next) {
