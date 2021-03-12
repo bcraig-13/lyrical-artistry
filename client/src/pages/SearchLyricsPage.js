@@ -52,9 +52,8 @@ function SearchLyricsPage() {
             <div className="row">
                 <div className="col-md-3" >
                     <LyricSearchForm ref={trackRef} handleSearchTracksFormSubmit={handleSearchTracksFormSubmit} />
-                    {/* {results.length > 0 && results.map((track) => <SongResult track={track} handleTrackViewClick={handleTrackViewClick} key={track.track.track_name} />)} */}
                     {results.length > 0 &&
-                        <div style={{ overflow: "scroll", width: "100%", height: "400px ", marginTop: "10px", marginLeft: "10px", borderRadius: "25px 0px 0px 25px"}}>
+                        <div style={{ overflowY: "scroll", width: "100%", height: "75% ", marginTop: "10px", marginLeft: "10px", borderRadius: "25px 0px 0px 25px"}}>
                             {results.map((track) => (
                                 <SongResult track={track} handleTrackViewClick={handleTrackViewClick} key={track.track.track_name} />
                             ))}
@@ -62,9 +61,8 @@ function SearchLyricsPage() {
                     }
                 </div>
                 <div className="col-md-5">
-                    {/* {lyrics !== "" && <LyricsDisplay lyrics={lyrics} handleQuoteHighlight={handleQuoteHighlight} />} */}
                     {lyrics !== "" &&
-                        <div style={{ overflowY: "auto", width: "100%", height: "575px " }}>
+                        <div style={{ overflowY: "auto", width: "100%", height: "575px", paddingLeft: "25px"}}>
                             <LyricsDisplay lyrics={lyrics} handleQuoteHighlight={handleQuoteHighlight} />
                         </div>
                     }
