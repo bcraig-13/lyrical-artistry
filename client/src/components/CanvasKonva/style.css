@@ -1,0 +1,33 @@
+#theText, #theFont, #theSize, #theColor {
+
+}
+
+
+.canvasFontColor label{
+    color: white;
+
+}
+
+.canvasFontColor h4{
+color: white;
+}
+
+/* h4{
+    color: white;
+} */
+
+.canvas{
+    color: white;
+}
+
+.canvasInput input{
+    max-width: 20%;
+    display:inline-flex;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+.canvasInput button{
+    display: inline-flex;
+    justify-content: center;
+}
