@@ -99,15 +99,12 @@ function CanvasKonva(props) {
   function handleTextSubmit(event) {
 
     event.preventDefault();
-    console.log("submit fired")
 
     if (inputToAdd.textToAdd) {
       setTextLists([...textsList, inputToAdd]);
       setInputToAdd({
+        ...inputToAdd,
         textToAdd: "",
-        fontToAdd: "arial",
-        sizeToAdd: 20,
-        colorToAdd: "black",
         currX: 50,
         currY: 50,
         listDragged: false
@@ -209,7 +206,7 @@ function CanvasKonva(props) {
         <label className="canvas">font:</label>
         <input className="input-group" onChange={(event) => setInputToAdd({ ...inputToAdd, fontToAdd: event.target.value })} value={inputToAdd.fontToAdd} id="theFont" placeholder="font" type="text" />
         <label className="canvas">size:</label>
-        <input className="input-group" onChange={(event) => setInputToAdd({ ...inputToAdd, sizeToAdd: event.target.value })} value={inputToAdd.sizeToAdd} id="theSize" placeholder="size" type="number" />
+        <input className="input-group" onChange={(event) => setInputToAdd({ ...inputToAdd, sizeToAdd: parseInt(event.target.value) })} value={inputToAdd.sizeToAdd} id="theSize" placeholder="size" type="number" />
         <label className="canvas">color:</label>
         <input className="input-group" onChange={(event) => setInputToAdd({ ...inputToAdd, colorToAdd: event.target.value })} value={inputToAdd.colorToAdd} id="theColor" placeholder="color" type="text" />
         <button
