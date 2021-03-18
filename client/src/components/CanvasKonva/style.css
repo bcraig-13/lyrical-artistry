@@ -9,25 +9,29 @@
 }
 
 .canvasFontColor h4{
-color: white;
-}
-
-/* h4{
     color: white;
-} */
+}
 
 .canvas{
     color: white;
 }
 
 .canvasInput input{
-    width: 5%;
+    width: 7%;
     display:inline-flex;
     margin-right: 5px;
     margin-left: 5px;
 }
 
+.canvasInput .fileUpload{
+    width: unset;
+}
+
 .canvasInput .longText{
+    width: 50%;
+}
+
+#filename{
     width: 20%;
 }
 
@@ -38,5 +42,5 @@ color: white;
 
 .toolbar{
     background-color: gray;
-    /* display: inline-block; */
+    display: inline-block;
 }

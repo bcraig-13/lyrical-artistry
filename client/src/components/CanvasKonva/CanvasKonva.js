@@ -197,29 +197,30 @@ function CanvasKonva(props) {
       <div className="canvasInput">
 
         <h4 className="canvas">Upload File:</h4>
-        <input type="file" className="canvas mb-5" onChange={(event) => openImage(event)} />
+        <input type="file" className="canvas mb-5 fileUpload" onChange={(event) => openImage(event)} />
 
         <h4 className="canvas">Add text to canvas and drag it</h4>
 
-        <div className="toolbar mb-3 p-1">
+          <div className="toolbar mb-3 p-1">
 
-          <label className="canvas">text:</label>
-          <input className="input-group longText" onChange={(event) => setInputToAdd({ ...inputToAdd, textToAdd: event.target.value })} value={inputToAdd.textToAdd} id="theText" placeholder="text" type="text" />
-          {/* <input onChange={(event) => setTextToAdd(event.target.value)} value={textToAdd} id="theText" placeholder="text" type="text" /> */}
-          <label className="canvas">font:</label>
-          <input className="input-group" onChange={(event) => setInputToAdd({ ...inputToAdd, fontToAdd: event.target.value })} value={inputToAdd.fontToAdd} id="theFont" placeholder="font" type="text" />
-          <label className="canvas">size:</label>
-          <input className="input-group" onChange={(event) => setInputToAdd({ ...inputToAdd, sizeToAdd: parseInt(event.target.value) })} value={inputToAdd.sizeToAdd} id="theSize" placeholder="size" type="number" />
-          <label className="canvas">color:</label>
-          <input className="input-group" onChange={(event) => setInputToAdd({ ...inputToAdd, colorToAdd: event.target.value })} value={inputToAdd.colorToAdd} id="theColor" placeholder="color" type="text" />
-          <button
-            id="addText"
-            className="btn btn-light btn-sm mb-1"
-            onClick={(event) => handleTextSubmit(event)}
-          // submit button is gonna add to list of texts
-          >Fix Text to Image</button><br />
+            <label className="canvas">text:</label>
+            <input className="input-group longText" onChange={(event) => setInputToAdd({ ...inputToAdd, textToAdd: event.target.value })} value={inputToAdd.textToAdd} id="theText" placeholder="text" type="text" />
+            {/* <input onChange={(event) => setTextToAdd(event.target.value)} value={textToAdd} id="theText" placeholder="text" type="text" /> */}
+            <label className="canvas">font:</label>
+            <input className="input-group" onChange={(event) => setInputToAdd({ ...inputToAdd, fontToAdd: event.target.value })} value={inputToAdd.fontToAdd} id="theFont" placeholder="font" type="text" />
+            <label className="canvas">size:</label>
+            <input className="input-group" onChange={(event) => setInputToAdd({ ...inputToAdd, sizeToAdd: parseInt(event.target.value) })} value={inputToAdd.sizeToAdd} id="theSize" placeholder="size" type="number" />
+            <label className="canvas">color:</label>
+            <input className="input-group" onChange={(event) => setInputToAdd({ ...inputToAdd, colorToAdd: event.target.value })} value={inputToAdd.colorToAdd} id="theColor" placeholder="color" type="text" />
+            <button
+              id="addText"
+              className="btn btn-light btn-sm mb-1"
+              onClick={(event) => handleTextSubmit(event)}
+            // submit button is gonna add to list of texts
+            >Fix Text to Image</button><br />
 
-        </div>
+          </div>
+
 
 
         <Stage width={width} height={height} ref={stageRef}>
@@ -258,7 +259,7 @@ function CanvasKonva(props) {
 
 
         <label className="canvas mt-3">Save File As:</label>
-        <input onChange={(event) => setWorkName(event.target.value)} value={workName} className="longText" id="filename" placeholder="text" type="text" />
+        <input onChange={(event) => setWorkName(event.target.value)} value={workName} id="filename" placeholder="text" type="text" />
         <button
           id="saveWork"
           className="btn btn-light btn-sm mb-1"
