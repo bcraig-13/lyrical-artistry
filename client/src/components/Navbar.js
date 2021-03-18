@@ -41,7 +41,7 @@ function Navbar() {
             </li>
             <li className="nav-item">
               <NavLink className="nav-link nav" activeClassName="active" to="/canvasPage">
-                Edit pictures
+                Edit Pictures
               </NavLink>
             </li>
             <li className="nav-item">
