@@ -1,0 +1,46 @@
+#theText, #theFont, #theSize, #theColor {
+
+}
+
+
+.canvasFontColor label{
+    color: white;
+
+}
+
+.canvasFontColor h4{
+    color: white;
+}
+
+.canvas{
+    color: white;
+}
+
+.canvasInput input{
+    width: 7%;
+    display:inline-flex;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+.canvasInput .fileUpload{
+    width: unset;
+}
+
+.canvasInput .longText{
+    width: 50%;
+}
+
+#filename{
+    width: 20%;
+}
+
+.canvasInput button{
+    display: inline-flex;
+    justify-content: center;
+}
+
+.toolbar{
+    background-color: gray;
+    display: inline-block;
+}

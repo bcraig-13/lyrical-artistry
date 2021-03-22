@@ -4,6 +4,9 @@ import useImage from 'use-image';
 import { v4 as uuidv4 } from 'uuid';
 import API from "../../util/API";
 import QuotesSelectionCanvas from "./QuotesSelectionCanvas";
+import "./style.css";
+// import Button from 'react-bootstrap/Button';
+
 
 function CanvasKonva(props) {
 
@@ -31,8 +34,6 @@ function CanvasKonva(props) {
     // ListDragging: false
   });
   const [workName, setWorkName] = useState("");
-
-
   //Retrieve list of quotes stored in DB
   const [quotes, setQuotes] = useState([]);
 
@@ -98,15 +99,12 @@ function CanvasKonva(props) {
   function handleTextSubmit(event) {
 
     event.preventDefault();
-    console.log("submit fired")
 
     if (inputToAdd.textToAdd) {
       setTextLists([...textsList, inputToAdd]);
       setInputToAdd({
+        ...inputToAdd,
         textToAdd: "",
-        fontToAdd: "arial",
-        sizeToAdd: 20,
-        colorToAdd: "black",
         currX: 50,
         currY: 50,
         listDragged: false
@@ -195,61 +193,83 @@ function CanvasKonva(props) {
       {quotes.length > 0 && 
         <QuotesSelectionCanvas quotes={quotes} changeInputToLyrics={changeInputToLyrics}/>
       }
-      <h4>Upload File:</h4>
-      <input type="file" onChange={(event) => openImage(event)} />
 
-      <h4>Add text to canvas and drag it</h4>
-      <input onChange={(event) => setInputToAdd({ ...inputToAdd, textToAdd: event.target.value })} value={inputToAdd.textToAdd} id="theText" placeholder="text" type="text" />
-      {/* <input onChange={(event) => setTextToAdd(event.target.value)} value={textToAdd} id="theText" placeholder="text" type="text" /> */}
-      <input onChange={(event) => setInputToAdd({ ...inputToAdd, fontToAdd: event.target.value })} value={inputToAdd.fontToAdd} id="theFont" placeholder="font" type="text" />
-      <input onChange={(event) => setInputToAdd({ ...inputToAdd, sizeToAdd: event.target.value })} value={inputToAdd.sizeToAdd} id="theSize" placeholder="size" type="number" />
-      <input onChange={(event) => setInputToAdd({ ...inputToAdd, colorToAdd: event.target.value })} value={inputToAdd.colorToAdd} id="theColor" placeholder="color" type="text" />
-      <button
-        id="addText"
-        onClick={(event) => handleTextSubmit(event)}
-      // submit button is gonna add to list of texts
-      >Fix Text to Image</button><br />
+      <div className="canvasInput">
 
-      <input onChange={(event) => setWorkName(event.target.value)} value={workName} id="filename" placeholder="text" type="text" />
-      <button
-        id="saveWork"
-        onClick={(event) => handleExport(event)}
-      // submit button is gonna add to list of texts
-      >Save Work</button><br />
+        <h4 className="canvas">Upload File:</h4>
+        <input type="file" className="canvas mb-5 fileUpload" onChange={(event) => openImage(event)} />
 
-      <Stage width={width} height={height} ref={stageRef}>
-        <Layer>
-          <Image image={image} width={width} height={height} />
-        </Layer>
+        <h4 className="canvas">Add text to canvas and drag it</h4>
 
-        {/* state for align: center vs align: right would be good too! */}
+          <div className="toolbar mb-3 p-1">
 
-        <Layer>
-          {/* the one we're working on */}
-          <Text
-            text={inputToAdd.textToAdd}
-            fontSize={inputToAdd.sizeToAdd}
-            fontFamily={inputToAdd.fontToAdd}
+            <label className="canvas">text:</label>
+            <input className="input-group longText" onChange={(event) => setInputToAdd({ ...inputToAdd, textToAdd: event.target.value })} value={inputToAdd.textToAdd} id="theText" placeholder="text" type="text" />
+            {/* <input onChange={(event) => setTextToAdd(event.target.value)} value={textToAdd} id="theText" placeholder="text" type="text" /> */}
+            <label className="canvas">font:</label>
+            <input className="input-group" onChange={(event) => setInputToAdd({ ...inputToAdd, fontToAdd: event.target.value })} value={inputToAdd.fontToAdd} id="theFont" placeholder="font" type="text" />
+            <label className="canvas">size:</label>
+            <input className="input-group" onChange={(event) => setInputToAdd({ ...inputToAdd, sizeToAdd: parseInt(event.target.value) })} value={inputToAdd.sizeToAdd} id="theSize" placeholder="size" type="number" />
+            <label className="canvas">color:</label>
+            <input className="input-group" onChange={(event) => setInputToAdd({ ...inputToAdd, colorToAdd: event.target.value })} value={inputToAdd.colorToAdd} id="theColor" placeholder="color" type="text" />
+            <button
+              id="addText"
+              className="btn btn-light btn-sm mb-1"
+              onClick={(event) => handleTextSubmit(event)}
+            // submit button is gonna add to list of texts
+            >Fix Text to Image</button><br />
 
-            x={inputToAdd.currX}
-            y={inputToAdd.currY}
+          </div>
 
-            draggable
-            fill={isDragging ? inputToAdd.colorToAdd !== 'green' ? 'green' : 'blue' : inputToAdd.colorToAdd}
-            onDragStart={() => {
-              setIsDragging(true)
-            }}
-            onDragEnd={e => {
-              setIsDragging(false);
-              setInputToAdd({ ...inputToAdd, currX: e.target.x(), currY: e.target.y() });
-            }}
-          />
 
-          {textsList.length ? mapTexts(textsList) : <Text></Text>}
 
-        </Layer>
+        <Stage width={width} height={height} ref={stageRef}>
+          <Layer>
+            <Image image={image} width={width} height={height} />
+          </Layer>
 
-      </Stage>
+          {/* state for align: center vs align: right would be good too! */}
+
+          <Layer>
+            {/* the one we're working on */}
+            <Text
+              text={inputToAdd.textToAdd}
+              fontSize={inputToAdd.sizeToAdd}
+              fontFamily={inputToAdd.fontToAdd}
+
+              x={inputToAdd.currX}
+              y={inputToAdd.currY}
+
+              draggable
+              fill={isDragging ? inputToAdd.colorToAdd !== 'green' ? 'green' : 'blue' : inputToAdd.colorToAdd}
+              onDragStart={() => {
+                setIsDragging(true)
+              }}
+              onDragEnd={e => {
+                setIsDragging(false);
+                setInputToAdd({ ...inputToAdd, currX: e.target.x(), currY: e.target.y() });
+              }}
+            />
+
+            {textsList.length ? mapTexts(textsList) : <Text></Text>}
+
+          </Layer>
+
+        </Stage>
+
+
+        <label className="canvas mt-3">Save File As:</label>
+        <input onChange={(event) => setWorkName(event.target.value)} value={workName} id="filename" placeholder="text" type="text" />
+        <button
+          id="saveWork"
+          className="btn btn-light btn-sm mb-1"
+          onClick={(event) => handleExport(event)}
+        // submit button is gonna add to list of texts
+        >Save Work</button><br />
+
+      </div>
+
+
 
     </div>
   )
