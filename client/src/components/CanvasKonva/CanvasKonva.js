@@ -188,13 +188,13 @@ function CanvasKonva(props) {
     API.getAllUserQuotes().then(quotes => {
       setQuotes(quotes.data);
     })
-  }, [])
+  }, [quotes])
 
   return (
     <div>
-      {quotes.length > 0 && quotes.map(quote => (
-        <QuotesSelectionCanvas {...quote} changeInputToLyrics={changeInputToLyrics}/>
-      ))}
+      {quotes.length > 0 && 
+        <QuotesSelectionCanvas quotes={quotes} changeInputToLyrics={changeInputToLyrics}/>
+      }
       <h4>Upload File:</h4>
       <input type="file" onChange={(event) => openImage(event)} />
 

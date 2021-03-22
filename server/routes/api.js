@@ -84,7 +84,7 @@ apiRouter.get("/api/user/images", isAuthenticated, (req, res) => {
 
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "uploads"));
+    cb(null, path.join(__dirname, "../uploads"));
   },
   filename: (req, file, cb) => {
     cb(null, file.fieldname + "-" + Date.now());
@@ -98,7 +98,7 @@ var upload = multer({
 
 
 apiRouter.post("/api/user/images", isAuthenticated, upload.single("image"), (req, res, next) => {
-  fs.readFile(path.join(__dirname, "uploads", req.file.filename))
+  fs.readFile(path.join(__dirname, "../uploads", req.file.filename))
     .then((data) => {
       var imageObject = {
         name: req.body.name,

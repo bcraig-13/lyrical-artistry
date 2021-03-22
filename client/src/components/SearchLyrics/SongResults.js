@@ -9,8 +9,8 @@ function SongResult(props) {
                     <div>Artist: {props.track.track.artist_name}</div>
                     <div>Album: {props.track.track.album_name}</div>
                 </div>
-                <div className="col-md-3">
-                    <button className = "btn btn-info"style={{marginTop: "50%"}} onClick={() => props.handleTrackViewClick(props.track.track.track_id)}>View</button>
+                <div className="col-md-3" style={{}}>
+                    <button className = "btn btn-info"style={{display: "flex", justifyContent: "center", textAlign: "center"}} onClick={() => props.handleTrackViewClick(props.track.track.track_id)}>View</button>
                 </div>
             </div>
         </div>
