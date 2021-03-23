@@ -1,27 +1,23 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Stage, Layer, Image, Text } from 'react-konva';
+import { Stage, Layer, Line, Rect, Circle, Image, Text } from 'react-konva';
 import useImage from 'use-image';
 import { v4 as uuidv4 } from 'uuid';
 import API from "../../util/API";
 import QuotesSelectionCanvas from "./QuotesSelectionCanvas";
+import FreeDraw from "./Freedraw";
 import "./style.css";
 // import Button from 'react-bootstrap/Button';
 
 
 function CanvasKonva(props) {
 
-
-  // const width = window.innerWidth;
-  // const height = window.innerHeight;
-  // ^^^ think this'll only work if there is a div controlling size that canvas is in...
-
-  // = "./exPhoto.jpg";
+  // for getting image onto canvas
   const [imgSrc, setImgSrc] = useState({});
   const [image] = useImage(imgSrc.file);
   // console.log([image.width, image.height])
 
   const [isDragging, setIsDragging] = useState(false);
-
+  // ^^^ made for array of textboxes; not sure if necessary (currently), or if it will even make it into final product
 
   const [textsList, setTextLists] = useState([]);
   const [inputToAdd, setInputToAdd] = useState({
@@ -33,9 +29,21 @@ function CanvasKonva(props) {
     currY: 50,
     // ListDragging: false
   });
+
+
+  const [freedrawTool, setFreedrawTool] = useState('pen');
+  const [lines, setLines] = useState([]);
+  const [isDrawing, setIsDrawing] = useState(false);
+  // const isDrawing = useRef(false);
+
+  // variables for the freedrawing tool!
+
+
   const [workName, setWorkName] = useState("");
   //Retrieve list of quotes stored in DB
   const [quotes, setQuotes] = useState([]);
+
+
 
   const width = 500;
   const height = 500;
@@ -49,6 +57,9 @@ function CanvasKonva(props) {
   // }
   // ==================================================================================
 
+
+  // ========================================================================
+  // code that handles exporting the finished work to the database
 
   function dataURItoBlob(dataURI) {
     // convert base64 to raw binary data held in a string
@@ -92,6 +103,20 @@ function CanvasKonva(props) {
 
   };
 
+  // =======================================================================
+  // takes the image selected from computer, and makes usable to canvas
+
+  function openImage(event) {
+    const url = URL.createObjectURL(event.target.files[0]);
+    setImgSrc({ file: url });
+    // this.setState({
+    //   file: URL.createObjectURL(event.target.files[0])
+    // })
+  }
+
+  // =======================================================================
+  // code that handles textbox additions and movement
+
 
   const stageRef = useRef(null);
   // <canvas id="canvas" ref={canvasRef} />
@@ -110,16 +135,6 @@ function CanvasKonva(props) {
         listDragged: false
       })
     }
-  }
-
-
-  function openImage(event) {
-    console.log(event);
-    const url = URL.createObjectURL(event.target.files[0]);
-    setImgSrc({ file: url });
-    // this.setState({
-    //   file: URL.createObjectURL(event.target.files[0])
-    // })
   }
 
   /* the ones saved in list */
@@ -172,11 +187,51 @@ function CanvasKonva(props) {
         />
       )
     })
-
     )
-
   }
+  // ======================================================================
+  // freedraw mouse events
 
+  // const handleClick = (e) => {
+  //   console.log("click is working")
+  // }
+
+  const handleMouseDown = (e) => {
+    console.log("function is working");
+    // // setIsDrawing(true);
+    // isDrawing.current = true;
+    // const pos = e.target.getStage().getPointerPosition();
+    // setLines([...lines, { freedrawTool, points: [pos.x, pos.y] }]);
+  };
+
+  const handleMouseMove = (e) => {
+    // no drawing - skipping
+    if (!isDrawing) {
+      return;
+    }
+    const stage = e.target.getStage();
+    const point = stage.getPointerPosition();
+    if (lines > 0) {
+      let lastLine = lines[lines.length - 1];
+
+      // add point
+      lastLine.points = lastLine.points.concat([point.x, point.y]);
+
+      // replace last
+      lines.splice(lines.length - 1, 1, lastLine);
+      setLines(lines.concat());
+    }
+  };
+
+  const handleMouseUp = () => {
+    // isDrawing.current = false;
+    setIsDrawing(false);
+
+  };
+
+
+  // ======================================================================
+  // user quotes
 
   function changeInputToLyrics(quote) {
     setInputToAdd({ ...inputToAdd, textToAdd: quote });
@@ -188,42 +243,66 @@ function CanvasKonva(props) {
     })
   }, [])
 
+  // =======================================================================
+
   return (
     <div>
       {quotes.length > 0 && quotes.map(quote => (
         <QuotesSelectionCanvas {...quote} changeInputToLyrics={changeInputToLyrics} />
       ))}
 
-      <div className="canvasInput">
+      <div className="canvasInput"
+        // onMouseDown={handleMouseDown}v\
+      >
 
         <h4 className="canvas">Upload File:</h4>
         <input type="file" className="canvas mb-5 fileUpload" onChange={(event) => openImage(event)} />
 
         <h4 className="canvas">Add text to canvas and drag it</h4>
 
-          <div className="toolbar mb-3 p-1">
+        <div className="toolbar mb-3 p-1">
 
-            <label className="canvas">text:</label>
-            <input className="input-group longText" onChange={(event) => setInputToAdd({ ...inputToAdd, textToAdd: event.target.value })} value={inputToAdd.textToAdd} id="theText" placeholder="text" type="text" />
-            {/* <input onChange={(event) => setTextToAdd(event.target.value)} value={textToAdd} id="theText" placeholder="text" type="text" /> */}
-            <label className="canvas">font:</label>
-            <input className="input-group" onChange={(event) => setInputToAdd({ ...inputToAdd, fontToAdd: event.target.value })} value={inputToAdd.fontToAdd} id="theFont" placeholder="font" type="text" />
-            <label className="canvas">size:</label>
-            <input className="input-group" onChange={(event) => setInputToAdd({ ...inputToAdd, sizeToAdd: parseInt(event.target.value) })} value={inputToAdd.sizeToAdd} id="theSize" placeholder="size" type="number" />
-            <label className="canvas">color:</label>
-            <input className="input-group" onChange={(event) => setInputToAdd({ ...inputToAdd, colorToAdd: event.target.value })} value={inputToAdd.colorToAdd} id="theColor" placeholder="color" type="text" />
-            <button
-              id="addText"
-              className="btn btn-light btn-sm mb-1"
-              onClick={(event) => handleTextSubmit(event)}
-            // submit button is gonna add to list of texts
-            >Fix Text to Image</button><br />
+          <label className="canvas">text:</label>
+          <input className="input-group longText" onChange={(event) => setInputToAdd({ ...inputToAdd, textToAdd: event.target.value })} value={inputToAdd.textToAdd} id="theText" placeholder="text" type="text" />
+          {/* <input onChange={(event) => setTextToAdd(event.target.value)} value={textToAdd} id="theText" placeholder="text" type="text" /> */}
+          <label className="canvas">font:</label>
+          <input className="input-group" onChange={(event) => setInputToAdd({ ...inputToAdd, fontToAdd: event.target.value })} value={inputToAdd.fontToAdd} id="theFont" placeholder="font" type="text" />
+          <label className="canvas">size:</label>
+          <input className="input-group" onChange={(event) => setInputToAdd({ ...inputToAdd, sizeToAdd: parseInt(event.target.value) })} value={inputToAdd.sizeToAdd} id="theSize" placeholder="size" type="number" />
+          <label className="canvas">color:</label>
+          <input className="input-group" onChange={(event) => setInputToAdd({ ...inputToAdd, colorToAdd: event.target.value })} value={inputToAdd.colorToAdd} id="theColor" placeholder="color" type="text" />
+          <button
+            id="addText"
+            className="btn btn-light btn-sm mb-1"
+            onClick={(event) => handleTextSubmit(event)}
+          // submit button is gonna add to list of texts
+          >Fix Text to Image</button><br />
 
-          </div>
+        </div>
 
+        <div className="freedraw">
+          <input type="checkbox"></input>
+          <label>freedraw</label>
 
+          <select
+            value={freedrawTool}
+            onChange={(e) => {
+              setFreedrawTool(e.target.value);
+            }}
+          >
+            <option value="pen">Pen</option>
+            <option value="eraser">Eraser</option>
+          </select>
+        </div>
 
-        <Stage width={width} height={height} ref={stageRef}>
+        <Stage
+          width={width}
+          height={height}
+          ref={stageRef}
+          onMouseDown={handleMouseDown}
+          onMousemove={handleMouseMove}
+          onMouseup={handleMouseUp}
+        >
           <Layer>
             <Image image={image} width={width} height={height} />
           </Layer>
@@ -251,8 +330,34 @@ function CanvasKonva(props) {
               }}
             />
 
+
+            {/* <Rect width={50} height={50} fill="red" />
+            <Circle x={200} y={200} stroke="black" radius={50} /> */}
+
             {textsList.length ? mapTexts(textsList) : <Text></Text>}
 
+          </Layer>
+
+          {/* freedraw */}
+          <Layer>
+            {lines.map((line, i) => (
+              <Line
+                key={i}
+                points={line.points}
+                stroke="#df4b26"
+                strokeWidth={5}
+                tension={0.5}
+                lineCap="round"
+                globalCompositeOperation={
+                  line.freedrawTool === 'eraser' ? 'destination-out' : 'source-over'
+                }
+              />
+            ))}
+          </Layer>
+
+
+          <Layer>
+            {/* shapes */}
           </Layer>
 
         </Stage>
