@@ -196,12 +196,21 @@ function CanvasKonva(props) {
   //   console.log("click is working")
   // }
 
+  // useEffect(() => {
+  //   console.log(lines)
+  // }, [lines])
+
   const handleMouseDown = (e) => {
-    console.log("function is working");
-    // // setIsDrawing(true);
+    // console.log("function is working");
     // isDrawing.current = true;
-    // const pos = e.target.getStage().getPointerPosition();
-    // setLines([...lines, { freedrawTool, points: [pos.x, pos.y] }]);
+    const pos = e.target.getStage().getPointerPosition();
+    const newLineArr = lines.concat([{ tool: freedrawTool, points: [pos.x, pos.y] }]);
+    
+    // console.log(`newline: ${JSON.stringify(newLineArr)}`)
+    setLines(newLineArr);
+    setIsDrawing(true);
+    // setLines([lines] + [ { tool: freedrawTool, points: [pos.x, pos.y] }]);
+    // console.log(lines)
   };
 
   const handleMouseMove = (e) => {
@@ -211,22 +220,26 @@ function CanvasKonva(props) {
     }
     const stage = e.target.getStage();
     const point = stage.getPointerPosition();
-    if (lines > 0) {
-      let lastLine = lines[lines.length - 1];
 
-      // add point
-      lastLine.points = lastLine.points.concat([point.x, point.y]);
+    console.log(lines.length-1)
+    let lastLine = lines[lines.length - 1];
 
-      // replace last
-      lines.splice(lines.length - 1, 1, lastLine);
-      setLines(lines.concat());
-    }
+    // add point
+    lastLine.points = lastLine.points.concat([point.x, point.y]);
+
+    let temp=lines.concat();
+    temp.splice(lines.length - 1, 1, lastLine)
+    // replace last
+    // console.log(`lines: ${JSON.stringify(lines)}`)
+    // const temp = ;
+    console.log(`temp: ${JSON.stringify(temp)}`)
+
+    setLines(temp);
   };
 
   const handleMouseUp = () => {
     // isDrawing.current = false;
     setIsDrawing(false);
-
   };
 
 
@@ -252,7 +265,7 @@ function CanvasKonva(props) {
       ))}
 
       <div className="canvasInput"
-        // onMouseDown={handleMouseDown}v\
+      // onMouseDown={handleMouseDown}v\
       >
 
         <h4 className="canvas">Upload File:</h4>
@@ -340,11 +353,11 @@ function CanvasKonva(props) {
 
           {/* freedraw */}
           <Layer>
-            {lines.map((line, i) => (
+            {lines.map(line => (
               <Line
-                key={i}
+                key={uuidv4()}
                 points={line.points}
-                stroke="#df4b26"
+                stroke="red"
                 strokeWidth={5}
                 tension={0.5}
                 lineCap="round"
@@ -353,12 +366,17 @@ function CanvasKonva(props) {
                 }
               />
             ))}
+            {/* <Line
+              points={[0, 0, 500, 500]}
+              stroke="red"
+              strokeWidth={5}
+            /> */}
           </Layer>
 
 
-          <Layer>
-            {/* shapes */}
-          </Layer>
+          {/* <Layer>
+            shapes
+          </Layer> */}
 
         </Stage>
 
