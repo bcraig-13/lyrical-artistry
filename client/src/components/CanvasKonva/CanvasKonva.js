@@ -38,7 +38,7 @@ function CanvasKonva(props) {
   const [workName, setWorkName] = useState("");
   //Retrieve list of quotes stored in DB
   const [quotes, setQuotes] = useState([]);
-
+  const [quoteModal, showQuoteModal] = useState(false);
   const width = 500;
   const height = 500;
 
@@ -193,6 +193,10 @@ function CanvasKonva(props) {
     })
   }, [quotes])
 
+  const handleModalClose = () => {
+    showQuoteModal(false);
+  }
+
   return (
     <div>
       <div style={{ overflow: "scroll", overflowX: "hidden", height: "300px", width: "80%", backgroundColor: "white" }}>
@@ -200,8 +204,9 @@ function CanvasKonva(props) {
         {quotes.length === 0 &&
           <div>
             <h3>Your quotes list is empty. Click to find more quotes!</h3>
-
+            <button onClick={() => showQuoteModal(true)}>Open Lyrics Search</button>
           </div>}
+        <SongModal handleModalClose={handleModalClose} show={quoteModal} />
         {quotes.length > 0 &&
           <QuotesSelectionCanvas quotes={quotes} changeInputToLyrics={changeInputToLyrics} />
         }
