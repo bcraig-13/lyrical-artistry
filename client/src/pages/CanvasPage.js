@@ -1,12 +1,16 @@
 import CanvasKonva from "../components/CanvasKonva/CanvasKonva";
-
+import SideBarMediaAPI from "../components/SearchLyrics/SideBarMediaAPI";
 function CanvasPage() {
   return (
-    <div>
-      <h1>Edit Pictures</h1>
-      {/* The below code is used for uploading and submitting an image. Need to integrate with canvas */}
-      <hr />
-      <CanvasKonva/>
+    <div className="row">
+      <div className="col-md-2">
+        <SideBarMediaAPI />
+      </div>
+      <div className="col-md-10">
+        <h1>Edit Picture</h1>
+        <hr />
+        <CanvasKonva />
+      </div>
     </div>
   );
 }

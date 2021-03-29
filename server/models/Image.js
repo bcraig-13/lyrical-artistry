@@ -7,6 +7,10 @@ var imageSchema = new mongoose.Schema({
 	{
 		data: Buffer,
 		contentType: String
+	},
+	public: {
+		type: Boolean,
+		default: false
 	}
 });
 

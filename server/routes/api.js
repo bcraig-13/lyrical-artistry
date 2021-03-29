@@ -47,6 +47,12 @@ apiRouter.post("/api/user/quotes", isAuthenticated, (req, res) => {
     })
 });
 
+apiRouter.delete("/api/user/quotes/:quoteID", isAuthenticated, (req, res) => {
+  db.Quote.findById({ _id: req.params.quoteID }).then(dbModel => dbModel.remove()).catch(err => {
+    res.json(err);
+  })
+})
+
 apiRouter.get("/api/user/quotes", isAuthenticated, (req, res) => {
   db.User.findById(req.user.id).populate("quotes").then(dbUser => {
     res.json(dbUser.quotes);
@@ -84,7 +90,7 @@ apiRouter.get("/api/user/images", isAuthenticated, (req, res) => {
 
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "uploads"));
+    cb(null, path.join(__dirname, "../uploads"));
   },
   filename: (req, file, cb) => {
     cb(null, file.fieldname + "-" + Date.now());
@@ -98,7 +104,7 @@ var upload = multer({
 
 
 apiRouter.post("/api/user/images", isAuthenticated, upload.single("image"), (req, res, next) => {
-  fs.readFile(path.join(__dirname, "uploads", req.file.filename))
+  fs.readFile(path.join(__dirname, "../uploads", req.file.filename))
     .then((data) => {
       var imageObject = {
         name: req.body.name,
@@ -120,4 +126,12 @@ apiRouter.post("/api/user/images", isAuthenticated, upload.single("image"), (req
       res.sendStatus(500);
     });
 });
+
+apiRouter.delete("/api/user/images/:imageID", isAuthenticated, (req, res) => {
+  db.Image.findById({ _id: req.params.imageID }).then(dbModel => dbModel.remove()).catch(err => {
+    res.json(err);
+  })
+});
+
+
 module.exports = apiRouter;
