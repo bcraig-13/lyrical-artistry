@@ -4,7 +4,9 @@ import useImage from 'use-image';
 import { v4 as uuidv4 } from 'uuid';
 import API from "../../util/API";
 import QuotesSelectionCanvas from "./QuotesSelectionCanvas";
+import SongModal from "../SearchLyrics/SongModal";
 import "./style.css";
+
 // import Button from 'react-bootstrap/Button';
 
 
@@ -96,7 +98,10 @@ function CanvasKonva(props) {
 
     const data = new FormData();
     data.append("image", blob, workName);
-    API.postImage(data);
+    data.name = workName;
+    API.postImage(data).then((results) => {
+      console.log(results.config);
+    });
 
     // API.postWork(workName, uri);
     // stageRef.current.toDataURL().then()
@@ -264,15 +269,23 @@ function CanvasKonva(props) {
     API.getAllUserQuotes().then(quotes => {
       setQuotes(quotes.data);
     })
-  }, [])
+  }, [quotes])
 
   // =======================================================================
 
   return (
     <div>
-      {quotes.length > 0 && quotes.map(quote => (
-        <QuotesSelectionCanvas {...quote} changeInputToLyrics={changeInputToLyrics} />
-      ))}
+      <div style={{ overflow: "scroll", overflowX: "hidden", height: "300px", width: "80%", backgroundColor: "white" }}>
+        <h2>Select your Quote</h2>
+        {quotes.length === 0 &&
+          <div>
+            <h3>Your quotes list is empty. Click to find more quotes!</h3>
+
+          </div>}
+        {quotes.length > 0 &&
+          <QuotesSelectionCanvas quotes={quotes} changeInputToLyrics={changeInputToLyrics} />
+        }
+      </div>
 
       <div className="canvasInput"
       // onMouseDown={handleMouseDown}v\

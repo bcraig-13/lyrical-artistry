@@ -6,7 +6,6 @@ import CanvasPage from "./pages/CanvasPage";
 // import PublicPage from "./pages/PublicPage";
 import SignUpPage from "./pages/SignUpPage";
 import UserProfilePage from "./pages/UserProfilePage";
-import SearchLyricsPage from "./pages/SearchLyricsPage";
 import { ProvideAuth } from "./util/authContext";
 import Gallery from "./pages/Gallery";
 
@@ -15,7 +14,7 @@ function App() {
     <ProvideAuth>
       <Router>
         <div>
-          <Route path={["/searchLyrics", "/canvasPage", "/profile", "/gallery"]}>
+          <Route path={["/canvasPage", "/profile", "/gallery"]}>
             <Navbar />
           </Route>
           <Switch>
@@ -24,9 +23,6 @@ function App() {
             </Route>
             <PrivateRoute path="/gallery">
               <Gallery />
-            </PrivateRoute>
-            <PrivateRoute path="/searchLyrics">
-              <SearchLyricsPage />
             </PrivateRoute>
             <Route path="/login">
               <LoginPage />
