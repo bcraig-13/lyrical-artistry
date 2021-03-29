@@ -4,7 +4,6 @@ import useImage from 'use-image';
 import { v4 as uuidv4 } from 'uuid';
 import API from "../../util/API";
 import QuotesSelectionCanvas from "./QuotesSelectionCanvas";
-import FreeDraw from "./Freedraw";
 import "./style.css";
 // import Button from 'react-bootstrap/Button';
 
@@ -34,6 +33,7 @@ function CanvasKonva(props) {
   const [freedrawTool, setFreedrawTool] = useState('pen');
   const [lines, setLines] = useState([]);
   const [isDrawing, setIsDrawing] = useState(false);
+  const [drawCheck, setDrawCheck]=useState(false);
   // const isDrawing = useRef(false);
 
   // variables for the freedrawing tool!
@@ -201,8 +201,10 @@ function CanvasKonva(props) {
   // }, [lines])
 
   const handleMouseDown = (e) => {
-    // console.log("function is working");
-    // isDrawing.current = true;
+    
+    if (!drawCheck) {
+      return;
+    }
     const pos = e.target.getStage().getPointerPosition();
     const newLineArr = lines.concat([{ tool: freedrawTool, points: [pos.x, pos.y] }]);
     
@@ -215,6 +217,9 @@ function CanvasKonva(props) {
 
   const handleMouseMove = (e) => {
     // no drawing - skipping
+    if (!drawCheck) {
+      return;
+    }
     if (!isDrawing) {
       return;
     }
@@ -242,7 +247,12 @@ function CanvasKonva(props) {
     setIsDrawing(false);
   };
 
-
+  const handleChecked = () => {
+    // isDrawing.current = false;
+    // setIsDrawing(false);
+    if (drawCheck) {setDrawCheck(false)};
+    if (!drawCheck) {setDrawCheck(true)};
+  };
   // ======================================================================
   // user quotes
 
@@ -294,7 +304,7 @@ function CanvasKonva(props) {
         </div>
 
         <div className="freedraw">
-          <input type="checkbox"></input>
+          <input type="checkbox" onChange={handleChecked}></input>
           <label>freedraw</label>
 
           <select
