@@ -4,7 +4,9 @@ import useImage from 'use-image';
 import { v4 as uuidv4 } from 'uuid';
 import API from "../../util/API";
 import QuotesSelectionCanvas from "./QuotesSelectionCanvas";
+import SongModal from "../SearchLyrics/SongModal";
 import "./style.css";
+
 // import Button from 'react-bootstrap/Button';
 
 
@@ -85,7 +87,10 @@ function CanvasKonva(props) {
 
     const data = new FormData();
     data.append("image", blob, workName);
-    API.postImage(data);
+    data.name = workName;
+    API.postImage(data).then((results) => {
+      console.log(results.config);
+    });
 
     // API.postWork(workName, uri);
     // stageRef.current.toDataURL().then()
@@ -190,9 +195,17 @@ function CanvasKonva(props) {
 
   return (
     <div>
-      {quotes.length > 0 && 
-        <QuotesSelectionCanvas quotes={quotes} changeInputToLyrics={changeInputToLyrics}/>
-      }
+      <div style={{ overflow: "scroll", overflowX: "hidden", height: "300px", width: "80%", backgroundColor: "white" }}>
+        <h2>Select your Quote</h2>
+        {quotes.length === 0 &&
+          <div>
+            <h3>Your quotes list is empty. Click to find more quotes!</h3>
+
+          </div>}
+        {quotes.length > 0 &&
+          <QuotesSelectionCanvas quotes={quotes} changeInputToLyrics={changeInputToLyrics} />
+        }
+      </div>
 
       <div className="canvasInput">
 
@@ -201,25 +214,25 @@ function CanvasKonva(props) {
 
         <h4 className="canvas">Add text to canvas and drag it</h4>
 
-          <div className="toolbar mb-3 p-1">
+        <div className="toolbar mb-3 p-1">
 
-            <label className="canvas">text:</label>
-            <input className="input-group longText" onChange={(event) => setInputToAdd({ ...inputToAdd, textToAdd: event.target.value })} value={inputToAdd.textToAdd} id="theText" placeholder="text" type="text" />
-            {/* <input onChange={(event) => setTextToAdd(event.target.value)} value={textToAdd} id="theText" placeholder="text" type="text" /> */}
-            <label className="canvas">font:</label>
-            <input className="input-group" onChange={(event) => setInputToAdd({ ...inputToAdd, fontToAdd: event.target.value })} value={inputToAdd.fontToAdd} id="theFont" placeholder="font" type="text" />
-            <label className="canvas">size:</label>
-            <input className="input-group" onChange={(event) => setInputToAdd({ ...inputToAdd, sizeToAdd: parseInt(event.target.value) })} value={inputToAdd.sizeToAdd} id="theSize" placeholder="size" type="number" />
-            <label className="canvas">color:</label>
-            <input className="input-group" onChange={(event) => setInputToAdd({ ...inputToAdd, colorToAdd: event.target.value })} value={inputToAdd.colorToAdd} id="theColor" placeholder="color" type="text" />
-            <button
-              id="addText"
-              className="btn btn-light btn-sm mb-1"
-              onClick={(event) => handleTextSubmit(event)}
-            // submit button is gonna add to list of texts
-            >Fix Text to Image</button><br />
+          <label className="canvas">text:</label>
+          <input className="input-group longText" onChange={(event) => setInputToAdd({ ...inputToAdd, textToAdd: event.target.value })} value={inputToAdd.textToAdd} id="theText" placeholder="text" type="text" />
+          {/* <input onChange={(event) => setTextToAdd(event.target.value)} value={textToAdd} id="theText" placeholder="text" type="text" /> */}
+          <label className="canvas">font:</label>
+          <input className="input-group" onChange={(event) => setInputToAdd({ ...inputToAdd, fontToAdd: event.target.value })} value={inputToAdd.fontToAdd} id="theFont" placeholder="font" type="text" />
+          <label className="canvas">size:</label>
+          <input className="input-group" onChange={(event) => setInputToAdd({ ...inputToAdd, sizeToAdd: parseInt(event.target.value) })} value={inputToAdd.sizeToAdd} id="theSize" placeholder="size" type="number" />
+          <label className="canvas">color:</label>
+          <input className="input-group" onChange={(event) => setInputToAdd({ ...inputToAdd, colorToAdd: event.target.value })} value={inputToAdd.colorToAdd} id="theColor" placeholder="color" type="text" />
+          <button
+            id="addText"
+            className="btn btn-light btn-sm mb-1"
+            onClick={(event) => handleTextSubmit(event)}
+          // submit button is gonna add to list of texts
+          >Fix Text to Image</button><br />
 
-          </div>
+        </div>
 
 
 

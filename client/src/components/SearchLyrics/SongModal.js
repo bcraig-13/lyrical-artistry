@@ -2,6 +2,7 @@ import LyricSearchForm from "./LyricSearchForm";
 import SongResult from "./SongResults";
 import LyricsDisplay from "./LyricsDisplay"
 import QuoteSelectForm from "./QuoteSelectForm";
+import NotificationSaveModal from "./NotificationSaveModal";
 import React, { useState, useEffect, useRef } from "react";
 import API from "../../util/API";
 import { Modal } from "react-bootstrap";
@@ -12,6 +13,8 @@ function SongModal(props) {
     const [results, setResults] = useState([]);
     const [lyrics, setLyrics] = useState("");
     const [quote, setQuote] = useState("");
+    const [showNotification, showSaveSuccessful] = useState(false);
+    const [saveSuccess, setSaveSuccess] = useState(false);
     const trackRef = useRef();
 
 
@@ -39,7 +42,22 @@ function SongModal(props) {
     };
 
     const handleQuoteSaveClick = (quoteObject) => {
-        API.postQuotes(quoteObject);
+        if (quoteObject) {
+            API.postQuotes(quoteObject).then(() => {
+                displaySuccessfulSave();
+            });
+        }
+        else {
+            setSaveSuccess(false);
+            showSaveSuccessful(true);
+        }
+    }
+
+    //=================================================================//
+    const displaySuccessfulSave = () => {
+        setQuote("");
+        setSaveSuccess(true);
+        showSaveSuccessful(true);
     }
 
     const handleQuoteHighlight = () => {
@@ -75,7 +93,11 @@ function SongModal(props) {
                     <div className="col-md-4">
                         {quote !== "" && <QuoteSelectForm quote={quote} handleQuoteSaveClick={handleQuoteSaveClick} />}
                     </div>
+                    <div style={{ position: "absolute", right: "5px", bottom: "5px" }}>
+                        <NotificationSaveModal showSaveSuccessful={showSaveSuccessful} show={showNotification} saveSuccessful={saveSuccess} />
+                    </div>
                 </div>
+
             </Modal.Body>
         </Modal>)
 }

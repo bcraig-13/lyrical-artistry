@@ -23,6 +23,9 @@ const API = {
   postQuotes: (quoteObject) => {
     return axios.post(`/api/user/quotes`, quoteObject)
   },
+  deleteQuote: (quoteID) => {
+    return axios.delete(`/api/user/quotes/${quoteID}`)
+  },
   getAllUserQuotes: () => {
     return axios.get(`/api/user/quotes`);
   },
@@ -32,6 +35,9 @@ const API = {
   },
   getAllUserImages: () => {
     return axios.get("/api/user/images");
+  },
+  deletePicture: (imageID) => {
+    return axios.delete(`/api/user/images/${imageID}`);
   }
 };
 

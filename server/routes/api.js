@@ -47,6 +47,12 @@ apiRouter.post("/api/user/quotes", isAuthenticated, (req, res) => {
     })
 });
 
+apiRouter.delete("/api/user/quotes/:quoteID", isAuthenticated, (req, res) => {
+  db.Quote.findById({ _id: req.params.quoteID }).then(dbModel => dbModel.remove()).catch(err => {
+    res.json(err);
+  })
+})
+
 apiRouter.get("/api/user/quotes", isAuthenticated, (req, res) => {
   db.User.findById(req.user.id).populate("quotes").then(dbUser => {
     res.json(dbUser.quotes);
@@ -120,4 +126,12 @@ apiRouter.post("/api/user/images", isAuthenticated, upload.single("image"), (req
       res.sendStatus(500);
     });
 });
+
+apiRouter.delete("/api/user/images/:imageID", isAuthenticated, (req, res) => {
+  db.Image.findById({ _id: req.params.imageID }).then(dbModel => dbModel.remove()).catch(err => {
+    res.json(err);
+  })
+});
+
+
 module.exports = apiRouter;
