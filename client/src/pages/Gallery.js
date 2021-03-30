@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import ImageCard from "./ImageCard";
+import { useEffect, useState } from "react";
+import ImageCard from "../components/Gallery/ImageCard";
 import API from "../util/API";
 function Gallery() {
   const [userImages, setUserImages] = useState([]);
@@ -14,7 +14,7 @@ function Gallery() {
         }
       }));
     })
-  }, [])
+  }, [userImages])
 
   return (
     <div className="container-fluid portfolio-bg" style={{ marginTop: "50px" }}>

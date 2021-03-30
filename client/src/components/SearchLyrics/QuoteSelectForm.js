@@ -7,11 +7,18 @@ function QuoteSelectForm(props) {
 
     const handleQuoteInputSubmit = (event) => {
         event.preventDefault();
-        let quoteObject = {
-            title: titleRef.current.value,
-            artist: artistRef.current.value,
-            quote: quoteRef.current.value
-        };
+        let quoteObject;
+        if (titleRef.current.value === "" || artistRef.current.value === "" || quoteRef.current.value === "") {
+            quoteObject = false;
+        }
+        else {
+            quoteObject = {
+                title: titleRef.current.value,
+                artist: artistRef.current.value,
+                quote: quoteRef.current.value
+            };
+
+        }
         props.handleQuoteSaveClick(quoteObject);
     }
 
@@ -31,4 +38,4 @@ function QuoteSelectForm(props) {
     )
 }
 
-export default QuoteSelectForm;    
+export default QuoteSelectForm;
