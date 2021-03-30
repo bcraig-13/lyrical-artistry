@@ -4,6 +4,7 @@ import useImage from 'use-image';
 import { v4 as uuidv4 } from 'uuid';
 import API from "../../util/API";
 import QuotesSelectionCanvas from "./QuotesSelectionCanvas";
+import NotificationSaveModal from "../SearchLyrics/NotificationSaveModal";
 import SongModal from "../SearchLyrics/SongModal";
 import "./style.css";
 
@@ -24,7 +25,6 @@ function CanvasKonva(props) {
 
   const [isDragging, setIsDragging] = useState(false);
 
-
   const [textsList, setTextLists] = useState([]);
   const [inputToAdd, setInputToAdd] = useState({
     textToAdd: "",
@@ -35,12 +35,16 @@ function CanvasKonva(props) {
     currY: 50,
     // ListDragging: false
   });
+  const width = 500;
+  const height = 500;
   const [workName, setWorkName] = useState("");
   //Retrieve list of quotes stored in DB
   const [quotes, setQuotes] = useState([]);
+  //Show lyrics Modal API
   const [quoteModal, showQuoteModal] = useState(false);
-  const width = 500;
-  const height = 500;
+  //Save Notification
+  const [saveNotification, showSaveNotification] = useState(false);
+  const [successfulSave, setSuccessfulSave] = useState(false);
 
 
   // ==================================================================================
@@ -89,7 +93,8 @@ function CanvasKonva(props) {
     data.append("image", blob, workName);
     data.name = workName;
     API.postImage(data).then((results) => {
-      console.log(results.config);
+      showSaveNotification(true);
+      setSuccessfulSave(true);
     });
 
     // API.postWork(workName, uri);
@@ -286,7 +291,9 @@ function CanvasKonva(props) {
         >Save Work</button><br />
 
       </div>
-
+      <div style={{ position: "absolute", right: "5px", bottom: "5px" }}>
+        <NotificationSaveModal category="photo" showSaveSuccessful={showSaveNotification} show={saveNotification} saveSuccessful={successfulSave} />
+      </div>
 
 
     </div>
