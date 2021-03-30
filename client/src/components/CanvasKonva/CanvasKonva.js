@@ -34,9 +34,15 @@ function CanvasKonva(props) {
 
   const [freedrawTool, setFreedrawTool] = useState('pen');
   const [lines, setLines] = useState([]);
+
+  const [drawCheck, setDrawCheck] = useState(false);
+  // for if they want to enter freedraw mode (allows dragging text without drawing)
+
   const [isDrawing, setIsDrawing] = useState(false);
-  const [drawCheck, setDrawCheck]=useState(false);
-  // const isDrawing = useRef(false);
+  // makes lines generated only when mousedown in freedraw mode
+  const [strokeColor, setStrokeColor] = useState('black');
+  const [strokeWidth, setStrokeWidth] = useState(5);
+
 
   // variables for the freedrawing tool!
 
@@ -206,13 +212,13 @@ function CanvasKonva(props) {
   // }, [lines])
 
   const handleMouseDown = (e) => {
-    
+
     if (!drawCheck) {
       return;
     }
     const pos = e.target.getStage().getPointerPosition();
-    const newLineArr = lines.concat([{ tool: freedrawTool, points: [pos.x, pos.y] }]);
-    
+    const newLineArr = lines.concat([{ tool: freedrawTool, strokeColor, strokeWidth, points: [pos.x, pos.y] }]);
+
     // console.log(`newline: ${JSON.stringify(newLineArr)}`)
     setLines(newLineArr);
     setIsDrawing(true);
@@ -231,13 +237,13 @@ function CanvasKonva(props) {
     const stage = e.target.getStage();
     const point = stage.getPointerPosition();
 
-    console.log(lines.length-1)
+    console.log(lines.length - 1)
     let lastLine = lines[lines.length - 1];
 
     // add point
     lastLine.points = lastLine.points.concat([point.x, point.y]);
 
-    let temp=lines.concat();
+    let temp = lines.concat();
     temp.splice(lines.length - 1, 1, lastLine)
     // replace last
     // console.log(`lines: ${JSON.stringify(lines)}`)
@@ -255,8 +261,8 @@ function CanvasKonva(props) {
   const handleChecked = () => {
     // isDrawing.current = false;
     // setIsDrawing(false);
-    if (drawCheck) {setDrawCheck(false)};
-    if (!drawCheck) {setDrawCheck(true)};
+    if (drawCheck) { setDrawCheck(false) };
+    if (!drawCheck) { setDrawCheck(true) };
   };
   // ======================================================================
   // user quotes
@@ -316,7 +322,7 @@ function CanvasKonva(props) {
 
         </div>
 
-        <div className="freedraw">
+        <div className="freedraw input-group">
           <input type="checkbox" onChange={handleChecked}></input>
           <label>freedraw</label>
 
@@ -330,6 +336,15 @@ function CanvasKonva(props) {
             <option value="eraser">Eraser</option>
           </select>
         </div>
+
+        <label className="canvas">stroke width:</label>
+        <input className="input-group"
+          onChange={(event) => setStrokeWidth( parseInt(event.target.value) )} value={strokeWidth} placeholder="5"
+          type="number" />
+        <label className="canvas">color:</label>
+        <input className="input-group"
+          onChange={(event) => setStrokeColor(event.target.value)} value={strokeColor}
+          placeholder="black" type="text" />
 
         <Stage
           width={width}
@@ -380,8 +395,8 @@ function CanvasKonva(props) {
               <Line
                 key={uuidv4()}
                 points={line.points}
-                stroke="red"
-                strokeWidth={5}
+                stroke={line.strokeColor}
+                strokeWidth={line.strokeWidth}
                 tension={0.5}
                 lineCap="round"
                 globalCompositeOperation={
