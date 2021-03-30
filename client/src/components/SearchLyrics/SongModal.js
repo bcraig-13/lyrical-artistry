@@ -94,7 +94,7 @@ function SongModal(props) {
                         {quote !== "" && <QuoteSelectForm quote={quote} handleQuoteSaveClick={handleQuoteSaveClick} />}
                     </div>
                     <div style={{ position: "absolute", right: "5px", bottom: "5px" }}>
-                        <NotificationSaveModal showSaveSuccessful={showSaveSuccessful} show={showNotification} saveSuccessful={saveSuccess} />
+                        <NotificationSaveModal category="lyric" showSaveSuccessful={showSaveSuccessful} show={showNotification} saveSuccessful={saveSuccess} />
                     </div>
                 </div>
 

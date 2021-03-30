@@ -4,6 +4,7 @@ import useImage from 'use-image';
 import { v4 as uuidv4 } from 'uuid';
 import API from "../../util/API";
 import QuotesSelectionCanvas from "./QuotesSelectionCanvas";
+import NotificationSaveModal from "../SearchLyrics/NotificationSaveModal";
 import SongModal from "../SearchLyrics/SongModal";
 import "./style.css";
 
@@ -24,7 +25,6 @@ function CanvasKonva(props) {
 
   const [isDragging, setIsDragging] = useState(false);
 
-
   const [textsList, setTextLists] = useState([]);
   const [inputToAdd, setInputToAdd] = useState({
     textToAdd: "",
@@ -35,12 +35,16 @@ function CanvasKonva(props) {
     currY: 50,
     // ListDragging: false
   });
+  const width = 500;
+  const height = 500;
   const [workName, setWorkName] = useState("");
   //Retrieve list of quotes stored in DB
   const [quotes, setQuotes] = useState([]);
-
-  const width = 500;
-  const height = 500;
+  //Show lyrics Modal API
+  const [quoteModal, showQuoteModal] = useState(false);
+  //Save Notification
+  const [saveNotification, showSaveNotification] = useState(false);
+  const [successfulSave, setSuccessfulSave] = useState(false);
 
 
   // ==================================================================================
@@ -89,7 +93,8 @@ function CanvasKonva(props) {
     data.append("image", blob, workName);
     data.name = workName;
     API.postImage(data).then((results) => {
-      console.log(results.config);
+      showSaveNotification(true);
+      setSuccessfulSave(true);
     });
 
     // API.postWork(workName, uri);
@@ -193,15 +198,20 @@ function CanvasKonva(props) {
     })
   }, [quotes])
 
+  const handleModalClose = () => {
+    showQuoteModal(false);
+  }
+
   return (
     <div>
       <div style={{ overflow: "scroll", overflowX: "hidden", height: "300px", width: "80%", backgroundColor: "white" }}>
         <h2 style={{fontWeight: '1000', padding: '10px'}}>Select your Quote</h2>
         {quotes.length === 0 &&
           <div>
-            <h3 style={{padding: '10px'}}>Your quotes list is empty. Click to find more quotes!</h3>
-
+            <h3>Your quotes list is empty. Click to find more quotes!</h3>
+            <button onClick={() => showQuoteModal(true)}>Open Lyrics Search</button>
           </div>}
+        <SongModal handleModalClose={handleModalClose} show={quoteModal} />
         {quotes.length > 0 &&
           <QuotesSelectionCanvas quotes={quotes} changeInputToLyrics={changeInputToLyrics} />
         }
@@ -283,7 +293,9 @@ function CanvasKonva(props) {
         >Save Work</button><br />
 
       </div>
-
+      <div style={{ position: "absolute", right: "5px", bottom: "5px" }}>
+        <NotificationSaveModal category="photo" showSaveSuccessful={showSaveNotification} show={saveNotification} saveSuccessful={successfulSave} />
+      </div>
 
 
     </div>
