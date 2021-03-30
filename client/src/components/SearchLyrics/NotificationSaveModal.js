@@ -24,9 +24,9 @@ function NotificationSaveModal(props) {
             </Toast.Header>
             <Toast.Body>
                 {props.saveSuccessful === true &&
-                    <div>Your lyric has been saved!</div>}
+                    <div>Your {props.category} has been saved!</div>}
                 {props.saveSuccessful === false &&
-                    <div>Your lyric failed to save!</div>}
+                    <div>Your {props.category} failed to save!</div>}
             </Toast.Body>
         </Toast>
     )
