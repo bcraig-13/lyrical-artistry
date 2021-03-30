@@ -311,8 +311,8 @@ function CanvasKonva(props) {
 
         </div>
 
-        <div className="canvas freedraw toolbar">
-          <input className="input-group" id="freedrawCheckbox" type="checkbox" checked={drawCheck} onChange={handleChecked}></input>
+        <div className="canvas toolbar">
+          <input className="input-group freedraw" id="freedrawCheckbox" type="checkbox" checked={drawCheck} onChange={handleChecked}></input>
           <label>freedraw</label>
 
           <select
@@ -326,11 +326,11 @@ function CanvasKonva(props) {
           </select>
 
           <label className="canvas">stroke width:</label>
-          <input className="input-group"
+          <input className="input-group freedraw"
             onChange={(event) => setStrokeWidth(parseInt(event.target.value))} value={strokeWidth} placeholder="5"
             type="number" />
           <label className="canvas">color:</label>
-          <input className="input-group"
+          <input className="input-group freedraw"
             onChange={(event) => setStrokeColor(event.target.value)} value={strokeColor}
             placeholder="black" type="text" />
         </div>
