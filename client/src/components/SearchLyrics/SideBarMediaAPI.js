@@ -9,10 +9,10 @@ function SideBarMediaAPI() {
     const handleModalOpen = () => setShow(true);
 
     return (
-        <div>
+        <div style={{ paddingLeft: "240px", paddingTop: "80px" }}>
             <img src={process.env.PUBLIC_URL + "/icons/music.png"} className="btn btn-primary"style={{
                 objectFit: "contain",
-                width: "50px"
+                width: "70px"
             }} onClick={handleModalOpen} alt="projects" />
             <SongModal handleModalClose={handleModalClose} show={show} />
         </div>)

@@ -2,4 +2,7 @@ body {
   width: 100%;
   margin: 0;
   background-image: url("./img/music.jpg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
 }
