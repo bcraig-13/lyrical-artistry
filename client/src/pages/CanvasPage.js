@@ -7,7 +7,7 @@ function CanvasPage() {
         <SideBarMediaAPI />
       </div>
       <div className="col-md-10">
-        <h1>Edit Picture</h1>
+        <h1 className="nav2">Edit Picture</h1>
         <hr />
         <CanvasKonva />
       </div>

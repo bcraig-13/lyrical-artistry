@@ -265,10 +265,10 @@ function CanvasKonva(props) {
   return (
     <div>
       <div style={{ overflow: "scroll", overflowX: "hidden", height: "300px", width: "80%", backgroundColor: "white" }}>
-        <h2>Select your Quote</h2>
+        <h2 style={{fontWeight: '1000', padding: '10px'}}>Select your Quote</h2>
         {quotes.length === 0 &&
           <div>
-            <h3>Your quotes list is empty. Click to find more quotes!</h3>
+            <h3 style={{padding: '10px'}}>Your quotes list is empty. Click to find more quotes!</h3>
 
           </div>}
         {quotes.length > 0 &&
@@ -280,10 +280,10 @@ function CanvasKonva(props) {
       // onMouseDown={handleMouseDown}v\
       >
 
-        <h4 className="canvas">Upload File:</h4>
+        <h4 className="canvas" style={{fontWeight: '1000'}}>Upload File:</h4>
         <input type="file" className="canvas mb-5 fileUpload" onChange={(event) => openImage(event)} />
 
-        <h4 className="canvas">Add text to canvas and drag it</h4>
+        <h4 className="canvas" style={{fontWeight: '1000'}}>Add text to canvas and drag it</h4>
 
         <div className="toolbar mb-3 p-1">
 
@@ -300,6 +300,7 @@ function CanvasKonva(props) {
             id="addText"
             className="btn btn-light btn-sm mb-1"
             onClick={(event) => handleTextSubmit(event)}
+            style={{fontWeight: '1000'}}
           // submit button is gonna add to list of texts
           >Fix Text to Image</button><br />
 
@@ -408,6 +409,7 @@ function CanvasKonva(props) {
           id="saveWork"
           className="btn btn-light btn-sm mb-1"
           onClick={(event) => handleExport(event)}
+          style={{fontWeight: '1000'}}
         // submit button is gonna add to list of texts
         >Save Work</button><br />
 
