@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Stage, Layer, Image, Text } from 'react-konva';
+import { Stage, Layer, Line, Rect, Circle, Image, Text } from 'react-konva';
 import useImage from 'use-image';
 import { v4 as uuidv4 } from 'uuid';
 import API from "../../util/API";
@@ -13,15 +13,9 @@ import "./style.css";
 
 function CanvasKonva(props) {
 
-
-  // const width = window.innerWidth;
-  // const height = window.innerHeight;
-  // ^^^ think this'll only work if there is a div controlling size that canvas is in...
-
-  // = "./exPhoto.jpg";
+  // for getting image onto canvas
   const [imgSrc, setImgSrc] = useState({});
   const [image] = useImage(imgSrc.file);
-  // console.log([image.width, image.height])
 
   const [isDragging, setIsDragging] = useState(false);
 
@@ -35,6 +29,22 @@ function CanvasKonva(props) {
     currY: 50,
     // ListDragging: false
   });
+
+
+  const [freedrawTool, setFreedrawTool] = useState('pen');
+  const [lines, setLines] = useState([]);
+
+  const [drawCheck, setDrawCheck] = useState(false);
+  // for if they want to enter freedraw mode (allows dragging text without drawing)
+
+  const [isDrawing, setIsDrawing] = useState(false);
+  // makes lines generated only when mousedown in freedraw mode
+  const [strokeColor, setStrokeColor] = useState('black');
+  const [strokeWidth, setStrokeWidth] = useState(5);
+
+
+  // variables for the freedrawing tool!
+
   const width = 500;
   const height = 500;
   const [workName, setWorkName] = useState("");
@@ -55,6 +65,9 @@ function CanvasKonva(props) {
   // }
   // ==================================================================================
 
+
+  // ==================================================================================
+  // code that handles exporting the finished work to the database
 
   function dataURItoBlob(dataURI) {
     // convert base64 to raw binary data held in a string
@@ -86,8 +99,6 @@ function CanvasKonva(props) {
 
     const blob = dataURItoBlob(url);
 
-    // console.log(url);
-
 
     const data = new FormData();
     data.append("image", blob, workName);
@@ -101,6 +112,20 @@ function CanvasKonva(props) {
     // stageRef.current.toDataURL().then()
 
   };
+
+  // =======================================================================
+  // takes the image selected from computer, and makes usable to canvas
+
+  function openImage(event) {
+    const url = URL.createObjectURL(event.target.files[0]);
+    setImgSrc({ file: url });
+    // this.setState({
+    //   file: URL.createObjectURL(event.target.files[0])
+    // })
+  }
+
+  // =======================================================================
+  // code that handles textbox additions and movement
 
 
   const stageRef = useRef(null);
@@ -120,16 +145,6 @@ function CanvasKonva(props) {
         listDragged: false
       })
     }
-  }
-
-
-  function openImage(event) {
-    console.log(event);
-    const url = URL.createObjectURL(event.target.files[0]);
-    setImgSrc({ file: url });
-    // this.setState({
-    //   file: URL.createObjectURL(event.target.files[0])
-    // })
   }
 
   /* the ones saved in list */
@@ -182,11 +197,61 @@ function CanvasKonva(props) {
         />
       )
     })
-
     )
-
   }
+  // ======================================================================
+  // freedraw mouse events
 
+  const handleMouseDown = (e) => {
+
+    if (!drawCheck) {
+      return;
+    }
+    const pos = e.target.getStage().getPointerPosition();
+    const newLineArr = lines.concat([{ tool: freedrawTool, strokeColor, strokeWidth, points: [pos.x, pos.y] }]);
+
+    setLines(newLineArr);
+    setIsDrawing(true);
+  };
+
+  const handleMouseMove = (e) => {
+    // no drawing - skipping
+    if (!drawCheck) {
+      return;
+    }
+    if (!isDrawing) {
+      return;
+    }
+    const stage = e.target.getStage();
+    const point = stage.getPointerPosition();
+
+    let lastLine = lines[lines.length - 1];
+
+    // add point
+    lastLine.points = lastLine.points.concat([point.x, point.y]);
+
+    let temp = lines.concat();
+    temp.splice(lines.length - 1, 1, lastLine)
+    // replace last
+    // const temp = ;
+    console.log(`temp: ${JSON.stringify(temp)}`)
+
+    setLines(temp);
+  };
+
+  const handleMouseUp = () => {
+    // isDrawing.current = false;
+    setIsDrawing(false);
+  };
+
+  const handleChecked = () => {
+    // isDrawing.current = false;
+    // setIsDrawing(false);
+    if (drawCheck) { setDrawCheck(false) };
+    if (!drawCheck) { setDrawCheck(true) };
+  };
+  // ======================================================================
+  // user quotes
 
   function changeInputToLyrics(quote) {
     setInputToAdd({ ...inputToAdd, textToAdd: quote });
@@ -198,6 +263,14 @@ function CanvasKonva(props) {
     })
   }, [quotes])
 
+  // =======================================================================
+
+  useEffect(() => {
+
+    if (drawCheck){ setDrawCheck(false) }
+
+  }, [inputToAdd])
+
   const handleModalClose = () => {
     showQuoteModal(false);
   }
@@ -205,7 +278,7 @@ function CanvasKonva(props) {
   return (
     <div>
       <div style={{ overflow: "scroll", overflowX: "hidden", height: "300px", width: "80%", backgroundColor: "white" }}>
-        <h2 style={{fontWeight: '1000', padding: '10px'}}>Select your Quote</h2>
+        <h2 style={{ fontWeight: '1000', padding: '10px' }}>Select your Quote</h2>
         {quotes.length === 0 &&
           <div>
             <h3>Your quotes list is empty. Click to find more quotes!</h3>
@@ -219,10 +292,10 @@ function CanvasKonva(props) {
 
       <div className="canvasInput">
 
-        <h4 className="canvas" style={{fontWeight: '1000'}}>Upload File:</h4>
+        <h4 className="canvas" style={{ fontWeight: '1000' }}>Upload File:</h4>
         <input type="file" className="canvas mb-5 fileUpload" onChange={(event) => openImage(event)} />
 
-        <h4 className="canvas" style={{fontWeight: '1000'}}>Add text to canvas and drag it</h4>
+        <h4 className="canvas" style={{ fontWeight: '1000' }}>Add text to canvas and drag it</h4>
 
         <div className="toolbar mb-3 p-1">
 
@@ -239,15 +312,44 @@ function CanvasKonva(props) {
             id="addText"
             className="btn btn-light btn-sm mb-1"
             onClick={(event) => handleTextSubmit(event)}
-            style={{fontWeight: '1000'}}
+            style={{ fontWeight: '1000' }}
           // submit button is gonna add to list of texts
           >Fix Text to Image</button><br />
 
         </div>
 
+        <div className="canvas toolbar mb-3 p-1">
+          <input className="input-group freedraw" id="freedrawCheckbox" type="checkbox" checked={drawCheck} onChange={handleChecked}></input>
+          <label>freedraw</label>
 
+          <select
+            value={freedrawTool}
+            onChange={(e) => {
+              setFreedrawTool(e.target.value);
+            }}
+          >
+            <option value="pen">Pen</option>
+            <option value="eraser">Eraser</option>
+          </select>
 
-        <Stage width={width} height={height} ref={stageRef}>
+          <label className="canvas">stroke width:</label>
+          <input className="input-group freedraw"
+            onChange={(event) => setStrokeWidth(parseInt(event.target.value))} value={strokeWidth} placeholder="5"
+            type="number" />
+          <label className="canvas">color:</label>
+          <input className="input-group freedraw"
+            onChange={(event) => setStrokeColor(event.target.value)} value={strokeColor}
+            placeholder="black" type="text" />
+        </div>
+
+        <Stage
+          width={width}
+          height={height}
+          ref={stageRef}
+          onMouseDown={handleMouseDown}
+          onMousemove={handleMouseMove}
+          onMouseup={handleMouseUp}
+        >
           <Layer>
             <Image image={image} width={width} height={height} />
           </Layer>
@@ -260,6 +362,8 @@ function CanvasKonva(props) {
               text={inputToAdd.textToAdd}
               fontSize={inputToAdd.sizeToAdd}
               fontFamily={inputToAdd.fontToAdd}
+
+              width={480}
 
               x={inputToAdd.currX}
               y={inputToAdd.currY}
@@ -275,9 +379,40 @@ function CanvasKonva(props) {
               }}
             />
 
+
+            {/* <Rect width={50} height={50} fill="red" />
+            <Circle x={200} y={200} stroke="black" radius={50} /> */}
+
             {textsList.length ? mapTexts(textsList) : <Text></Text>}
 
           </Layer>
+
+          {/* freedraw */}
+          <Layer>
+            {lines.map(line => (
+              <Line
+                key={uuidv4()}
+                points={line.points}
+                stroke={line.strokeColor}
+                strokeWidth={line.strokeWidth}
+                tension={0.5}
+                lineCap="round"
+                globalCompositeOperation={
+                  line.tool === 'eraser' ? 'destination-out' : 'source-over'
+                }
+              />
+            ))}
+            {/* <Line
+              points={[0, 0, 500, 500]}
+              stroke="red"
+              strokeWidth={5}
+            /> */}
+          </Layer>
+
+
+          {/* <Layer>
+            shapes
+          </Layer> */}
 
         </Stage>
 
@@ -288,7 +423,7 @@ function CanvasKonva(props) {
           id="saveWork"
           className="btn btn-light btn-sm mb-1"
           onClick={(event) => handleExport(event)}
-          style={{fontWeight: '1000'}}
+          style={{ fontWeight: '1000' }}
         // submit button is gonna add to list of texts
         >Save Work</button><br />
 

@@ -2,25 +2,19 @@
 
 }
 
-
-.canvasFontColor label{
-    color: white;
-
-}
-
-.canvasFontColor h4{
-    color: white;
-}
-
 .canvas{
     color: white;
 }
 
 .canvasInput input{
-    width: 7%;
+    width: 6%;
     display:inline-flex;
     margin-right: 5px;
     margin-left: 5px;
+}
+
+.canvasInput label{
+    margin: 5px;
 }
 
 .canvasInput .fileUpload{
@@ -43,4 +37,19 @@
 .toolbar{
     background-color: gray;
     display: inline-block;
+}
+
+
+.canvasInput .freedraw{
+    width: 25%
+}
+
+#freedrawCheckbox{
+   width: 1.25em;
+   height: 1.25em;
+   vertical-align:middle;
+}
+
+.canvas.toolbar{
+    
 }
