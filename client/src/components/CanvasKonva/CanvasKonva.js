@@ -262,6 +262,13 @@ function CanvasKonva(props) {
 
   // =======================================================================
 
+  useEffect(() => {
+
+    if (drawCheck){ setDrawCheck(false) }
+
+  }, [inputToAdd])
+
+
   return (
     <div>
       <div style={{ overflow: "scroll", overflowX: "hidden", height: "300px", width: "80%", backgroundColor: "white" }}>
@@ -305,7 +312,7 @@ function CanvasKonva(props) {
         </div>
 
         <div className="canvas freedraw toolbar">
-          <input className="input-group" type="checkbox" onChange={handleChecked}></input>
+          <input className="input-group" id="freedrawCheckbox" type="checkbox" checked={drawCheck} onChange={handleChecked}></input>
           <label>freedraw</label>
 
           <select
