@@ -15,7 +15,6 @@ function CanvasKonva(props) {
   // for getting image onto canvas
   const [imgSrc, setImgSrc] = useState({});
   const [image] = useImage(imgSrc.file);
-  // console.log([image.width, image.height])
 
   const [isDragging, setIsDragging] = useState(false);
   // ^^^ made for array of textboxes; not sure if necessary (currently), or if it will even make it into final product
@@ -66,7 +65,7 @@ function CanvasKonva(props) {
   // ==================================================================================
 
 
-  // ========================================================================
+  // ==================================================================================
   // code that handles exporting the finished work to the database
 
   function dataURItoBlob(dataURI) {
@@ -99,14 +98,11 @@ function CanvasKonva(props) {
 
     const blob = dataURItoBlob(url);
 
-    // console.log(url);
-
 
     const data = new FormData();
     data.append("image", blob, workName);
     data.name = workName;
     API.postImage(data).then((results) => {
-      console.log(results.config);
     });
 
     // API.postWork(workName, uri);
@@ -203,14 +199,6 @@ function CanvasKonva(props) {
   // ======================================================================
   // freedraw mouse events
 
-  // const handleClick = (e) => {
-  //   console.log("click is working")
-  // }
-
-  // useEffect(() => {
-  //   console.log(lines)
-  // }, [lines])
-
   const handleMouseDown = (e) => {
 
     if (!drawCheck) {
@@ -219,11 +207,8 @@ function CanvasKonva(props) {
     const pos = e.target.getStage().getPointerPosition();
     const newLineArr = lines.concat([{ tool: freedrawTool, strokeColor, strokeWidth, points: [pos.x, pos.y] }]);
 
-    // console.log(`newline: ${JSON.stringify(newLineArr)}`)
     setLines(newLineArr);
     setIsDrawing(true);
-    // setLines([lines] + [ { tool: freedrawTool, points: [pos.x, pos.y] }]);
-    // console.log(lines)
   };
 
   const handleMouseMove = (e) => {
@@ -237,7 +222,6 @@ function CanvasKonva(props) {
     const stage = e.target.getStage();
     const point = stage.getPointerPosition();
 
-    console.log(lines.length - 1)
     let lastLine = lines[lines.length - 1];
 
     // add point
@@ -246,7 +230,6 @@ function CanvasKonva(props) {
     let temp = lines.concat();
     temp.splice(lines.length - 1, 1, lastLine)
     // replace last
-    // console.log(`lines: ${JSON.stringify(lines)}`)
     // const temp = ;
     console.log(`temp: ${JSON.stringify(temp)}`)
 
@@ -400,7 +383,7 @@ function CanvasKonva(props) {
                 tension={0.5}
                 lineCap="round"
                 globalCompositeOperation={
-                  line.freedrawTool === 'eraser' ? 'destination-out' : 'source-over'
+                  line.tool === 'eraser' ? 'destination-out' : 'source-over'
                 }
               />
             ))}
