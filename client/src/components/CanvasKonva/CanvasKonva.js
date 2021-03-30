@@ -265,10 +265,10 @@ function CanvasKonva(props) {
   return (
     <div>
       <div style={{ overflow: "scroll", overflowX: "hidden", height: "300px", width: "80%", backgroundColor: "white" }}>
-        <h2 style={{fontWeight: '1000', padding: '10px'}}>Select your Quote</h2>
+        <h2 style={{ fontWeight: '1000', padding: '10px' }}>Select your Quote</h2>
         {quotes.length === 0 &&
           <div>
-            <h3 style={{padding: '10px'}}>Your quotes list is empty. Click to find more quotes!</h3>
+            <h3 style={{ padding: '10px' }}>Your quotes list is empty. Click to find more quotes!</h3>
 
           </div>}
         {quotes.length > 0 &&
@@ -276,14 +276,12 @@ function CanvasKonva(props) {
         }
       </div>
 
-      <div className="canvasInput"
-      // onMouseDown={handleMouseDown}v\
-      >
+      <div className="canvasInput">
 
-        <h4 className="canvas" style={{fontWeight: '1000'}}>Upload File:</h4>
+        <h4 className="canvas" style={{ fontWeight: '1000' }}>Upload File:</h4>
         <input type="file" className="canvas mb-5 fileUpload" onChange={(event) => openImage(event)} />
 
-        <h4 className="canvas" style={{fontWeight: '1000'}}>Add text to canvas and drag it</h4>
+        <h4 className="canvas" style={{ fontWeight: '1000' }}>Add text to canvas and drag it</h4>
 
         <div className="toolbar mb-3 p-1">
 
@@ -300,14 +298,14 @@ function CanvasKonva(props) {
             id="addText"
             className="btn btn-light btn-sm mb-1"
             onClick={(event) => handleTextSubmit(event)}
-            style={{fontWeight: '1000'}}
+            style={{ fontWeight: '1000' }}
           // submit button is gonna add to list of texts
           >Fix Text to Image</button><br />
 
         </div>
 
-        <div className="freedraw input-group">
-          <input type="checkbox" onChange={handleChecked}></input>
+        <div className="canvas freedraw toolbar">
+          <input className="input-group" type="checkbox" onChange={handleChecked}></input>
           <label>freedraw</label>
 
           <select
@@ -319,16 +317,16 @@ function CanvasKonva(props) {
             <option value="pen">Pen</option>
             <option value="eraser">Eraser</option>
           </select>
-        </div>
 
-        <label className="canvas">stroke width:</label>
-        <input className="input-group"
-          onChange={(event) => setStrokeWidth( parseInt(event.target.value) )} value={strokeWidth} placeholder="5"
-          type="number" />
-        <label className="canvas">color:</label>
-        <input className="input-group"
-          onChange={(event) => setStrokeColor(event.target.value)} value={strokeColor}
-          placeholder="black" type="text" />
+          <label className="canvas">stroke width:</label>
+          <input className="input-group"
+            onChange={(event) => setStrokeWidth(parseInt(event.target.value))} value={strokeWidth} placeholder="5"
+            type="number" />
+          <label className="canvas">color:</label>
+          <input className="input-group"
+            onChange={(event) => setStrokeColor(event.target.value)} value={strokeColor}
+            placeholder="black" type="text" />
+        </div>
 
         <Stage
           width={width}
@@ -350,6 +348,8 @@ function CanvasKonva(props) {
               text={inputToAdd.textToAdd}
               fontSize={inputToAdd.sizeToAdd}
               fontFamily={inputToAdd.fontToAdd}
+
+              width={480}
 
               x={inputToAdd.currX}
               y={inputToAdd.currY}
@@ -409,7 +409,7 @@ function CanvasKonva(props) {
           id="saveWork"
           className="btn btn-light btn-sm mb-1"
           onClick={(event) => handleExport(event)}
-          style={{fontWeight: '1000'}}
+          style={{ fontWeight: '1000' }}
         // submit button is gonna add to list of texts
         >Save Work</button><br />
 

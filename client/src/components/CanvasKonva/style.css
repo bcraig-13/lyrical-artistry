@@ -2,25 +2,19 @@
 
 }
 
-
-.canvasFontColor label{
-    color: white;
-
-}
-
-.canvasFontColor h4{
-    color: white;
-}
-
 .canvas{
     color: white;
 }
 
 .canvasInput input{
-    width: 7%;
+    width: 6%;
     display:inline-flex;
     margin-right: 5px;
     margin-left: 5px;
+}
+
+.canvasInput label{
+    margin: 5px;
 }
 
 .canvasInput .fileUpload{
