@@ -318,7 +318,7 @@ function CanvasKonva(props) {
 
         </div>
 
-        <div className="canvas toolbar">
+        <div className="canvas toolbar mb-3 p-1">
           <input className="input-group freedraw" id="freedrawCheckbox" type="checkbox" checked={drawCheck} onChange={handleChecked}></input>
           <label>freedraw</label>
 

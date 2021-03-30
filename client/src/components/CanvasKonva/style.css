@@ -41,5 +41,15 @@
 
 
 .canvasInput .freedraw{
-    width: 1`5%
+    width: 25%
+}
+
+#freedrawCheckbox{
+   width: 1.25em;
+   height: 1.25em;
+   vertical-align:middle;
+}
+
+.canvas.toolbar{
+    
 }
