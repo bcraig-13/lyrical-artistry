@@ -85,8 +85,11 @@ function SongModal(props) {
                     </div>
                     <div className="col-md-5">
                         {lyrics !== "" &&
-                            <div style={{ overflowY: "auto", width: "100%", height: "575px", paddingLeft: "25px" }}>
-                                <LyricsDisplay lyrics={lyrics} handleQuoteHighlight={handleQuoteHighlight} />
+                            <div>
+                                <h2>Highlight the Lyrics You Want To Save</h2>
+                                <div style={{ overflowY: "auto", width: "100%", height: "575px", paddingLeft: "25px" }}>
+                                    <LyricsDisplay lyrics={lyrics} handleQuoteHighlight={handleQuoteHighlight} />
+                                </div>
                             </div>
                         }
                     </div>
