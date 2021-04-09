@@ -31,7 +31,8 @@ const API = {
   },
   postImage: (imageObject) => {
     // return axios.post(`/api/user/imageTemplate`, imageObject)
-    return axios.post(`/api/user/images`, imageObject)
+    return axios.post(`/api/user/files`, imageObject);
+    // return axios.post(`/api/user/images`, imageObject)
   },
   getAllUserImages: () => {
     return axios.get("/api/user/images");

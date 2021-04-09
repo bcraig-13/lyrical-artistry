@@ -8,6 +8,15 @@ const path = require("path");
 require("dotenv").config({ path: path.resolve(__dirname, ".env") });
 const multer = require("multer");
 const fs = require("fs").promises;
+var multerS3 = require('multer-s3');
+const AWS = require("aws-sdk");
+const BUCKET_NAME = "lyrical-artistry-s3";
+const USER_KEY = process.env.AWSAccessKeyId;
+const USER_SECRET = process.env.AWSSecretKey
+const s3 = new AWS.S3({
+  accessKeyId: USER_KEY,
+  secretAccessKey: USER_SECRET,
+});
 
 // LOGIN ROUTE
 apiRouter.post("/api/login", (req, res) => {
@@ -88,20 +97,52 @@ apiRouter.get("/api/user/images", isAuthenticated, (req, res) => {
   })
 })
 
-var storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "../uploads"));
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.fieldname + "-" + Date.now());
-  },
-});
+// var storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, path.join(__dirname, "../uploads"));
+//   },
+//   filename: (req, file, cb) => {
+//     cb(null, file.fieldname + "-" + Date.now());
+//   },
+// });
+
 
 var upload = multer({
-  storage: storage,
-  // limits: {fileSize: 500000}
+  storage: multerS3({
+    s3: s3,
+    bucket: BUCKET_NAME,
+    metadata: function (req, file, cb) {
+      cb(null, { fieldName: file.fieldname });
+    },
+    key: function (req, file, cb) {
+      cb(null, Date.now().toString())
+    },
+    // destination: (req, file, cb) => {
+    //   cb(null, path.join(__dirname, "../uploads"));
+    // },
+    // filename: (req, file, cb) => {
+    //   cb(null, file.fieldname + "-" + Date.now());
+    // },
+  })
 });
 
+
+
+apiRouter.post("/api/user/files", upload.single("image"), isAuthenticated, (req, res) => {
+  // fs.readFile(path.join(__dirname, "../uploads", req.file.filename), (err, data) => {
+  fs.readFile(path.join(__dirname, "../uploads/LedZeppelin.jpg"), (err, data) => {
+    if (err) throw err;
+    const params = {
+      Bucket: BUCKET_NAME, // pass your bucket name
+      // Key: 'contacts.png', // file will be saved as testBucket/contacts.csv
+      Body: JSON.stringify(data, null, 2)
+    };
+    s3.upload(params, function (s3Err, data) {
+      if (s3Err) throw s3Err
+      console.log(`File uploaded successfully at ${data.Location}`)
+    });
+  });
+});
 
 apiRouter.post("/api/user/images", isAuthenticated, upload.single("image"), (req, res, next) => {
   fs.readFile(path.join(__dirname, "../uploads", req.file.filename))
