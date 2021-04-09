@@ -1,5 +1,6 @@
 import decode from "jwt-decode";
 import axios from "axios";
+import { Route, Redirect } from "react-router-dom";
 
 class AuthService {
   login(username, password) {
@@ -8,6 +9,7 @@ class AuthService {
       .post("/api/login", { username: username, password: password })
       .then((res) => {
         // set the token once the user logs in
+
         this.setToken(res.data.token);
         // return the rest of the response
         return res;
@@ -25,6 +27,9 @@ class AuthService {
   loggedIn() {
     // Checks if there is a saved token and it's still valid
     const token = this.getToken();
+    // if(this.isTokenExpired(token)){
+    //   return <Redirect to="/login" />
+    // }
     return !!token && !this.isTokenExpired(token); // handwaiving here
   }
 
