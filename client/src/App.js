@@ -21,7 +21,7 @@ function App() {
             <Route exact path="/">
               <LoginPage />
             </Route>
-            <PrivateRoute path="/gallery">
+            <PrivateRoute path="/gallery" exact>
               <Gallery />
             </PrivateRoute>
             <Route path="/login">
@@ -30,10 +30,10 @@ function App() {
             <Route path="/signup">
               <SignUpPage />
             </Route>
-            <PrivateRoute path="/canvasPage">
+            <PrivateRoute path="/canvasPage" exact>
               <CanvasPage />
             </PrivateRoute>
-            <PrivateRoute path="/profile">
+            <PrivateRoute path="/profile" exact>
               <UserProfilePage />
             </PrivateRoute>
           </Switch>

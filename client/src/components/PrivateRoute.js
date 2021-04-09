@@ -5,10 +5,10 @@ import { useAuth } from "../util/authContext";
 // authenticated. Takes the same props as a Route component from react-router.
 function PrivateRoute({ children, ...rest }) {
   const auth = useAuth();
-
+  console.log(auth.isLoggedIn);
   return (
     <Route {...rest}>
-      {auth.isLoggedIn ? children : <Redirect to="/login" />}
+      {auth.isLoggedIn === true ? children : <Redirect to="/login" />}
     </Route>
   );
 }
