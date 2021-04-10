@@ -234,7 +234,7 @@ function CanvasKonva(props) {
     temp.splice(lines.length - 1, 1, lastLine)
     // replace last
     // const temp = ;
-    console.log(`temp: ${JSON.stringify(temp)}`)
+    // console.log(`temp: ${JSON.stringify(temp)}`)
 
     setLines(temp);
   };
