@@ -117,6 +117,7 @@ var upload = multer({
     key: function (req, file, cb) {
       cb(null, Date.now().toString())
     },
+
     // destination: (req, file, cb) => {
     //   cb(null, path.join(__dirname, "../uploads"));
     // },
@@ -128,19 +129,23 @@ var upload = multer({
 
 
 
-apiRouter.post("/api/user/files", upload.single("image"), isAuthenticated, (req, res) => {
+// apiRouter.post("/api/user/files", upload.single("image"), isAuthenticated, (req, res) => {
+apiRouter.post("/api/user/files", isAuthenticated, (req, res) => {
   // fs.readFile(path.join(__dirname, "../uploads", req.file.filename), (err, data) => {
-  fs.readFile(path.join(__dirname, "../uploads/LedZeppelin.jpg"), (err, data) => {
-    if (err) throw err;
-    const params = {
-      Bucket: BUCKET_NAME, // pass your bucket name
-      // Key: 'contacts.png', // file will be saved as testBucket/contacts.csv
-      Body: JSON.stringify(data, null, 2)
-    };
-    s3.upload(params, function (s3Err, data) {
-      if (s3Err) throw s3Err
-      console.log(`File uploaded successfully at ${data.Location}`)
-    });
+  // fs.readFile(path.join(__dirname, "../uploads/LedZeppelin.jpg"), (err, data) => {
+  //   if (err) throw err;
+  console.log(req.body);
+  const params = {
+    Bucket: BUCKET_NAME, // pass your bucket name
+    Key: `${Date.now().toString()}`, // file will be saved as testBucket/contacts.csv
+    ContentEncoding: 'base64',
+    ContentType: "image/png", 
+    Body: fs.readFile("./blue.png")
+  };
+  s3.putObject(params, function (s3Err, data) {
+    if (s3Err) throw s3Err
+    console.log(`File uploaded successfully at s3`)
+    //   });
   });
 });
 
