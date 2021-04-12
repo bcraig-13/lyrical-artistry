@@ -10,10 +10,10 @@ const multer = require("multer");
 const fs = require("fs").promises;
 var multerS3 = require('multer-s3');
 const AWS = require("aws-sdk");
-// const BUCKET_NAME = "lyrical-artistry-s3";
-const BUCKET_NAME = process.env.AWSBucket;
+const BUCKET_NAME = "lyrical-artistry-s3";
+// const BUCKET_NAME = process.env.AWSBucket;
 const USER_KEY = process.env.AWSAccessKeyId;
-const USER_SECRET = process.env.AWSSecretKey
+const USER_SECRET = process.env.AWSSecretKey;
 const s3 = new AWS.S3({
   accessKeyId: USER_KEY,
   secretAccessKey: USER_SECRET,
@@ -109,20 +109,11 @@ var upload = multer({
   storage: multerS3({
     s3: s3,
     bucket: BUCKET_NAME,
-    metadata: function (req, file, cb) {
-      cb(null, { fieldName: file.fieldname });
-    },
     key: function (req, file, cb) {
-      cb(null, Date.now().toString()+".png")
+      cb(null, Date.now().toString() + ".png")
     },
-    // ^^^ this is what controls the name in the 
-
-    // destination: (req, file, cb) => {
-    //   cb(null, path.join(__dirname, "../uploads"));
-    // },
-    // filename: (req, file, cb) => {
-    //   cb(null, file.fieldname + "-" + Date.now());
-    // },
+    contentType: multerS3.AUTO_CONTENT_TYPE,
+    acl: `public-read`,
   })
 });
 
@@ -130,60 +121,25 @@ var upload = multer({
 
 // sends to S3
 apiRouter.post("/api/user/files", upload.single("image"), isAuthenticated, (req, res) => {
-  // fs.readFile(path.join(__dirname, "../uploads", req.file.filename), (err, data) => {
-  // fs.readFileSync(path.join(__dirname, "../uploads/LedZeppelin.jpg"), (err, data) => {
-  //   if (err) throw err;
-  //   const params = {
-  //     Bucket: BUCKET_NAME, // pass your bucket name
-  //     // Key: 'contacts.png', // file will be saved as testBucket/contacts.csv
-  //     Key: "LedZeppelin.jpg",
-  //     // Body: JSON.stringify(data, null, 2)
-  //     Body: data
-  //   };
-
-  //   s3.putObject(params, function (s3Err, data) {
-  //   // s3.upload(params, function (s3Err, data) {
-  //     if (s3Err) throw s3Err
-  //     console.log(`File uploaded successfully at ${data.Location}`)
-  //   });
-    
-
-  // });
+  console.log(req.file);
+  const image = {
+    imageS3Url: req.file.location,
+  }
+  db.Image.create(image)
+    .then(({ _id }) => db.User.findOneAndUpdate({ _id: req.user.id }, { $push: { images: _id } }, { new: true }))
+    .catch((err) => {
+      console.log(err);
+    })
   console.log("success");
 });
 
-
+// apiRouter.get("/api/user/s3images") 
 // =====================================================================================================================================================
 
-
-
-// sends to MongoDB (will be using the URLs eventually, instead of actual picture)
-apiRouter.post("/api/user/images", isAuthenticated, upload.single("image"), (req, res, next) => {
-  fs.readFile(path.join(__dirname, "../uploads", req.file.filename))
-    .then((data) => {
-      var imageObject = {
-        name: req.body.name,
-        img: {
-          data,
-          contentType: "image/png",
-        },
-      };
-      return imageObject;
-    })
-    .then((image) => {
-      db.Image.create(image)
-        .then(({ _id }) => db.User.findOneAndUpdate({ _id: req.user.id }, { $push: { images: _id } }, { new: true }))
-        .then(() => {
-          res.redirect("/gallery")
-        })
-    }).catch((err) => {
-      console.log(err);
-      res.sendStatus(500);
-    });
-});
-
 apiRouter.delete("/api/user/images/:imageID", isAuthenticated, (req, res) => {
-  db.Image.findById({ _id: req.params.imageID }).then(dbModel => dbModel.remove()).catch(err => {
+  db.Image.findById({ _id: req.params.imageID }).then(dbModel => {
+    dbModel.remove()
+  }).catch(err => {
     res.json(err);
   })
 });
