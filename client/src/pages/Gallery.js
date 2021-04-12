@@ -11,7 +11,7 @@ function Gallery() {
       setUserImages(res.data.map(image => {
         return {
           id: image._id,
-          image: image.img.data
+          image: image.imageS3Url
         }
       }));
     })
