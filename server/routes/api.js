@@ -10,8 +10,8 @@ const multer = require("multer");
 const fs = require("fs").promises;
 var multerS3 = require('multer-s3');
 const AWS = require("aws-sdk");
-const BUCKET_NAME = "lyrical-artistry-s3";
-// const BUCKET_NAME = process.env.AWSBucket;
+// const BUCKET_NAME = "lyrical-artistry-s3";
+const BUCKET_NAME = process.env.AWSBucket;
 const USER_KEY = process.env.AWSAccessKeyId;
 const USER_SECRET = process.env.AWSSecretKey;
 const s3 = new AWS.S3({
@@ -72,16 +72,6 @@ apiRouter.get("/api/user/quotes", isAuthenticated, (req, res) => {
   })
 })
 
-apiRouter.get("api/gallery", isAuthenticated, (req, res) => {
-  db.User.findById(req.user.id)
-    .populate("images")
-    .then((userDoc) => {
-      res.render("gallery", {
-        username: req.user.username,
-        images: userDoc.images,
-      });
-    });
-});
 
 apiRouter.get("/api/user/images", isAuthenticated, (req, res) => {
   db.User.findById(req.user.id).populate("images").then(dbUser => {
@@ -89,7 +79,6 @@ apiRouter.get("/api/user/images", isAuthenticated, (req, res) => {
       dbUser.images.map((imageDoc) => {
         //Convert mongoose Document class to JS object
         const image = imageDoc.toObject();
-        image.img.data = `data:image/${image.img.contentType};base64,${image.img.data.toString("base64")}`;
         return image;
       })
     );
@@ -121,16 +110,15 @@ var upload = multer({
 
 // sends to S3
 apiRouter.post("/api/user/files", upload.single("image"), isAuthenticated, (req, res) => {
-  console.log(req.file);
   const image = {
     imageS3Url: req.file.location,
+    // public: req.publicStatus
   }
   db.Image.create(image)
     .then(({ _id }) => db.User.findOneAndUpdate({ _id: req.user.id }, { $push: { images: _id } }, { new: true }))
     .catch((err) => {
       console.log(err);
     })
-  console.log("success");
 });
 
 // apiRouter.get("/api/user/s3images") 
@@ -138,6 +126,13 @@ apiRouter.post("/api/user/files", upload.single("image"), isAuthenticated, (req,
 
 apiRouter.delete("/api/user/images/:imageID", isAuthenticated, (req, res) => {
   db.Image.findById({ _id: req.params.imageID }).then(dbModel => {
+    console.log(dbModel);
+    const s3Key = dbModel.imageS3Url.replace("https://lyrical-artistry-s3.s3.amazonaws.com/","");
+    var params = { Bucket: BUCKET_NAME, Key: s3Key };
+    s3.deleteObject(params, function (err, data) {
+      if (err) console.log(err, err.stack);  // error
+      else console.log();                 // deleted
+    });
     dbModel.remove()
   }).catch(err => {
     res.json(err);

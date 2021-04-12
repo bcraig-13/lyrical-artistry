@@ -70,15 +70,7 @@ function CanvasKonva(props) {
   // code that handles exporting the finished work to the database
 
   function dataURItoBlob(dataURI) {
-    // var binary = atob(dataURI.split(',')[1]);
-    // var array = [];
-    // for(var i = 0; i < binary.length; i++) {
-    //     array.push(binary.charCodeAt(i));
-    // }
-    // return new Blob([new Uint8Array(array)], {type: 'image/jpg'});
-
-
-    // convert base64 to raw binary data held in a string
+       // convert base64 to raw binary data held in a string
     // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
     var byteString = atob(dataURI.split(',')[1]);
 
@@ -113,7 +105,6 @@ function CanvasKonva(props) {
     data.name = workName;
     
     API.postImage(data).then((results) => {
-    // API.postImage(data).then((results) => {
       console.log(results);
       showSaveNotification(true);
       setSuccessfulSave(true);
