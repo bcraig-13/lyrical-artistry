@@ -173,7 +173,7 @@ function CanvasKonva(props) {
           y={currY}
           fill={colorToAdd}
 
-
+          width={480}
         // need to work on the update when done dragging!
         // draggable
         // fill={listDragged ? colorToAdd !== 'green' ? 'green' : 'blue' : colorToAdd}
@@ -268,6 +268,16 @@ function CanvasKonva(props) {
     if (drawCheck){ setDrawCheck(false) }
 
   }, [inputToAdd])
+
+
+  // useEffect(() => {
+
+  //   if (!drawCheck){ setDrawCheck(false) }
+
+  // }, [inputToAdd])
+
+
+
 
   const handleModalClose = () => {
     showQuoteModal(false);
@@ -422,6 +432,7 @@ function CanvasKonva(props) {
           className="btn btn-light btn-sm mb-1"
           onClick={(event) => handleExport(event)}
           style={{ fontWeight: '1000' }}
+          disabled={workName? false : true}
         // submit button is gonna add to list of texts
         >Save Work</button><br />
 
