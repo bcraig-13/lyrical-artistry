@@ -107,9 +107,9 @@ const[privacySettings, setPrivacySettings] = useState("public");
     const data = new FormData();
     data.append("image", blob, workName);
     data.name = workName;
+    data.privacy= privacySettings;
 
     API.postImage(data).then((results) => {
-      console.log(results);
       showSaveNotification(true);
       setSuccessfulSave(true);
     });
