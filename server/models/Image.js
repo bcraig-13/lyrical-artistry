@@ -8,6 +8,7 @@ var imageSchema = new mongoose.Schema({
 		type: String,
 		default: "public"
 	}
+	
 });
 
 const Image = mongoose.model("Image", imageSchema);

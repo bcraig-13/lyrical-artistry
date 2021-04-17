@@ -7,10 +7,8 @@ const apiRouter = new Router();
 const path = require("path");
 require("dotenv").config({ path: path.resolve(__dirname, ".env") });
 const multer = require("multer");
-const fs = require("fs").promises;
 var multerS3 = require('multer-s3');
 const AWS = require("aws-sdk");
-// const BUCKET_NAME = "lyrical-artistry-s3";
 const BUCKET_NAME = process.env.AWSBucket;
 const USER_KEY = process.env.AWSAccessKeyId;
 const USER_SECRET = process.env.AWSSecretKey;
@@ -87,13 +85,6 @@ apiRouter.get("/api/user/images", isAuthenticated, (req, res) => {
   })
 })
 
-
-// =====================================================================================================================================================
-
-// Updated code that uploads to S3 (able to get the saved work onto S3)
-
-
-
 var upload = multer({
   storage: multerS3({
     s3: s3,
@@ -105,8 +96,6 @@ var upload = multer({
     acl: `public-read`,
   })
 });
-
-
 
 // sends to S3
 apiRouter.post("/api/user/files", upload.single("image"), isAuthenticated, (req, res) => {
@@ -123,17 +112,13 @@ apiRouter.post("/api/user/files", upload.single("image"), isAuthenticated, (req,
     })
 });
 
-// apiRouter.get("/api/user/s3images") 
-// =====================================================================================================================================================
-
 apiRouter.delete("/api/user/images/:imageID", isAuthenticated, (req, res) => {
   db.Image.findById({ _id: req.params.imageID }).then(dbModel => {
     console.log(dbModel);
-    const s3Key = dbModel.imageS3Url.replace("https://lyrical-artistry-s3.s3.amazonaws.com/","");
+    const s3Key = dbModel.imageS3Url.replace(`https://${BUCKET_NAME}.s3.amazonaws.com/`,"");
     var params = { Bucket: BUCKET_NAME, Key: s3Key };
     s3.deleteObject(params, function (err, data) {
       if (err) console.log(err, err.stack);  // error
-      else console.log();                 // deleted
     });
     dbModel.remove()
   }).catch(err => {
