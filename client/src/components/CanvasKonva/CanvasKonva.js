@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { Stage, Layer, Line, Rect, Circle, Image, Text } from 'react-konva';
 import useImage from 'use-image';
 import { v4 as uuidv4 } from 'uuid';
+import { InputGroup, FormControl } from "react-bootstrap";
+
 import API from "../../util/API";
 import QuotesSelectionCanvas from "./QuotesSelectionCanvas";
 import NotificationSaveModal from "../SearchLyrics/NotificationSaveModal";
@@ -57,6 +59,8 @@ function CanvasKonva(props) {
   const [successfulSave, setSuccessfulSave] = useState(false);
 
 
+const[privacySettings, setPrivacySettings] = useState("public");
+
   // ==================================================================================
   // IGNORE (poss enhancment- scale canvas to image height)
   // img.onload = function() {
@@ -70,7 +74,7 @@ function CanvasKonva(props) {
   // code that handles exporting the finished work to the database
 
   function dataURItoBlob(dataURI) {
-       // convert base64 to raw binary data held in a string
+    // convert base64 to raw binary data held in a string
     // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
     var byteString = atob(dataURI.split(',')[1]);
 
@@ -103,9 +107,9 @@ function CanvasKonva(props) {
     const data = new FormData();
     data.append("image", blob, workName);
     data.name = workName;
-    
+    data.privacy= privacySettings;
+
     API.postImage(data).then((results) => {
-      console.log(results);
       showSaveNotification(true);
       setSuccessfulSave(true);
     });
@@ -173,7 +177,7 @@ function CanvasKonva(props) {
           y={currY}
           fill={colorToAdd}
 
-
+          width={480}
         // need to work on the update when done dragging!
         // draggable
         // fill={listDragged ? colorToAdd !== 'green' ? 'green' : 'blue' : colorToAdd}
@@ -264,10 +268,16 @@ function CanvasKonva(props) {
   // =======================================================================
 
   useEffect(() => {
-
-    if (drawCheck){ setDrawCheck(false) }
-
+    if (drawCheck) { setDrawCheck(false) }
   }, [inputToAdd])
+
+
+  // useEffect(() => {
+  //   console.log(privacySettings);
+  // }, [privacySettings])
+
+
+
 
   const handleModalClose = () => {
     showQuoteModal(false);
@@ -422,8 +432,24 @@ function CanvasKonva(props) {
           className="btn btn-light btn-sm mb-1"
           onClick={(event) => handleExport(event)}
           style={{ fontWeight: '1000' }}
+          disabled={workName ? false : true}
         // submit button is gonna add to list of texts
         >Save Work</button><br />
+
+        <p>Please choose your privacy settings for this piece:</p>
+        <input type="radio" id="public" name="privacy" value="public" onChange={(event) => setPrivacySettings(event.target.value)}/>
+        <label for="public">public</label><br />
+        <input type="radio" id="friends" name="privacy" value="friends" onChange={(event) => setPrivacySettings(event.target.value)}/>
+        <label for="friends">friends</label><br />
+        <input type="radio" id="private" name="privacy" value="private" onChange={(event) => setPrivacySettings(event.target.value)}/>
+        <label for="private">private</label>
+
+        {/* <InputGroup>
+          <InputGroup.Prepend>
+            <InputGroup.Radio aria-label="Radio button for following text input" />
+          </InputGroup.Prepend>
+          <FormControl aria-label="Text input with radio button" />
+        </InputGroup> */}
 
       </div>
       <div style={{ position: "absolute", right: "5px", bottom: "5px" }}>

@@ -101,6 +101,8 @@ var upload = multer({
 apiRouter.post("/api/user/files", upload.single("image"), isAuthenticated, (req, res) => {
   const image = {
     imageS3Url: req.file.location,
+    name: req.file.originalname,
+    privacy: req.headers.privacy
     // public: req.publicStatus
   }
   db.Image.create(image)
