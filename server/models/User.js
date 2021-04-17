@@ -27,7 +27,27 @@ const UserSchema = new Schema({
       message: `Quotes exceed max size`
     }
   },
-  images: [{ type: Schema.Types.ObjectId, ref: "Image" }]
+  images: [{ type: Schema.Types.ObjectId, ref: "Image" }],
+  profileImage: String,
+  firstName: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  lastName: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  email: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  
+  // friends/followers: [],
+  
+
 });
 
 // Execute before each user.save() call

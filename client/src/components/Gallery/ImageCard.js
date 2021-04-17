@@ -1,13 +1,12 @@
 import React from "react";
 import API from "../../util/API";
 import { useState } from "react";
-import { Dropdown } from "react-bootstrap";
+import { Dropdown , Image} from "react-bootstrap";
 
 function ImageCard(props) {
   const [imageOptions, showImageOptions] = useState(false);
 
   const deletePicture = (pictureId) => {
-    console.log(props.img);
     API.deletePicture(pictureId);
   }
 
@@ -15,14 +14,15 @@ function ImageCard(props) {
     <div className="card" style={{ width: "100%", height: "auto", marginLeft: "5px", marginTop: "20px", position: "relative" }}
       onMouseEnter={() => showImageOptions(true)}
       onMouseLeave={() => showImageOptions(false)}>
-      <img
+      <Image
         src={props.img}
         className="card-img-top"
         alt={props.id}
-        style={{}}
+        onClick={()=>props.showImageModal(props.img)}
+        fluid
       />
       {imageOptions &&
-        <div style={{ position: "absolute", zIndex: "100", top: "0", right: "0" }}>
+        <div style={{ position: "absolute", zIndex: "100", top: "0", right: "0", marginTop: "5px", marginRight: "5px" }}>
           <Dropdown alignRight={true}>
             <Dropdown.Toggle><i className="arrow down"></i></Dropdown.Toggle>
             <Dropdown.Menu>

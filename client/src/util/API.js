@@ -7,10 +7,14 @@ const API = {
   },
   
   // sign up a user to our service
-  signUpUser: ({ username, password }) => {
+  signUpUser: ({ username, password, firstName, lastName, email }) => {
     return axios.post("api/signup", {
       username,
-      password
+      password,
+      firstName,
+      lastName,
+      email
+
     });
   },
 
