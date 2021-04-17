@@ -3,9 +3,10 @@ const Schema = mongoose.Schema;
 
 var imageSchema = new mongoose.Schema({
 	imageS3Url: String,
-	public: {
-		type: Boolean,
-		default: false
+	name: String,
+	privacy: {
+		type: String,
+		default: "public"
 	}
 });
 
