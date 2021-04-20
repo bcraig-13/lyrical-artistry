@@ -284,7 +284,7 @@ const[privacySettings, setPrivacySettings] = useState("public");
   }
 
   return (
-    <div>
+    <div className="canvasKonva">
       <div style={{ overflow: "scroll", overflowX: "hidden", height: "300px", width: "80%", backgroundColor: "white" }}>
         <h2 style={{ fontWeight: '1000', padding: '10px' }}>Select your Quote</h2>
         {quotes.length === 0 &&

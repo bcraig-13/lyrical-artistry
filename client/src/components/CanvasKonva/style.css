@@ -1,55 +1,51 @@
-#theText, #theFont, #theSize, #theColor {
-
+.canvasKonva{
+    
 }
 
-.canvas{
+.canvasKonva .canvas{
     color: white;
 }
 
-.canvasInput input{
+.canvasKonva .canvasInput input{
     width: 6%;
     display:inline-flex;
     margin-right: 5px;
     margin-left: 5px;
 }
 
-.canvasInput label{
+.canvasKonva .canvasInput label{
     margin: 5px;
 }
 
-.canvasInput .fileUpload{
+.canvasKonva .canvasInput .fileUpload{
     width: unset;
 }
 
-.canvasInput .longText{
+.canvasKonva .canvasInput .longText{
     width: 50%;
 }
 
-#filename{
+.canvasKonva #filename{
     width: 20%;
 }
 
-.canvasInput button{
+.canvasKonva .canvasInput button{
     display: inline-flex;
     justify-content: center;
 }
 
-.toolbar{
+.canvasKonva .toolbar{
     background-color: gray;
     display: inline-block;
 }
 
 
-.canvasInput .freedraw{
+.canvasKonva .canvasInput .freedraw{
     width: 25%
 }
 
-#freedrawCheckbox{
+.canvasKonva #freedrawCheckbox{
    width: 1.25em;
    height: 1.25em;
    vertical-align:middle;
-}
-
-.canvas.toolbar{
-    
 }
