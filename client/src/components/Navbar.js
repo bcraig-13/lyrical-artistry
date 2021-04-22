@@ -40,6 +40,11 @@ function Navbar() {
               </NavLink>
             </li>
             <li className="nav-item">
+              <NavLink className="nav-link nav" activeClassName="active" to="/publicGallery">
+                Public
+              </NavLink>
+            </li>
+            <li className="nav-item">
               <NavLink className="nav-link nav" activeClassName="active" to="/login" onClick={signOut}>
                 Sign Out
               </NavLink>
