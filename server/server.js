@@ -3,9 +3,12 @@ require("dotenv").config({ path: path.resolve(__dirname, ".env") });
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-const apiRouter = require("./routes/api");
 
+// API Routes
+const apiRouter = require("./routes/api");
 const musixMatchRouter = require("./routes/musixMatchAPI");
+// Websocket
+const websocket = require("./config/websocket")
 
 const PORT = process.env.PORT || 3001;
 
