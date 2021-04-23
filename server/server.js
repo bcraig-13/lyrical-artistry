@@ -8,7 +8,8 @@ const mongoose = require("mongoose");
 const apiRouter = require("./routes/api");
 const musixMatchRouter = require("./routes/musixMatchAPI");
 // Websocket
-const websocket = require("./config/websocket")
+// const websocket = require("./config/websocket");
+// const WebSocket = require("ws");
 
 const PORT = process.env.PORT || 3001;
 
@@ -16,7 +17,7 @@ const PORT = process.env.PORT || 3001;
 // not set.
 if (!process.env.SERVER_SECRET) {
   throw new Error(
-    "A SEVER_SECRET env variable must be set. Please add to .env or include in Heroku config."
+    "A SERVER_SECRET env variable must be set. Please add to .env or include in Heroku config."
   );
 }
 
@@ -59,3 +60,4 @@ app.get("*", function (req, res) {
 app.listen(PORT, function () {
   console.log(`🌎 ==> Server now on port ${PORT}!`);
 });
+
