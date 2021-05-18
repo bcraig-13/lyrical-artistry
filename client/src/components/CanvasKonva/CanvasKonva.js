@@ -438,26 +438,20 @@ function CanvasKonva(props) {
 
         <div className="privacyRadio">
           <p>Who can see?</p>
-          <input type="radio" id="public" name="privacy" value="public" onChange={(event) => setPrivacySettings(event.target.value)} />
-          <label for="public">public (everyone)</label><br />
-          <input type="radio" id="friends" name="privacy" value="friends" onChange={(event) => setPrivacySettings(event.target.value)} />
-          <label for="friends">friends</label><br />
-          <input type="radio" id="private" name="privacy" value="private" onChange={(event) => setPrivacySettings(event.target.value)} />
-          <label for="private">private (yourself)</label>
 
-          <label class="container">Public (everyone)
+          <label className="container">Public (everyone)
   <input type="radio" id="public" name="privacy" value="public" onChange={(event) => setPrivacySettings(event.target.value)} />
-            <span class="checkmark"></span>
+            <span className="checkmark"></span>
           </label>
 
-          <label class="container" id="friends" name="privacy" value="friends" onChange={(event) => setPrivacySettings(event.target.value)} >Friends
-  <input type="radio" />
-            <span class="checkmark"></span>
+          <label className="container">Friends
+  <input type="radio" id="friends" name="privacy" value="friends" onChange={(event) => setPrivacySettings(event.target.value)} />
+            <span className="checkmark"></span>
           </label>
 
-          <label class="container" id="private" name="privacy" value="private" onChange={(event) => setPrivacySettings(event.target.value)}>Private (yourself)
-  <input type="radio" />
-            <span class="checkmark"></span>
+          <label className="container">Private (yourself)
+  <input type="radio" id="private" name="privacy" value="private" onChange={(event) => setPrivacySettings(event.target.value)} />
+            <span className="checkmark"></span>
           </label>
 
         </div>
