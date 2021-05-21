@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
-
+import axios from "axios";
+// should ref the API file & write the axios request directly in the API file!
 
 
 
@@ -9,9 +10,22 @@ import React, { useEffect, useState } from "react";
 function Navbar() {
 
 
+
+
     const [userSearch, setUserSearch] = useState();
 
     // need to make so that hitting search redirects to user's profile page!
+
+    useEffect(() => {
+        //   console.log(privacySettings);
+        if (userSearch) {
+            axios.get(`/api/search/${userSearch}`).then((response) => {
+                console.log(response);
+
+            })
+        }
+
+    }, [userSearch])
 
     return (
 

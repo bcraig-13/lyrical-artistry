@@ -48,6 +48,19 @@ apiRouter.get("/api/user", isAuthenticated, (req, res) => {
     .catch((err) => res.status(400).send(err));
 });
 
+
+apiRouter.get(`/api/search/:user`, (req, res) => {
+db.User.find({ username: { $regex: req.params.user } })
+    .then((data) => {
+      if (data) {
+        res.json(data);
+      } else {
+        res.status(404).send({ success: false, message: "No user found" });
+      }
+    })
+    .catch((err) => res.status(400).send(err));
+});
+
 apiRouter.post("/api/user/quotes", isAuthenticated, (req, res) => {
   db.Quote.create(req.body)
     .then(({ _id }) => db.User.findOneAndUpdate({ _id: req.user.id }, { $push: { quotes: _id } }, { new: true }))
@@ -129,7 +142,7 @@ apiRouter.post("/api/user/files", upload.single("image"), isAuthenticated, (req,
 apiRouter.delete("/api/user/images/:imageID", isAuthenticated, (req, res) => {
   db.Image.findById({ _id: req.params.imageID }).then(dbModel => {
     console.log(dbModel);
-    const s3Key = dbModel.imageS3Url.replace("https://lyrical-artistry-s3.s3.amazonaws.com/","");
+    const s3Key = dbModel.imageS3Url.replace("https://lyrical-artistry-s3.s3.amazonaws.com/", "");
     var params = { Bucket: BUCKET_NAME, Key: s3Key };
     s3.deleteObject(params, function (err, data) {
       if (err) console.log(err, err.stack);  // error
