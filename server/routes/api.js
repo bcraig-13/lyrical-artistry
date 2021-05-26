@@ -85,6 +85,20 @@ apiRouter.get("/api/user/images", isAuthenticated, (req, res) => {
   })
 })
 
+apiRouter.get("/api/publicImages", isAuthenticated, (req, res) => {
+  db.Image.find({ privacy: "public"}).then(dbImages => {
+    res.json(
+      dbImages.map((imageDoc) => {
+        //Convert mongoose Document class to JS object
+        const image = imageDoc.toObject();
+        return image;
+      })
+    );
+  }).catch(err => {
+    res.json(err);
+  })
+})
+
 var upload = multer({
   storage: multerS3({
     s3: s3,
