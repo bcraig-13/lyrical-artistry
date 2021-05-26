@@ -6,6 +6,7 @@ import CanvasPage from "./pages/CanvasPage";
 // import PublicPage from "./pages/PublicPage";
 import SignUpPage from "./pages/SignUpPage";
 import UserProfilePage from "./pages/UserProfilePage";
+import PublicGallery from "./pages/PublicGalleryPage";
 import { ProvideAuth } from "./util/authContext";
 import Gallery from "./pages/Gallery";
 
@@ -32,6 +33,9 @@ function App() {
             </Route>
             <PrivateRoute path="/canvasPage" exact>
               <CanvasPage />
+            </PrivateRoute>
+            <PrivateRoute path="/publicGallery" exact>
+              <PublicGallery />
             </PrivateRoute>
             <PrivateRoute path="/profile" exact>
               <UserProfilePage />

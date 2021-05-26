@@ -14,7 +14,6 @@ const API = {
       firstName,
       lastName,
       email
-
     });
   },
 
@@ -22,13 +21,13 @@ const API = {
     return axios.get(`/api/tracks/${trackName}`);
   },
   getLyrics: (trackID) => {
-    return axios.get(`/api/lyrics/${trackID}`)
+    return axios.get(`/api/lyrics/${trackID}`);
   },
   postQuotes: (quoteObject) => {
-    return axios.post(`/api/user/quotes`, quoteObject)
+    return axios.post(`/api/user/quotes`, quoteObject);
   },
   deleteQuote: (quoteID) => {
-    return axios.delete(`/api/user/quotes/${quoteID}`)
+    return axios.delete(`/api/user/quotes/${quoteID}`);
   },
   getAllUserQuotes: () => {
     return axios.get(`/api/user/quotes`);
@@ -39,9 +38,12 @@ const API = {
   getAllUserImages: () => {
     return axios.get("/api/user/images");
   },
+  getAllPublicImages: ()=> {
+    return axios.get("/api/publicImages");
+  },
   deletePicture: (imageID) => {
     return axios.delete(`/api/user/images/${imageID}`);
-  }
+  },
 };
 
 export default API;
