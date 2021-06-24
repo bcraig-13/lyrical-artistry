@@ -1,6 +1,8 @@
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 // import PublicPage from "./pages/PublicPage";
+
+import PublicGallery from "./pages/PublicGalleryPage";
 import { ProvideAuth } from "./util/authContext";
 import Gallery from "./pages/Gallery";
 import LoginPage from "./pages/LoginPage";
@@ -41,6 +43,9 @@ function App() {
             </Route>
             <PrivateRoute path="/canvasPage" exact>
               <CanvasPage />
+            </PrivateRoute>
+            <PrivateRoute path="/publicGallery" exact>
+              <PublicGallery />
             </PrivateRoute>
             <PrivateRoute path="/profile" exact>
               <UserProfilePage />

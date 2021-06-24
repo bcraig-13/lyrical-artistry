@@ -2,12 +2,14 @@ import { useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { useAuth } from "../util/authContext";
 import API from "../util/API";
-import '../components/myStyles.css'
 
 function SignUpPage() {
   const [formState, setFormState] = useState({
     username: "",
-    password: ""
+    password: "",
+    firstName: "",
+    lastName: "",
+    email: "",
   });
 
   const auth = useAuth();
@@ -34,34 +36,70 @@ function SignUpPage() {
   }
 
   return (
-    <div className= 'parent'>
-      <img src= {process.env.PUBLIC_URL + "./img/lyrical-artistry.png"} alt="Lyrical Artistry"></img>
+    <div className='parent'>
+      <img src={process.env.PUBLIC_URL + "./img/lyrical-artistry.png"} alt="Lyrical Artistry"></img>
       <h1 className='primary'>Sign Up</h1>
       <form onSubmit={handleSignUpFormSubmit}>
-        <label htmlFor="username" className='primary'>Username:</label>
-        <input className='username'
+        <input
+          type="text"
+          name="firstName"
+          id="firstName"
+          value={formState.firstName}
+          onChange={handleInputChange}
+          placeholder="First Name:"
+          style={{ marginTop: "5px" }}
+          required
+        />
+        <br />
+        <input
+          type="text"
+          name="lastName"
+          id="lastName"
+          value={formState.lastName}
+          onChange={handleInputChange}
+          placeholder="Last Name:"
+          style={{ marginTop: "5px" }}
+          required
+        />
+        <br />
+        <input
+          type="email"
+          name="email"
+          id="email"
+          value={formState.email}
+          onChange={handleInputChange}
+          placeholder="Email Address:"
+          style={{ marginTop: "5px" }}
+          required
+        />
+        <br />
+        <input
           type="text"
           name="username"
           id="username"
           value={formState.username}
           onChange={handleInputChange}
+          placeholder="Username:"
+          style={{ marginTop: "5px" }}
           required
         />
         <br />
-        <label htmlFor="password" className='primary'>Password:</label>
         <input
           type="password"
           name="password"
           id="password"
           value={formState.password}
           onChange={handleInputChange}
+          placeholder="Password:"
+          style={{ marginTop: "5px" }}
           required
         />
         <br />
-        <button className= 'button' type="submit">Submit</button>
+
+        <button type="submit" style={{marginTop: "5px"}}>Submit</button>
       </form>
       <p className='primary'>
-        Have an account? <Link to="/login" style={{color: "#DCDCDC"}}>Login</Link>
+        Have an account? <Link to="/login" style={{ color: "#DCDCDC" }}>Login</Link>
       </p>
     </div>
   );
