@@ -6,19 +6,6 @@ import { Modal, Button, Overlay, OverlayTrigger, Popover, Form, Card } from "rea
 
 // should ref the API file & write the axios request directly in the API file!
 
-
-// key={uuidv4()}
-// dont need! use _id
-
-
-
-
-
-// popover overlay might be better...
-
-
-
-
 {/* <Form.Select aria-label="Default select example">
   <option>Open this select menu</option>
   <option value="1">One</option>
@@ -32,38 +19,30 @@ import { Modal, Button, Overlay, OverlayTrigger, Popover, Form, Card } from "rea
 
 function UserSearch() {
 
-
-
-
   const [userSearch, setUserSearch] = useState();
   const [userSearchResults, setUserSearchResults] = useState([]);
-
-  const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
+  const [show, setShow] = useState({ show: false })
 
   // need to make so that hitting search redirects to user's profile page!
 
   useEffect(() => {
-    //   console.log(privacySettings);
 
-      var tempArr;
-      tempArr = [];
-      axios.get(`/api/search/${userSearch}`).then((response) => {
-        // console.log(response);
-        // change to get array of vars, put in search result!
-        // results.data._id & results.data.username
-        // handleShow()
-        response.data.map(entry => {
-          tempArr.push({ _id: entry._id, username: entry.username })
-        })
+    userSearch ? setShow({}) : setShow({ show: false })
 
-        setUserSearchResults(tempArr);
-        console.log(userSearchResults);
+    var tempArr;
+    tempArr = [];
+    axios.get(`/api/search/${userSearch}`).then((response) => {
+      response.data.map(entry => {
+        tempArr.push({ _id: entry._id, username: entry.username })
+      })
 
-      }).catch(err => setUserSearchResults([]))
+      setUserSearchResults(tempArr);
+      // setShow({})
+
+    }).catch(err => {
+      setUserSearchResults([]);
+      // setShow({ show: false });
+    })
 
   }, [userSearch])
 
@@ -72,9 +51,7 @@ function UserSearch() {
 
       <OverlayTrigger
         trigger="focus"
-        show={userSearchResults.length !== 0 ? true : false}
-        // {userSearchResults.length !== 0 ? : show=false}
-        // might be okay; try 'focus' as well maybe...
+        {...show}
         key="bottom"
         placement="bottom"
         overlay={
@@ -87,13 +64,17 @@ function UserSearch() {
                 <option value="2">Two</option>
                 <option value="3">Three</option>
               </Form.Select> */}
-              {userSearchResults.map(entry => (
-                <Card key={entry._id}>
-                  <Card.Body>{entry.username}</Card.Body>
-                </Card>
-              )
 
-              )}
+              {userSearchResults.length === 0 ? <h5>No Results Found</h5> : ""}
+              
+              {userSearchResults.length > 0 ?
+                userSearchResults.map(entry => (
+                  <Card key={entry._id}>
+                    <Card.Body>{entry.username}</Card.Body>
+                  </Card>
+                ))
+                : ""
+              }
             </Popover.Content>
           </Popover>
         }
@@ -101,16 +82,6 @@ function UserSearch() {
         <input className="input-group" onChange={(event) => setUserSearch(event.target.value)} value={userSearch} id="userSearch" placeholder="search for friends" type="text" />
 
       </OverlayTrigger>
-
-      {/* <input className="input-group" onChange={(event) => setUserSearch(event.target.value)} value={userSearch} id="userSearch" placeholder="search for friends" type="text" /> */}
-
-      {/* <Form.Select aria-label="Default select example">
-        <option>Open this select menu</option>
-        <option value="1">One</option>
-        <option value="2">Two</option>
-        <option value="3">Three</option>
-      </Form.Select> */}
-
 
     </>
   )
